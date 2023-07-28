@@ -171,8 +171,8 @@ public class LatJDBCDAO implements LatDAO_interface {
 				latestnewsVO.setNewsNo(rs.getInt("news_No"));
 				latestnewsVO.setNewsContext(rs.getString("news_Context"));
 				latestnewsVO.setAnnPic(rs.getBytes("ann_Pic"));
-				latestnewsVO.setAnnStatus(rs.getInt("ann_Status"));
-				latestnewsVO.setAnnTime(rs.getDate("ann_Time"));
+				latestnewsVO.setAnnStatus(rs.getByte("ann_Status"));
+				latestnewsVO.setAnnTime(rs.getTimestamp("ann_Time"));
 				
 			}
 
@@ -233,8 +233,8 @@ public class LatJDBCDAO implements LatDAO_interface {
 				latestnewsVO.setNewsNo(rs.getInt("news_No"));
 				latestnewsVO.setNewsContext(rs.getString("news_Context"));
 				latestnewsVO.setAnnPic(rs.getBytes("ann_Pic"));
-				latestnewsVO.setAnnStatus(rs.getInt("ann_Status"));
-				latestnewsVO.setAnnTime(rs.getDate("ann_Time"));
+				latestnewsVO.setAnnStatus(rs.getByte("ann_Status"));
+				latestnewsVO.setAnnTime(rs.getTimestamp("ann_Time"));
 				list.add(latestnewsVO); // Store the row in the list
 			}
 
