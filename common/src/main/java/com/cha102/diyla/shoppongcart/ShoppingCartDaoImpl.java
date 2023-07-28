@@ -40,19 +40,19 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 				PreparedStatement pstmtUpdateAmount = con.prepareStatement(
 						"UPDATE shopping_cart_list set com_amount = ? where MEM_ID = ? and COM_NO = ?");) {
 			pstmtSelect.setInt(1, memID);
-			pstmtSelect.setInt(2, comm.getComNO());
+			pstmtSelect.setInt(2, 1);
 			try (ResultSet rs = pstmtSelect.executeQuery();) {
 				if (rs.next()) {
 //					int existingQuantity = rs.getInt("com_amount");
 //					pstmtUpdateAmount.setInt(1, amount + existingQuantity);
 //					pstmtUpdateAmount.setInt(2, memID);
-//					pstmtUpdateAmount.setInt(3, comm.getComNO());
+//					pstmtUpdateAmount.setInt(3, 1);
 //					pstmtUpdateAmount.executeUpdate();
 					update(memID,comm, amount);
 
 				} else {
 					pstmtInsertCom.setInt(1, memID);
-					pstmtInsertCom.setInt(2, comm.getComNO());
+					pstmtInsertCom.setInt(2, 1);
 					pstmtInsertCom.setInt(3, amount);
 					pstmtInsertCom.executeUpdate();
 				}
@@ -76,13 +76,13 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 				PreparedStatement pstmtSelect = con.prepareStatement(
 						"Select com_amount from shopping_cart_list where MEM_ID = ? and COM_NO = ?");) {
 			pstmtSelect.setInt(1, memID);
-			pstmtSelect.setInt(2, comm.getComNO());
+			pstmtSelect.setInt(2, 1);
 			try (ResultSet rs = pstmtSelect.executeQuery();) {
 				if (rs.next()) {
 					int existingQuantity = rs.getInt("com_amount");
 					pstmtUpdate.setInt(1, amount + existingQuantity);
 					pstmtUpdate.setInt(2, memID);
-					pstmtUpdate.setInt(3, comm.getComNO());
+					pstmtUpdate.setInt(3, 1);
 					pstmtUpdate.executeUpdate();
 //					if(existingQuantity<=0) {}
 				}
@@ -101,7 +101,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 				PreparedStatement pstmtDel = con.prepareStatement("DELETE FROM shopping_cart_list where MEM_ID = ? and COM_NO = ?"); 
 				){
 			pstmtDel.setInt(1, memID);
-			pstmtDel.setInt(2, comm.getComNO());
+			pstmtDel.setInt(2, 1);
 			pstmtDel.executeUpdate();
 			
 			
@@ -122,7 +122,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
 	public static void main(String[] args) {
 		CommodityVO commodityVO = new CommodityVO();
-		commodityVO.setComNO(1);
+//		commodityVO.setComNO(1);
 		ShoppingCartDaoImpl shoppingCartDaoImp = new ShoppingCartDaoImpl();
 		shoppingCartDaoImp.insert(2, commodityVO, 5);
 	}
