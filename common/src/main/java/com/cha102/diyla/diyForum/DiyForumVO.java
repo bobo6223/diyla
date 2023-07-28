@@ -15,7 +15,7 @@ public class DiyForumVO {
         this.memId = memId;
         this.diyNo = diyNo;
         this.artiCont = artiCont;
-        this.diyGrade = diyGrade;
+        this.diyGrade =  diyGrade;
     }
 
     @Override
