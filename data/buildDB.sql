@@ -1,11 +1,11 @@
 DROP
-DATABASE IF EXISTS DIYLA;
+    DATABASE IF EXISTS DIYLA;
 
 CREATE
-DATABASE DIYLA;
+    DATABASE DIYLA;
 
 USE
-DIYLA;
+    DIYLA;
 
 CREATE TABLE MEMBER
 (
@@ -34,13 +34,13 @@ CREATE TABLE EMPLOYEE
     EMP_ACCOUNT  VARCHAR(50) UNIQUE NOT NULL COMMENT '管理員帳號',
     EMP_PASSWORD VARCHAR(50)        NOT NULL COMMENT '管理員密碼',
     EMP_STATUS   TINYINT            NOT NULL DEFAULT '0' COMMENT '狀態(0:啟用,1:停權)'
-) COMMENT'後台管理員';
+) COMMENT '後台管理員';
 
 CREATE TABLE AUTH_FUN
 (
     AUTH_ID  INT PRIMARY KEY AUTO_INCREMENT COMMENT '權限編號',
     AUTH_FUN VARCHAR(50) COMMENT '權限功能'
-) COMMENT'後台權限功能';
+) COMMENT '後台權限功能';
 
 CREATE TABLE AUTHORITY
 (
@@ -52,7 +52,7 @@ CREATE TABLE AUTHORITY
     CONSTRAINT FK_AUTHORITY_AUTH_FUN
         FOREIGN KEY (AUTH_ID) REFERENCES DIYLA.AUTH_FUN (AUTH_ID),
     PRIMARY KEY (EMP_ID, AUTH_ID)
-) COMMENT'後台管理員權限';
+) COMMENT '後台管理員權限';
 
 
 CREATE TABLE COMMODITY_CLASS
@@ -70,7 +70,7 @@ CREATE TABLE COMMODITY
     COM_CLASS_NO  INT                                 NOT NULL COMMENT '商品類別編號',
     COM_NAME      VARCHAR(50)                         NOT NULL COMMENT '商品名稱',
     COM_PIC       LONGBLOB COMMENT '商品圖片',
-    COM_DEC       VARCHAR(200) NULL COMMENT '商品描述',
+    COM_DEC       VARCHAR(200)                        NULL COMMENT '商品描述',
     COM_PRI       INT                                 NOT NULL,
     COM_QUA       INT                                 NOT NULL COMMENT '數量',
     COM_STATE     TINYINT   DEFAULT 0                 NOT NULL COMMENT '商品狀態，(0:下架，1:上架中，2:完售)',
@@ -129,7 +129,7 @@ CREATE TABLE COMMODITY_COMMENT
     COM_NO         INT                                 NOT NULL COMMENT '商品編號',
     MEM_ID         INT                                 NOT NULL COMMENT '會員編號',
     RATING         TINYINT   DEFAULT 5                 NOT NULL COMMENT '評分，(1~5分)',
-    COM_CONTENT    VARCHAR(200) NULL COMMENT '評論內容',
+    COM_CONTENT    VARCHAR(200)                        NULL COMMENT '評論內容',
     COM_TIME       TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '評論時間',
     CONSTRAINT COMMODITY_COMMENT_COMMODITY_COM_NO_FK
         FOREIGN KEY (COM_NO) REFERENCES DIYLA.COMMODITY (COM_NO),
@@ -356,7 +356,7 @@ CREATE TABLE DIY_FORUM
     DIY_GRA   TINYINT       NOT NULL DEFAULT '5' COMMENT '1:一分,2:兩分,3:三分,4:四分,5:五分',
     FOREIGN KEY (MEM_ID) REFERENCES MEMBER (MEM_ID),
     FOREIGN KEY (DIY_NO) REFERENCES DIY_CATE (DIY_NO)
-)COMMENT 'DIY討論區';
+) COMMENT 'DIY討論區';
 
 CREATE TABLE DIY_RESERVE_RESULT
 (
@@ -367,17 +367,7 @@ CREATE TABLE DIY_RESERVE_RESULT
     RESERVE_STATUS   TINYINT   NOT NULL DEFAULT '0' COMMENT '0:正常,1:不可預約',
     RESERVE_UPD_TIME TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     PEO_LIMIT        INT       NOT NULL
-)COMMENT 'DIY預約匯總結果';
-
-CREATE TABLE ING_STORAGE
-(
-    ING_ID       INT PRIMARY KEY AUTO_INCREMENT COMMENT '0~100:對應各食材',
-    BRAND        VARCHAR(20) NOT NULL,
-    ING_NUMS     INT         NOT NULL COMMENT '以克數來表示',
-    ING_NAME     VARCHAR(20) NOT NULL,
-    `STATUS`     TINYINT     NOT NULL DEFAULT '0' COMMENT '0:正常,1:不可用',
-    SERVING_SIZE INT         NOT NULL DEFAULT '1' COMMENT '每個食材每份有不同克數'
-)COMMENT '食材';
+) COMMENT 'DIY預約匯總結果';
 
 CREATE TABLE DIY_ING
 (
@@ -387,11 +377,31 @@ CREATE TABLE DIY_ING
     PRIMARY KEY (DIY_NO, ING_ID),
     FOREIGN KEY (DIY_NO) REFERENCES DIY_CATE (DIY_NO),
     FOREIGN KEY (ING_ID) REFERENCES ING_STORAGE (ING_ID)
-)COMMENT 'DIY使用食材明細';
+) COMMENT 'DIY使用食材明細';
 
+create table notice
+(
+    notice_no      int primary key auto_increment,
+    mem_id         int           not null,
+    notice_title   varchar(50)   not null,
+    notice_context varchar(1000) not null,
+    notice_time    timestamp     not null default (current_timestamp),
+    notice_status  tinyint       not null default '0' comment '未讀取0,讀取1',
+    constraint fk_member_memid
+        foreign key (mem_id) references member (mem_id)
+);
 
-
-
+create table chatroom
+(
+    chat_no      int primary key auto_increment,
+    mem_id       int           not null,
+    tea_id       int           not null,
+    chat_time    timestamp     not null default (current_timestamp),
+    chat_context varchar(1000) not null,
+    chat_dir     tinyint       not null comment '師傅對會員0,會員對師傅1',
+    constraint fk_memchat_memid
+        foreign key (mem_id) references member (mem_id)
+);
 
 
 
