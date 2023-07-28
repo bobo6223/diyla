@@ -1,4 +1,4 @@
-package com.cha102.diyla.commodityModel;
+package com.cha102.diyla.diyModel;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

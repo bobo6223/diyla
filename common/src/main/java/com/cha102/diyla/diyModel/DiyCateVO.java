@@ -1,4 +1,4 @@
-package com.diy.model;
+package com.cha102.diyla.diyModel;
 
 public class DiyCateVO implements java.io.Serializable {
     private Integer diyNo;
