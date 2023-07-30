@@ -24,7 +24,7 @@ public class DiyForumVO {
 				+ ", diyGrade=" + diyGrade + "]";
 	}
 
-    public Integer getArtiNo() {
+	public Integer getArtiNo() {
         return artiNo;
     }
 
