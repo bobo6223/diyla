@@ -1,6 +1,8 @@
 package com.cha102.diyla.diyIng;
 
-public class DIYIngredientVO {
+import java.io.Serializable;
+
+public class DIYIngredientVO implements Serializable {
     private Integer diyNo;
     private Integer ingId;
     private Integer ingCount;

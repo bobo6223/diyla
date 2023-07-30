@@ -1,6 +1,8 @@
 package com.cha102.diyla.diyForum;
 
-public class DiyForumVO {
+import java.io.Serializable;
+
+public class DiyForumVO implements Serializable{
     private Integer artiNo;
     private Integer memId;
     private Integer diyNo;

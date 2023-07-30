@@ -1,9 +1,10 @@
 package com.cha102.diyla.diyReserveResult;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-public class DIYReserveResultVO {
+public class DIYReserveResultVO implements Serializable{
     private Integer diyReserveNo;
     private Date diyReserveDate;
     private Byte diyPeriod;
