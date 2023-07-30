@@ -2,7 +2,6 @@ package com.cha102.diyla.commodityModel;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
 
 public class CommodityVO implements Serializable {
     private Integer comNO;
@@ -16,7 +15,7 @@ public class CommodityVO implements Serializable {
     private Integer comState;
     private Integer commentTotal;
     private Integer ratingSum;
-    private Timestamp updateTime;
+        private Timestamp updateTime;
 
     public CommodityVO(){}
 
