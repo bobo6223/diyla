@@ -25,10 +25,10 @@ public class CommodityController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if ("insertPage".equals(action)) {
-            List<CommodityClassVO> commodityClasses = classService.getAll();
-            req.setAttribute("commodityClasses",commodityClasses);
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/shop/insertNewCommodity.jsp");
-            requestDispatcher.forward(req, resp);
+            List<CommodityClassVO> commodityClasses = classService.getAll(); // 取回所有商品類別
+            req.setAttribute("commodityClasses",commodityClasses); // 放到大中小的小
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/shop/insertNewCommodity.jsp"); // 設定下個頁面路徑
+            requestDispatcher.forward(req, resp); // 轉導到下個頁面，並把請求跟回應一併交給
         }
     }
 

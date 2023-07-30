@@ -1,6 +1,15 @@
+<%@ page import="com.cha102.diyla.commodityClassModel.CommodityClassService" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.cha102.diyla.commodityClassModel.CommodityClassVO" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isELIgnored="false" %>
+
+<%--<%--%>
+<%--    CommodityClassService classService = new CommodityClassService();--%>
+<%--    List<CommodityClassVO> commodityClasses = classService.getAll(); // 取回所有商品類別--%>
+<%--    pageContext.setAttribute("commodityClasses",commodityClasses);--%>
+<%--%>--%>
 <html>
 <head>
     <title>新增商品表單</title>
