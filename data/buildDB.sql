@@ -71,7 +71,7 @@ CREATE TABLE COMMODITY
     COM_CLASS_NO  INT                                 NOT NULL COMMENT '商品類別編號',
     COM_NAME      VARCHAR(50)                         NOT NULL COMMENT '商品名稱',
     COM_PIC       LONGBLOB COMMENT '商品圖片',
-    COM_DEC       VARCHAR(200)                        NULL COMMENT '商品描述',
+    COM_DES       VARCHAR(200)                        NULL COMMENT '商品描述',
     COM_PRI       INT                                 NOT NULL,
     COM_QUA       INT                                 NOT NULL COMMENT '數量',
     COM_STATE   TINYINT   DEFAULT 0                 NOT NULL COMMENT '商品狀態，(0:下架，1:上架中，2:完售)',

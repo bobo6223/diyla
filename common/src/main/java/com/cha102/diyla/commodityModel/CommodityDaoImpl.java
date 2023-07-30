@@ -18,7 +18,7 @@ public class CommodityDaoImpl implements CommodityDao{
             throw new RuntimeException(e);
         }
     }
-    public static final String INSERT_SQL = "INSERT INTO COMMODITY (COM_CLASS_NO,COM_NAME,COM_PIC,COM_DEC,COM_PRI,COM_QUA,COM_STATE) VALUES (?,?,?,?,?,?,?);";
+    public static final String INSERT_SQL = "INSERT INTO COMMODITY (COM_CLASS_NO,COM_NAME,COM_PIC,COM_DES,COM_PRI,COM_QUA,COM_STATE) VALUES (?,?,?,?,?,?,?);";
 
     public int insert(CommodityVO commodity) {
         try (Connection conn = ds.getConnection();
@@ -27,7 +27,7 @@ public class CommodityDaoImpl implements CommodityDao{
             ps.setInt(1, commodity.getComClassNo());
             ps.setString(2,commodity.getComNAME());
             ps.setBytes(3,commodity.getComPic());
-            ps.setString(4,commodity.getComDec());
+            ps.setString(4,commodity.getComDes());
             ps.setDouble(5,commodity.getComPri());
             ps.setInt(6,commodity.getComQua());
             ps.setInt(7,commodity.getComState());

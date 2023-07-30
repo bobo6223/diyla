@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 @WebServlet("/shop/CommodityController")
@@ -36,22 +37,67 @@ public class CommodityController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
-
+        if ("insertPage".equals(action)) {
+            List<CommodityClassVO> commodityClasses = classService.getAll(); // 取回所有商品類別
+            req.setAttribute("commodityClasses",commodityClasses); // 放到大中小的小
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/shop/insertNewCommodity.jsp"); // 設定下個頁面路徑
+            requestDispatcher.forward(req, res); // 轉導到下個頁面，並把請求跟回應一併交給
+        }
+        HashMap<String, String> errMsg = new HashMap<>();
 
         if ("insert".equals(action)) {
-            Integer comClassNo = Integer.valueOf(req.getParameter("comClassNo"));
+            Integer comClassNo = null;
+            try {
+                 comClassNo = Integer.valueOf(req.getParameter("comClassNo"));
+            } catch (NumberFormatException e) {
+                errMsg.put("comClassNo", "請選擇類別");
+            }
+
             String commodityName = req.getParameter("commodityName");
-            byte[]   commodityPic = IOUtils.toByteArray(req.getPart("commodityPic").getInputStream());
+            if (commodityName == null || commodityName.trim().length() == 0) {
+                errMsg.put("commodityName", "名稱不得空白");
+            }
+            byte[] commodityPic = IOUtils.toByteArray(req.getPart("commodityPic").getInputStream());
+            if (commodityPic.length==0) {
+                errMsg.put("commodityPic", "請上傳圖片檔");
+            }
+
             String commodityDes = req.getParameter("commodityDes");
-            Double commodityPri = Double.valueOf(req.getParameter("commodityPri"));
-            Integer commodityQua = Integer.valueOf(req.getParameter("commodityQua"));
+            if (commodityDes == null || commodityDes.trim().length() == 0) {
+                errMsg.put("commodityDes", "請加入商品敘述");
+            }
+            Integer commodityPri = null;
+            try {
+                commodityPri = Integer.valueOf(req.getParameter("commodityPri"));
+            } catch (Exception e) {
+                errMsg.put("commodityPri", "請輸入價格");
+            }
+           if(commodityPri==null||commodityPri<=0){
+               errMsg.put("commodityPri", "價格不得小於零");
+           }
+            Integer commodityQua = null;
+            try {
+                commodityQua = Integer.valueOf(req.getParameter("commodityQua"));
+            } catch (Exception e) {
+                errMsg.put("commodityQua", "請輸入數量");
+            }
+            if(commodityQua==null||commodityQua<=0){
+                errMsg.put("commodityQua", "數量不得小於零");
+            }
+
+            if (!errMsg.isEmpty()) {
+                req.setAttribute("errMsg",errMsg);
+                RequestDispatcher requestDispatcher= req.getRequestDispatcher("/shop/CommodityController?action=insertPage");
+                requestDispatcher.forward(req,res);
+                return;
+            }
             Integer commodityStatus = Integer.valueOf(req.getParameter("commodityStatus"));
 
             CommodityVO commodityVO = new CommodityVO();
             commodityVO.setComClassNo(comClassNo);
             commodityVO.setComNAME(commodityName);
             commodityVO.setComPic(commodityPic);
-            commodityVO.setComDec(commodityDes);
+            commodityVO.setComDes(commodityDes);
             commodityVO.setComPri(commodityPri);
             commodityVO.setComQua(commodityQua);
             commodityVO.setComState(commodityStatus);

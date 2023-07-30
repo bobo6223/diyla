@@ -31,7 +31,7 @@ public class CommodityClassController extends HttpServlet {
             HashMap<String, String> errMsgs = new HashMap<>();
             String className = req.getParameter("className");
             if (className == null || className.trim().length() == 0) {
-                errMsgs.put("className", "商品名稱不得空白");
+                errMsgs.put("className", "類別名稱不得空白");
             }
             if (!errMsgs.isEmpty()) {
                 req.setAttribute("errMsgs", errMsgs);
