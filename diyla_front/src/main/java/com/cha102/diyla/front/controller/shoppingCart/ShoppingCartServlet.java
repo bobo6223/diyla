@@ -1,4 +1,4 @@
-package com.cha102.diyla.back.controller.shoppingCart;
+package com.cha102.diyla.front.controller.shoppingCart;
 
 import java.io.IOException;
 import java.util.List;
