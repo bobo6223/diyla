@@ -276,19 +276,19 @@ public class LatJDBCDAO implements LatDAO_interface {
 	public static void main(String[] args) throws Exception {
 		LatJDBCDAO dao = new LatJDBCDAO();
 //新增
-		LatestnewsVO latVO = new LatestnewsVO();
-		latVO.setNewsContext("【甜點DIY公告】\r\n" + "親愛的顧客們，\r\n" + "\r\n"
-				+ "我們很高興宣佈將於本月底推出一系列有趣又美味的甜點DIY活動！這是一個難得的機會，讓您在家中也能享受親手製作精緻甜點的樂趣。請務必細讀以下詳情，並記得預約您心儀的DIY體驗。\r\n" + "\r\n"
-				+ "活動日期：每週六和週日，從本月底開始，共持續四週\r\n" + "\r\n" + "活動時間：上午10點至下午4點\r\n" + "\r\n" + "地點：我們位於市中心的甜點工作坊\r\n"
-				+ "\r\n" + "活動內容：\r\n" + "\r\n" + "了解甜點製作的基本技巧：我們的專業師傅將向您展示製作各種甜點的基本步驟，從麵團的製作到烘焙、裝飾等細節。\r\n" + "\r\n"
-				+ "DIY甜點體驗：您將有機會親手製作多種美味的甜點，包括香濃巧克力蛋糕、口感鬆軟的香草杯子蛋糕、多層次的水果塔等等。無需經驗，適合初學者和家庭參與。\r\n" + "\r\n"
-				+ "專業指導：我們的甜點師傅將在整個DIY過程中全程指導，並分享一些秘訣，讓您的甜點更加完美。\r\n" + "\r\n"
-				+ "交流和分享：在活動中，您將有機會認識其他喜歡甜點的朋友，一同分享您的烘焙心得和美味作品。\r\n" + "\r\n" + "費用：\r\n" + "每人參與費用：650元（包括所有食材和材料）\r\n"
-				+ "\r\n" + "預約方式：\r\n" + "請提前致電我們的客服中心，預約您想參加的日期。由於名額有限，請盡早預訂以確保您的位置。\r\n" + "\r\n" + "備註：\r\n" + "\r\n"
-				+ "本活動歡迎所有年齡層的人士參與，兒童必須由家長或監護人陪同參加。\r\n" + "請穿著舒適的衣物和防滑鞋，以確保您在工作坊中的安全。\r\n"
-				+ "我們期待著與您一同度過愉快的甜點DIY時光！讓我們一起創造美味與甜蜜的回憶。\r\n" + "\r\n" + "感謝您的支持！\r\n" + "\r\n" + "DIYLA");
-		dao.insert(latVO);
-		System.out.println("新增成功");
+//		LatestnewsVO latVO = new LatestnewsVO();
+//		latVO.setNewsContext("【甜點DIY公告】\r\n" + "親愛的顧客們，\r\n" + "\r\n"
+//				+ "我們很高興宣佈將於本月底推出一系列有趣又美味的甜點DIY活動！這是一個難得的機會，讓您在家中也能享受親手製作精緻甜點的樂趣。請務必細讀以下詳情，並記得預約您心儀的DIY體驗。\r\n" + "\r\n"
+//				+ "活動日期：每週六和週日，從本月底開始，共持續四週\r\n" + "\r\n" + "活動時間：上午10點至下午4點\r\n" + "\r\n" + "地點：我們位於市中心的甜點工作坊\r\n"
+//				+ "\r\n" + "活動內容：\r\n" + "\r\n" + "了解甜點製作的基本技巧：我們的專業師傅將向您展示製作各種甜點的基本步驟，從麵團的製作到烘焙、裝飾等細節。\r\n" + "\r\n"
+//				+ "DIY甜點體驗：您將有機會親手製作多種美味的甜點，包括香濃巧克力蛋糕、口感鬆軟的香草杯子蛋糕、多層次的水果塔等等。無需經驗，適合初學者和家庭參與。\r\n" + "\r\n"
+//				+ "專業指導：我們的甜點師傅將在整個DIY過程中全程指導，並分享一些秘訣，讓您的甜點更加完美。\r\n" + "\r\n"
+//				+ "交流和分享：在活動中，您將有機會認識其他喜歡甜點的朋友，一同分享您的烘焙心得和美味作品。\r\n" + "\r\n" + "費用：\r\n" + "每人參與費用：650元（包括所有食材和材料）\r\n"
+//				+ "\r\n" + "預約方式：\r\n" + "請提前致電我們的客服中心，預約您想參加的日期。由於名額有限，請盡早預訂以確保您的位置。\r\n" + "\r\n" + "備註：\r\n" + "\r\n"
+//				+ "本活動歡迎所有年齡層的人士參與，兒童必須由家長或監護人陪同參加。\r\n" + "請穿著舒適的衣物和防滑鞋，以確保您在工作坊中的安全。\r\n"
+//				+ "我們期待著與您一同度過愉快的甜點DIY時光！讓我們一起創造美味與甜蜜的回憶。\r\n" + "\r\n" + "感謝您的支持！\r\n" + "\r\n" + "DIYLA");
+//		dao.insert(latVO);
+//		System.out.println("新增成功");
 //修改
 //		latestnewsVO latVO2 = new latestnewsVO();
 //		FileInputStream fis = new FileInputStream("../image/commodity/3.jpg");
@@ -304,7 +304,7 @@ public class LatJDBCDAO implements LatDAO_interface {
 //		dao.delete(2);
 //		System.out.println("刪除成功");
 //查詢一筆
-//		latestnewsVO latVO3 = dao.findByPrimaryKey(3);
+//		LatestnewsVO latVO3 = dao.findByPrimaryKey(1);
 //		System.out.print(latVO3.getNewsNo()+",");
 //		System.out.print(latVO3.getAnnPic()+",");
 //		System.out.print(latVO3.getAnnTime()+",");
@@ -312,13 +312,13 @@ public class LatJDBCDAO implements LatDAO_interface {
 //		System.out.println(latVO3.getNewsContext()+",");
 //		System.out.println("---------------------");
 		//
-//		List<latestnewsVO> list = dao.getAll();
-//		for (latestnewsVO alat : list) {
-//			System.out.print(alat.getNewsNo()+",");
-//			System.out.print(alat.getAnnPic() + ",");
-//			System.out.print(alat.getAnnTime() + ",");
-//			System.out.print(alat.getAnnStatus() + ",");
-//			System.out.println(alat.getNewsContext() + ",");
-//		};
+		List<LatestnewsVO> list = dao.getAll();
+		for (LatestnewsVO alat : list) {
+			System.out.print(alat.getNewsNo()+",");
+			System.out.print(alat.getAnnPic() + ",");
+			System.out.print(alat.getAnnTime() + ",");
+			System.out.print(alat.getAnnStatus() + ",");
+			System.out.println(alat.getNewsContext() + ",");
+		};
 	}
 }

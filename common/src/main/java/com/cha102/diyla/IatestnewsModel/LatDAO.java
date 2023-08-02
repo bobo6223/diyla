@@ -24,11 +24,11 @@ public class LatDAO implements LatDAO_interface {
 		}
 	}
 	
-	private static final String INSERT_STMT = "INSERT INTO latestnews (News_Context,ann_Pic) VALUES ( ?, ?)";
-	private static final String GET_ALL_STMT = "SELECT news_No,news_Context,ann_Pic,ann_Status,ann_Time FROM latestnews order by news_No";
-	private static final String GET_ONE_STMT = "SELECT news_No,news_Context,ann_Pic,ann_Status,ann_Time FROM latestnews where news_No = ?";
-	private static final String DELETE = "DELETE FROM latestnews where news_No = ?";
-	private static final String UPDATE = "UPDATE latestnews set News_Context = ?,ann_Status =?,ann_pic =? where news_No = ?";
+	private static final String INSERT_STMT = "INSERT INTO diyla.latestnews (News_Context,ann_Pic) VALUES ( ?, ?)";
+	private static final String GET_ALL_STMT = "SELECT news_No,news_Context,ann_Pic,ann_Status,ann_Time FROM diyla.latestnews order by news_No";
+	private static final String GET_ONE_STMT = "SELECT news_No,news_Context,ann_Pic,ann_Status,ann_Time FROM diyla.latestnews where news_No = ?";
+	private static final String DELETE = "DELETE FROM diyla.latestnews where news_No = ?";
+	private static final String UPDATE = "UPDATE diyla.latestnews set News_Context = ?,ann_Status =?,ann_pic =? where news_No = ?";
 
 //新增
 	@Override

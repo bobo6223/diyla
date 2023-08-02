@@ -1,26 +1,35 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="diyla.common.com.cha102.diyla.latestnewsModel.*"%>
+<%-- 此頁暫練習採用 Script 的寫法取值 --%>
+
+<%
+LatestnewsVO latVO = (LatestnewsVO) request.getAttribute("latVO");
+%>
+
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>員工資料 - listOneEmp.jsp</title>
 </head>
-<body>
-<h1>最新消息</h1>
-<ul>
-    <li>
-        <FORM METHOD="post" ACTION="#" >
-            <b>選擇最新消息:</b>
-            <select size="1" name="newsNo">
-                <c:forEach var="newsNo" items="${latSvc.all}" >
-                    <option value="${lat.....VO.newsNo}">${newsNo.newsContext}
-                </c:forEach>
-            </select>
-            <input type="hidden" name="action" value="getOne_For_Display">
-            <input type="submit" value="送出">
-        </FORM>
-    </li>
-</ul>
+<body bgcolor='white'>
+
+<h4>此頁暫練習採用 Script 的寫法取值:</h4>
+<table id="table-1">
+    <tr><td>
+        <h3>員工資料 - ListOneEmp.jsp</h3>
+        <h4><a href="select_page.jsp">回首頁</a></h4>
+    </td></tr>
+</table>
+
+<table>
+    <tr>
+        <th>員工編號</th>
+
+    </tr>
+    <tr>
+        <td><%=latVO.getNewsNo()%> ${latVO.newsno}</td>
+
+    </tr>
+</table>
+
 </body>
 </html>

@@ -1,37 +1,46 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.cha102.diyla.IatestnewsModel.*"%>
 <%-- 此頁暫練習採用 Script 的寫法取值 --%>
 
 <%
-  LatVo latVO = (LatVo) request.getAttribute("latVO");
+     LatService latSvc = new LatService();
+        List<LatestnewsVO> list = latSvc.getAll();
+        pageContext.setAttribute("list",list);
 %>
-
+<!DOCTYPE html>
 <html>
 <head>
 <title>員工資料 - listOneEmp.jsp</title>
 </head>
 <body bgcolor='white'>
 
-<h4>此頁暫練習採用 Script 的寫法取值:</h4>
-<table id="table-1">
-	<tr><td>
-		 <h3>員工資料 - ListOneEmp.jsp</h3>
-		 <h4><a href="select_page.jsp"><img src="images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
-	</td></tr>
-</table>
-
 <table>
 	<tr>
-		<th>員工編號</th>
-		<th>員工姓名</th>
-		<th>職位</th>
-		<th>雇用日期</th>
-		<th>薪水</th>
-		<th>獎金</th>
-		<th>部門</th>
+		<th>員工編號${newsNo}</th>
+
 	</tr>
 	<tr>
-	    <td><%=latVO.getnewsNo()%></td>
+<% List<LatestnewsVO> scvList = (List)pageContext.getAttribute("list");%>
+<% if (scvList != null) { %>
+            <% for (LatestnewsVO a : scvList) { %>
+        <%--         <p>會員編號: <%= a.getNewsNo() %></p> --%>
+                <p>商品編號: <%= a.getNewsContext() %></p>
+                <p>商品數量: <%= a.getAnnTime() %></p>
+                <hr>
+                <% } %>
+                <% } %>
+
+  <c:forEach var="latVO" items="${list}">
+  <tr>
+  <td>${lat.newsNo}</td>
+  <td>${lat.newsContext}</td>
+  <td>${lat.annTime}</td>
+  <td>${lat.annStatus}</td>
+  <td>${lat.annPic}</td>
 	</tr>
+	</c:forEach>
 </table>
 
 </body>

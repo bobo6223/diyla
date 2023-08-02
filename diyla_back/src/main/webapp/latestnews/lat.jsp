@@ -10,28 +10,18 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>最新消息</h1>
+    <h1>最新公告</h1>
     <ul>
+        <li><a href='getlistone.jsp'>最新公告</a><br><br></li>
+
         <li>
         <FORM METHOD="post" ACTION="latServlet" >
-            <b>輸入員工編號 (如7001):</b>
-            <input type="text" name="newsNo">
+            <b>輸入公告編號 (如1):</b><input type="text" name="newsNO">
             <input type="hidden" name="action" value="getOne_For_Display">
             <input type="submit" value="送出">
         </FORM>
         </li>
-        <li>
-            <FORM METHOD="post" ACTION="latServlet" >
-              <b>選擇最新消息:</b>
-              <select size="1" name="newsNo">
-                <c:forEach var="newsNo" items="${latSvc.all}" >
-                 <option value="${lat.....VO.newsNo}">${newsNo.newsContext}
-                </c:forEach>
-              </select>
-              <input type="hidden" name="action" value="getOne_For_Display">
-              <input type="submit" value="送出">
-            </FORM>
-         </li>
+
     </ul>
 </body>
 </html>
