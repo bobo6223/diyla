@@ -1,17 +1,27 @@
-package com.cha102.diyla.commodityModel;
+package com.cha102.diyla.diyForum;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class DiyForumVO implements java.io.Serializable {
+public class DiyForumVO implements Serializable {
     private Integer artiNo;
     private Integer memId;
     private Integer diyNo;
     private String artiCont;
     private Byte diyGra;
+    
+ // 無參數
+    public DiyForumVO() {
+    	
+    }
 
-    public Integer getArtiNo() {
+    @Override
+	public String toString() {
+		return "DiyForumVO [artiNo=" + artiNo + ", memId=" + memId + ", diyNo=" + diyNo + ", artiCont=" + artiCont
+				+ ", diyGra=" + diyGra + "]";
+	}
+	public Integer getArtiNo() {
         return artiNo;
     }
     public void setArtiNo(Integer artiNo) {
