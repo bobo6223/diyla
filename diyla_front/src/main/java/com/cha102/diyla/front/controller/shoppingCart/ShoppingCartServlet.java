@@ -14,6 +14,7 @@ import com.cha102.diyla.commodityModel.CommodityVO;
 import com.cha102.diyla.member.MemVo;
 import com.cha102.diyla.shoppongcart.ShoppingCartVO;
 import com.cha102.diyla.shoppongcart.ShoppingCartDaoImpl;
+import com.cha102.diyla.shoppongcart.ShoppingCartService;
 
 @WebServlet("/shoppingCart/ShoppingCartServlet")
 public class ShoppingCartServlet extends HttpServlet {
@@ -27,8 +28,9 @@ public class ShoppingCartServlet extends HttpServlet {
 		String memId = req.getParameter("memId");
 		if ("getAll".equals(action)) {
 			// ***************************2.開始查詢資料*****************************************/
-			ShoppingCartDaoImpl dao = new ShoppingCartDaoImpl();
-			List<ShoppingCartVO> shoppingCartList = dao.getAll(Integer.valueOf(memId));
+//			ShoppingCartDaoImpl dao = new ShoppingCartDaoImpl();
+			ShoppingCartService shoppingCartService = new ShoppingCartService();
+			List<ShoppingCartVO> shoppingCartList = shoppingCartService.getAll(Integer.valueOf(memId));
 			req.setAttribute("shoppingCartList", shoppingCartList);
 			req.setAttribute("memId", memId);
             String url = "/shoppingCart/listAll.jsp";

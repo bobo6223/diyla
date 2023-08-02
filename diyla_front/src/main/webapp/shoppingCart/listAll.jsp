@@ -1,3 +1,5 @@
+<%@page import="com.cha102.diyla.commodityModel.CommodityService"%>
+<%@page import="com.cha102.diyla.commodityModel.CommodityVO"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.cha102.diyla.shoppongcart.*"%>
 <%@ page import="java.util.List"%>
@@ -22,6 +24,8 @@ List<ShoppingCartVO> scvList = (List)request.getAttribute("shoppingCartList"); /
 <%-- <% List<ShoppingCartVO> scvList = (List<ShoppingCartVO>) request.getAttribute("shoppingCartList"); %> --%>
 <% if (scvList != null && !scvList.isEmpty()) { %>
     <% for (ShoppingCartVO cartItem : scvList) { %>
+<%--     <%CommodityService commodityService=new CommodityService();  --%>
+<%--     CommodityVO commVo = commodityService.getCommdityByComNo(cartItem.getComNo()); %> --%>
 <%--         <p>會員編號: <%= cartItem.getMemId() %></p> --%>
         <p>商品編號: <%= cartItem.getComNo() %></p>
         <p>商品數量: <%= cartItem.getComAmount() %></p>
