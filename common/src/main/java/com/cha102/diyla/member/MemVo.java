@@ -2,7 +2,7 @@ package com.cha102.diyla.member;
 
 import java.sql.Date;
 
-public class MemVo implements java.io.Serializable{
+public class MemVO implements java.io.Serializable{
 	private Integer mem_id;
 	private String mem_name;
 	private String mem_email;
