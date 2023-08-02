@@ -2,17 +2,16 @@ package com.cha102.diyla.commodityModel;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
 
 public class CommodityVO implements Serializable {
     private Integer comNO;
     private Integer comClassNo;
     private String comNAME;
     private byte[] comPic;
-    private String comDec;
-    private Double comPri;
+    private String showPic;
+    private String comDes;
+    private Integer comPri;
     private Integer comQua;
-
     private Integer comState;
     private Integer commentTotal;
     private Integer ratingSum;
@@ -20,12 +19,13 @@ public class CommodityVO implements Serializable {
 
     public CommodityVO(){}
 
-    public CommodityVO(Integer comNO, Integer comClassNo, String comNAME, byte[] comPic, String comDec, Double comPri, Integer comQua, Integer comState, Integer commentTotal, Integer ratingSum, Timestamp updateTime) {
+    public CommodityVO(Integer comNO, Integer comClassNo, String comNAME, byte[] comPic, String showPic, String comDes, Integer comPri, Integer comQua, Integer comState, Integer commentTotal, Integer ratingSum, Timestamp updateTime) {
         this.comNO = comNO;
         this.comClassNo = comClassNo;
         this.comNAME = comNAME;
         this.comPic = comPic;
-        this.comDec = comDec;
+        this.showPic = showPic;
+        this.comDes = comDes;
         this.comPri = comPri;
         this.comQua = comQua;
         this.comState = comState;
@@ -66,19 +66,27 @@ public class CommodityVO implements Serializable {
         this.comPic = comPic;
     }
 
-    public String getComDec() {
-        return comDec;
+    public String getShowPic() {
+        return showPic;
     }
 
-    public void setComDec(String comDec) {
-        this.comDec = comDec;
+    public void setShowPic(String showPic) {
+        this.showPic = showPic;
     }
 
-    public Double getComPri() {
+    public String getComDes() {
+        return comDes;
+    }
+
+    public void setComDes(String comDes) {
+        this.comDes = comDes;
+    }
+
+    public Integer getComPri() {
         return comPri;
     }
 
-    public void setComPri(Double comPri) {
+    public void setComPri(Integer comPri) {
         this.comPri = comPri;
     }
 
