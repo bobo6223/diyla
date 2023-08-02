@@ -13,7 +13,7 @@ public class DiyForumJDBCDAO implements DiyForumDAO_Interface {
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/diyla?serverTimezone=Asia/Taipei";
 	String userid = "root";
-	String passwd = "Ee225025662";
+	String passwd = "12345678";
 
 	private static final String INSERT_STMT = "INSERT INTO diy_forum (MEM_ID,DIY_NO,ARTI_CONT,DIY_GRA) VALUES ( ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT ARTI_NO,MEM_ID,DIY_NO,ARTI_CONT,DIY_GRA FROM diy_forum order by ARTI_NO";
@@ -317,8 +317,8 @@ public class DiyForumJDBCDAO implements DiyForumDAO_Interface {
 
 // 查詢一筆		
 //		ARTI_NO,MEM_ID,DIY_NO,ARTI_CONT,DIY_GRA FROM diy_forum where ARTI_NO = 
-//
-//		DiyForumVO DFVO1 = dao.findByPrimaryKey(5);
+
+//		DiyForumVO DFVO1 = dao.findByPrimaryKey(7);
 //		System.out.println(DFVO1.getArtiNo()+"|"+DFVO1.getMemId()
 //				+"|"+DFVO1.getDiyNo()+"|"+DFVO1.getArtiCont()
 //				+"|"+DFVO1.getDiyGrade());
@@ -327,12 +327,12 @@ public class DiyForumJDBCDAO implements DiyForumDAO_Interface {
 		/* ========================================================================== */
 
 // 查詢多筆	
-		List<DiyForumVO> list = dao.getAll();
-		for (DiyForumVO a : list) {
-			System.out.println(a.getArtiNo() + "|" + a.getMemId() + "|" + a.getDiyNo() + "|" + a.getArtiCont() + "|"
-					+ a.getDiyGrade());
+//		List<DiyForumVO> list = dao.getAll();
+//		for (DiyForumVO a : list) {
+//			System.out.println(a.getArtiNo() + "|" + a.getMemId() + "|" + a.getDiyNo() + "|" + a.getArtiCont() + "|"
+//					+ a.getDiyGrade());
 
-		}
+//		}
 		;
 
 	}
