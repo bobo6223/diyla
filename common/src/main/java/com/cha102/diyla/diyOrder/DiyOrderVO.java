@@ -2,6 +2,7 @@ package com.cha102.diyla.diyOrder;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class DiyOrderVO implements Serializable {
 	
@@ -12,7 +13,7 @@ public class DiyOrderVO implements Serializable {
     private String articleContent;
     private Integer reservationNum;
     private Integer diyPeriod;
-    private java.sql.Date diyReserveDate;
+    private Timestamp diyReserveDate;
     private Timestamp createTime;
     private Byte reservationStatus;
     private Byte paymentStatus;
@@ -26,7 +27,7 @@ public class DiyOrderVO implements Serializable {
     // 帶參數的
     public DiyOrderVO(Integer diyOrderNo, Integer memId, Integer diyNo, String contactPerson,
                       String articleContent, Integer reservationNum, Integer diyPeriod,
-                      java.sql.Date diyReserveDate, Timestamp createTime, Byte reservationStatus,
+                      Timestamp diyReserveDate, Timestamp createTime, Byte reservationStatus,
                       Byte paymentStatus, Integer diyPrice) {
         this.diyOrderNo = diyOrderNo;
         this.memId = memId;
@@ -85,10 +86,10 @@ public class DiyOrderVO implements Serializable {
     public void setDiyPeriod(Integer diyPeriod) {
         this.diyPeriod = diyPeriod;
     }
-    public java.sql.Date getDiyReserveDate() {
+    public Timestamp getDiyReserveDate() {
         return diyReserveDate;
     }
-    public void setDiyReserveDate(java.sql.Date diyReserveDate) {
+    public void setDiyReserveDate(Timestamp diyReserveDate) {
         this.diyReserveDate = diyReserveDate;
     }
     public Timestamp getCreateTime() {
