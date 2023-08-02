@@ -11,7 +11,7 @@ public class DiyForumVO implements Serializable{
   private Integer memId;
   private Integer diyNo;
   private String artiCont;
-  private Integer diyGrade;
+  private Integer diyGrade; 
 
     public DiyForumVO() {
     }
