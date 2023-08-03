@@ -31,6 +31,13 @@ public class CommodityController extends HttpServlet {
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/shop/insertNewCommodity.jsp"); // 設定下個頁面路徑
             requestDispatcher.forward(req, resp); // 轉導到下個頁面，並把請求跟回應一併交給
         }
+
+        if ("listAll".equals(action)) {
+            List<CommodityVO> commodityVOS = service.getAll();
+            req.setAttribute("commodityList",commodityVOS);
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/shop/listCommodity.jsp");
+            requestDispatcher.forward(req, resp);
+        }
     }
 
     @Override
