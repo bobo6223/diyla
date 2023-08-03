@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <div class="header">商品列表</div>
-    <button class="add-button">新增商品</button>
+    <a href="${ctxPath}/shop/insertNewCommodity.jsp"><button class="add-button">新增商品</button></a>
     <div class="search-bar">
     </div>
     <table>
@@ -20,12 +20,13 @@
             <th>數量</th>
             <th>狀態</th>
         </tr>
-        <c:forEach items="commodity" var="${commodityList}"  >
+        <c:forEach items="${commodityList}" var="commodity"  >
             <tr>
+                <td>${classNameMap[commodity.comClassNo]}</td>
                 <td>${commodity.comNAME}</td>
-                <td>價格</td>
-                <td>數量</td>
-                <td>狀態</td>
+                <td>${commodity.comPri}</td>
+                <td>${commodity.comQua}</td>
+                <td>${commodityState[commodity.comState]}</td>
             </tr>
         </c:forEach>
 
