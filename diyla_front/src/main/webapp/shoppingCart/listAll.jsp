@@ -15,28 +15,49 @@ List<ShoppingCartVO> scvList = (List)request.getAttribute("shoppingCartList"); /
 <HTML>
 <HEAD>
 <TITLE>查詢結果</TITLE>
+<style>
+#item{
+/* background-color: green; */
+
+}
+.itemInfo{
+ border-color: red;
+}
+.title{
+background-color: rgba(241,243,244);
+font-weight: bold;
+}
+</style>
 </HEAD>
 <BODY>
 
 	<table>
 會員編號: ${memId} 的購物車列表
-<tr>
-<%-- <% List<ShoppingCartVO> scvList = (List<ShoppingCartVO>) request.getAttribute("shoppingCartList"); %> --%>
+
+<table width="75%" class="cartTable" cellspacing="0" cellpadding ="10px">
+<tr class="title">
+	<td>商品名稱</td>
+	<td>單價</td>
+	<td>數量</td>
+	<td>金額</td>
+</tr>
+
 <% if (scvList != null && !scvList.isEmpty()) { %>
     <% for (ShoppingCartVO cartItem : scvList) { %>
-<%--     <%CommodityService commodityService=new CommodityService();  --%>
-<%--     CommodityVO commVo = commodityService.getCommdityByComNo(cartItem.getComNo()); %> --%>
-<%--         <p>會員編號: <%= cartItem.getMemId() %></p> --%>
-        <p>商品編號: <%= cartItem.getComNo() %></p>
-        <p>商品數量: <%= cartItem.getComAmount() %></p>
-        <hr>
+    <%
+    CommodityService comService = new CommodityService(); 
+    %>
+<tr class="row">
+        <td class="itemInfo">商品編號: <%= cartItem.getComNo() %></td>
+        <td class="itemInfo">商品數量: <%= cartItem.getComAmount() %></td>
+</tr>
     <% } %>
 <% } else { %>
+</table>
     <p>購物車為空</p>
 <% } %>
 
-		</tr>
-	</table>
+	
 
 </BODY>
 </HTML>
