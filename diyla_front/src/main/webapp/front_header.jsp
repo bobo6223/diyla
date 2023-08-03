@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="zh-Hant">
 
@@ -35,8 +36,8 @@
     <!-- header section strats -->
     <header class="header_section">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
-            <a class="navbar-brand" href="index.jsp">
-                <img src="./images/DIYLA_LOGO.png" alt="DIYLA!" class="logo-image">
+            <a class="navbar-brand" href="${ctxPath}/index.jsp">
+                <img src="${ctxPath}/images/DIYLA_LOGO.png" alt="DIYLA!" class="logo-image">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,42 +51,42 @@
                             <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="diy.html">
+                        <%--可自行更改href連結--%>
+                        <a class="nav-link" href="index.jsp">
                             DIY體驗
                         </a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="dessert_course.html">
+                    <li class="nav-item">
+                        <%--可自行更改href連結--%>
+                        <a class="nav-link" href="index.jsp">
                             甜點課程
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="shop/shop.html">
+                        <a class="nav-link" href="shop/shop.jsp">
                             商店
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="community_sharing.html">
+                        <%--可自行更改href連結--%>
+                        <a class="nav-link" href="index.jsp">
                             社群分享
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="problem.html">
+                        <%--可自行更改href連結--%>
+                        <a class="nav-link" href="index.jsp">
                             常見問題
                         </a>
                     </li>
                 </ul>
                 <div class="user_option">
+                    <%--可自行更改href連結--%>
                     <a href="">
                         <i class="fa fa-user" aria-hidden="true"></i>
                         <span>登入</span>
                     </a>
-                    <a href="">
-                        <span>註冊</span>
-                    </a>
-
                     <form class="form-inline ">
-
                     </form>
                 </div>
             </div>
