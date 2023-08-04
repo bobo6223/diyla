@@ -3,120 +3,119 @@ package com.cha102.diyla.member;
 import java.sql.Date;
 
 public class MemVO implements java.io.Serializable{
-	private Integer mem_id;
-	private String mem_name;
-	private String mem_email;
-	private String mem_password;
-	private String mem_phone;
-	private Date mem_birthday;
-	private Integer mem_gender;
-	private String mem_address;
-	private Integer mem_status;
-	private Integer mem_token;
-	private Date mem_date;
-	private Integer blacklist_com;
-	private Integer blacklist_art;
-	private Integer blacklist_diy;
-	private Integer blacklist_class;
-	private Integer rpmsg_count;
-	
-	public Integer getMem_id() {
-		return mem_id;
+	private Integer memId;
+	private String memName;
+	private String memEmail;
+	private String memPassword;
+	private String memPhone;
+	private Date memBirthday;
+	private Integer memGender;
+	private String memAddress;
+	private Integer memStatus;
+	private Integer memToken;
+	private Date memDate;
+	private Integer blacklistCom;
+	private Integer blacklistArt;
+	private Integer blacklistDiy;
+	private Integer blacklistClass;
+
+	private Integer rpmsgCount;
+
+	public Integer getMemId() {
+		return memId;
 	}
-	
-	public void setMem_id(Integer mem_id) {
-		this.mem_id = mem_id;
+	public void setMemId(Integer memId) {
+		this.memId = memId;
 	}
-	
-	public String getMem_name() {
-		return mem_name;
+	public String getMemName() {
+		return memName;
 	}
-	public void setMem_name(String mem_name) {
-		this.mem_name = mem_name;
+	public void setMemName(String memName) {
+		this.memName = memName;
 	}
-	public String getMem_email() {
-		return mem_email;
+	public String getMemEmail() {
+		return memEmail;
 	}
-	public void setMem_email(String mem_email) {
-		this.mem_email = mem_email;
+	public void setMemEmail(String memEmail) {
+		this.memEmail = memEmail;
 	}
-	public String getMem_password() {
-		return mem_password;
+	public String getMemPassword() {
+		return memPassword;
 	}
-	public void setMem_password(String mem_password) {
-		this.mem_password = mem_password;
+	public void setMemPassword(String memPassword) {
+		this.memPassword = memPassword;
 	}
-	public String getMem_phone() {
-		return mem_phone;
+	public String getMemPhone() {
+		return memPhone;
 	}
-	public void setMem_phone(String mem_phone) {
-		this.mem_phone = mem_phone;
+	public void setMemPhone(String memPhone) {
+		this.memPhone = memPhone;
 	}
-	public Date getMem_birthday() {
-		return mem_birthday;
+	public Date getMemBirthday() {
+		return memBirthday;
 	}
-	public void setMem_birthday(Date mem_birthday) {
-		this.mem_birthday = mem_birthday;
+	public void setMemBirthday(Date memBirthday) {
+		this.memBirthday = memBirthday;
 	}
-	public Integer getMem_gender() {
-		return mem_gender;
+	public Integer getMemGender() {
+		return memGender;
 	}
-	public void setMem_gender(Integer mem_gender) {
-		this.mem_gender = mem_gender;
+	public void setMemGender(Integer memGender) {
+		this.memGender = memGender;
 	}
-	public String getMem_address() {
-		return mem_address;
+	public String getMemAddress() {
+		return memAddress;
 	}
-	public void setMem_address(String mem_address) {
-		this.mem_address = mem_address;
+	public void setMemAddress(String memAddress) {
+		this.memAddress = memAddress;
 	}
-	public Integer getMem_status() {
-		return mem_status;
+	public Integer getMemStatus() {
+		return memStatus;
 	}
-	public void setMem_status(Integer mem_status) {
-		this.mem_status = mem_status;
+	public void setMemStatus(Integer memStatus) {
+		this.memStatus = memStatus;
 	}
-	public Integer getMem_token() {
-		return mem_token;
+	public Integer getMemToken() {
+		return memToken;
 	}
-	public void setMem_token(Integer mem_token) {
-		this.mem_token = mem_token;
+	public void setMemToken(Integer memToken) {
+		this.memToken = memToken;
 	}
-	public Date getMem_date() {
-		return mem_date;
+	public Date getMemDate() {
+		return memDate;
 	}
-	public void setMem_date(Date mem_date) {
-		this.mem_date = mem_date;
+	public void setMemDate(Date memDate) {
+		this.memDate = memDate;
 	}
-	public Integer getBlacklist_com() {
-		return blacklist_com;
+	public Integer getBlacklistCom() {
+		return blacklistCom;
 	}
-	public void setBlacklist_com(Integer blacklist_com) {
-		this.blacklist_com = blacklist_com;
+	public void setBlacklistCom(Integer blacklistCom) {
+		this.blacklistCom = blacklistCom;
 	}
-	public Integer getBlacklist_art() {
-		return blacklist_art;
+	public Integer getBlacklistArt() {
+		return blacklistArt;
 	}
-	public void setBlacklist_art(Integer blacklist_art) {
-		this.blacklist_art = blacklist_art;
+	public void setBlacklistArt(Integer blacklistArt) {
+		this.blacklistArt = blacklistArt;
 	}
-	public Integer getBlacklist_diy() {
-		return blacklist_diy;
+	public Integer getBlacklistDiy() {
+		return blacklistDiy;
 	}
-	public void setBlacklist_diy(Integer blacklist_diy) {
-		this.blacklist_diy = blacklist_diy;
+	public void setBlacklistDiy(Integer blacklistDiy) {
+		this.blacklistDiy = blacklistDiy;
 	}
-	public Integer getBlacklist_class() {
-		return blacklist_class;
+	public Integer getBlacklistClass() {
+		return blacklistClass;
 	}
-	public void setBlacklist_class(Integer blacklist_class) {
-		this.blacklist_class = blacklist_class;
+	public void setBlacklistClass(Integer blacklistClass) {
+		this.blacklistClass = blacklistClass;
 	}
-	public Integer getRpmsg_count() {
-		return rpmsg_count;
+	public Integer getRpmsgCount() {
+		return rpmsgCount;
 	}
-	public void setRpmsg_count(Integer rpmsg_count) {
-		this.rpmsg_count = rpmsg_count;
+	public void setRpmsgCount(Integer rpmsgCount) {
+		this.rpmsgCount = rpmsgCount;
 	}
 
 	
