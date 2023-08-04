@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class CommodityVO implements Serializable {
+
     private Integer comNO;
     private Integer comClassNo;
     private String comName;
