@@ -9,6 +9,8 @@ public interface MemDAO_interface {
 	public void update(MemVO memvo);
 	public MemVO findByPrimaryKey(Integer mem_id);
 	public List<MemVO> getAll();
+
+	public MemVO selectLogin(String memEmail,String memPassword);
 	
 	
 }

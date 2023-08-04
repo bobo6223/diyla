@@ -4,13 +4,11 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<link rel="shortcut icon" href="images/DIYLA_cakeLOGO.png"
-	type="image/x-icon">
+<link rel="shortcut icon" href="images/DIYLA_cakeLOGO.png" type="image/x-icon">
 <title>會員登入</title>
 
     <!-- slider stylesheet -->
@@ -25,19 +23,27 @@
     
     <!-- responsive style -->
     <link href="../css/responsive.css" rel="stylesheet"/>
-    
+    <style>
+
+    </style>
 
 
 </head>
 <body>
 	<jsp:include page="../front_header.jsp"/>
 	<h4>會員登入</h4>
-	<jsp:useBean id="memSvc" scope="session"
-		class="com.cha102.diyla.member.MemberService" />
-	<form method="post" action="">
-		<label>請輸入帳號：</label> <input type="email" name="mem_emmail"
-			placeholder="請輸入信箱"><br> <label>請輸入密碼：</label> <input
-			type="password" name="mem_password" placeholder="請輸入6-12字(含英數字)"><br>
+    <c:if test="${not empty exMsgs}">
+        <div style="color:red">
+        <c:forEach var="message" items="${exMsgs}">
+        ${exMsgs}
+        </c:forEach>
+        </div>
+    </c:if>
+	<form method="post" action="login">
+		<label>請輸入帳號：</label>
+		<input type="email" name="user" placeholder="請輸入信箱"><br>
+		<label>請輸入密碼：</label>
+		<input type="password" name="password" placeholder="請輸入6-12字(含英數字)"><br>
 		<button type="submit" value="login">登入</button>
 		<button type="button">註冊會員</button>
 
