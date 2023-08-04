@@ -3,13 +3,17 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.cha102.diyla.shoppongcart.*"%>
 <%@ page import="java.util.List"%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page isELIgnored="false"%>
+
 
 <%-- 此頁暫練習採用 Script 的寫法取值 --%>
 
 <%
+
 List<ShoppingCartVO> scvList = (List) request.getAttribute("shoppingCartList"); //EmpServlet.java(Concroller), 存入req的empVO物件
+
 %>
 <!DOCTYPE HTML PUBLIC>
 <HTML>
@@ -33,10 +37,12 @@ margin-right:auto;
 .title {
 	background-color: rgba(241, 243, 244);
 	font-weight: bold;
+
 }
 </style>
 </HEAD>
 <BODY>
+
 
 
 	會員編號: ${memId} 的購物車列表
@@ -80,5 +86,6 @@ margin-right:auto;
 		</tr>
 	<button type="button">清空</button>
 	</table>
+
 </BODY>
 </HTML>

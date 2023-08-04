@@ -9,9 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import javax.servlet.http.HttpSession;
 
 import com.cha102.diyla.commodityModel.CommodityService;
+
 import com.cha102.diyla.commodityModel.CommodityVO;
 import com.cha102.diyla.member.MemVo;
 import com.cha102.diyla.shoppongcart.ShoppingCartVO;
@@ -28,6 +30,7 @@ public class ShoppingCartServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+
 //		HttpSession session = req.getSession();
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
