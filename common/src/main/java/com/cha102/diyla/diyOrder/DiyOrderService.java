@@ -1,7 +1,7 @@
 package com.cha102.diyla.diyOrder;
 
 import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class DiyOrderService {
@@ -11,14 +11,14 @@ public class DiyOrderService {
 		dao = new DiyOrderDAO();
 	}
 
-	public void addOD(int memId, int diyNo, String contactPerson, String articleContent, int reservationNum,
-			int diyPeriod, Timestamp diyReserveDate, Timestamp createTime, Byte reservationStatus, Byte paymentStatus,
+	public void addOD(int memId, int diyNo, String contactPerson, String contactPhone, int reservationNum,
+			int diyPeriod, Date diyReserveDate, Timestamp createTime, Byte reservationStatus, Byte paymentStatus,
 			int diyPrice) {
 		DiyOrderVO DOVO = new DiyOrderVO();
 		DOVO.setMemId(memId);
 		DOVO.setDiyNo(diyNo);
 		DOVO.setContactPerson(contactPerson);
-		DOVO.setArticleContent(articleContent);
+		DOVO.setContactPhone(contactPhone);
 		DOVO.setReservationNum(reservationNum);
 		DOVO.setDiyPeriod(diyPeriod);
 		DOVO.setDiyReserveDate(diyReserveDate);
@@ -28,15 +28,15 @@ public class DiyOrderService {
 		dao.insert(DOVO);
 	}
 
-	public void upOD(int memId, int diyNo, String contactPerson, String articleContent, int reservationNum,
-			int diyPeriod, Timestamp diyReserveDate, Timestamp createTime, Byte reservationStatus, Byte paymentStatus,
+	public void upOD(int memId, int diyNo, String contactPerson, String contactPhone, int reservationNum,
+			int diyPeriod, Date diyReserveDate, Timestamp createTime, Byte reservationStatus, Byte paymentStatus,
 			int diyPrice) {
 
 		DiyOrderVO DOVO = new DiyOrderVO();
 		DOVO.setMemId(memId);
 		DOVO.setDiyNo(diyNo);
 		DOVO.setContactPerson(contactPerson);
-		DOVO.setArticleContent(articleContent);
+		DOVO.setContactPhone(contactPhone);
 		DOVO.setReservationNum(reservationNum);
 		DOVO.setDiyPeriod(diyPeriod);
 		DOVO.setDiyReserveDate(diyReserveDate);

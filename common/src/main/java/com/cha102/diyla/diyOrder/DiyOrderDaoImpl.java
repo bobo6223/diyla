@@ -45,7 +45,7 @@ public class DiyOrderDaoImpl implements DiyOrderDAO_interface {
             ps.setInt(1, diyOrderVO.getMemId());
             ps.setInt(2, diyOrderVO.getDiyNo());
             ps.setString(3, diyOrderVO.getContactPerson());
-            ps.setString(4, diyOrderVO.getArticleContent());
+            ps.setString(4, diyOrderVO.getContactPhone());
             ps.setInt(5, diyOrderVO.getReservationNum());
             ps.setInt(6, diyOrderVO.getDiyPeriod());
             ps.setDate(7, diyOrderVO.getDiyReserveDate());
@@ -72,7 +72,7 @@ public class DiyOrderDaoImpl implements DiyOrderDAO_interface {
             ps.setInt(1, diyOrderVO.getMemId());
             ps.setInt(2, diyOrderVO.getDiyNo());
             ps.setString(3, diyOrderVO.getContactPerson());
-            ps.setString(4, diyOrderVO.getArticleContent());
+            ps.setString(4, diyOrderVO.getContactPhone());
             ps.setInt(5, diyOrderVO.getReservationNum());
             ps.setInt(6, diyOrderVO.getDiyPeriod());
             ps.setDate(7, diyOrderVO.getDiyReserveDate());
@@ -121,7 +121,7 @@ public class DiyOrderDaoImpl implements DiyOrderDAO_interface {
                     diyOrderVO.setMemId(rs.getInt("MEM_ID"));
                     diyOrderVO.setDiyNo(rs.getInt("DIY_NO"));
                     diyOrderVO.setContactPerson(rs.getString("CONTACT_PERSON"));
-                    diyOrderVO.setArticleContent(rs.getString("ARTICLE_CONTENT"));
+                    diyOrderVO.setContactPhone(rs.getString("CONTACT_Phone"));
                     diyOrderVO.setReservationNum(rs.getInt("RESERVATION_NUM"));
                     diyOrderVO.setDiyPeriod(rs.getInt("DIY_PERIOD"));
                     diyOrderVO.setDiyReserveDate(rs.getDate("DIY_RESERVE_DATE"));
@@ -149,7 +149,7 @@ public class DiyOrderDaoImpl implements DiyOrderDAO_interface {
                 diyOrderVO.setMemId(rs.getInt("MEM_ID"));
                 diyOrderVO.setDiyNo(rs.getInt("DIY_NO"));
                 diyOrderVO.setContactPerson(rs.getString("CONTACT_PERSON"));
-                diyOrderVO.setArticleContent(rs.getString("ARTICLE_CONTENT"));
+                diyOrderVO.setContactPhone(rs.getString("CONTACT_Phone"));
                 diyOrderVO.setReservationNum(rs.getInt("RESERVATION_NUM"));
                 diyOrderVO.setDiyPeriod(rs.getInt("DIY_PERIOD"));
                 diyOrderVO.setDiyReserveDate(rs.getDate("DIY_RESERVE_DATE"));
