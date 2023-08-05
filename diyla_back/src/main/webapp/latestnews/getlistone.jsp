@@ -32,15 +32,6 @@
                 <% } %>
                 <% } %>
 
-  <c:forEach var="latVO" items="${list}">
-  <tr>
-  <td>${lat.newsNo}</td>
-  <td>${lat.newsContext}</td>
-  <td>${lat.annTime}</td>
-  <td>${lat.annStatus}</td>
-  <td>${lat.annPic}</td>
-	</tr>
-	</c:forEach>
 </table>
 
 </body>
