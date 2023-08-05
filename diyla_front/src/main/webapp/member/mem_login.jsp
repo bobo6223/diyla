@@ -30,12 +30,14 @@
 
 </head>
 <body>
+
 	<jsp:include page="../front_header.jsp"/>
 	<h4>會員登入</h4>
+	<div>
     <c:if test="${not empty exMsgs}">
         <div style="color:red">
         <c:forEach var="message" items="${exMsgs}">
-        ${exMsgs}
+        ${message}
         </c:forEach>
         </div>
     </c:if>
@@ -45,10 +47,11 @@
 		<label>請輸入密碼：</label>
 		<input type="password" name="password" placeholder="請輸入6-12字(含英數字)"><br>
 		<button type="submit" value="login">登入</button>
-		<button type="button">註冊會員</button>
+		<button type="button">前往註冊</button><br>
+		<a href="">忘記密碼
 
 	</form>
-
+    </div>
 
 	<jsp:include page="../front_footer.jsp"/>
 </body>
