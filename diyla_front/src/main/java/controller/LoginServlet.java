@@ -35,13 +35,17 @@ public class LoginServlet extends HttpServlet {
         List<String> exMsgs = new LinkedList<String>();
         req.setAttribute("exMsgs",exMsgs);
         MemberService memVo = new MemberService();
-        MemVO m = memVo.login(user,password);
-        try{
-            RequestDispatcher success = req.getRequestDispatcher("");
-            success.forward(req,res);//導入登入成功頁面或是回到原頁面
-        } catch (IllegalArgumentException e){
-            exMsgs.add(e.getMessage());
+        MemVO m = memVo.login(exMsgs,user,password);
+        if (!exMsgs.isEmpty()){
+            RequestDispatcher failure = req.getRequestDispatcher("/member/mem_login.jsp");
+            failure.forward(req,res);
+            return;
+        } else {
+            RequestDispatcher success = req.getRequestDispatcher(req.getServletPath());
+            success.forward(req,res);
+            return;
         }
+
 
 
 

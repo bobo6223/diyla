@@ -51,20 +51,22 @@ public class MemberService {
 		return dao.getAll();
 	}
 
-	public MemVO login(String email, String password){
+	public MemVO login(List<String> exMsgs,String email, String password){
 		MemVO mem = dao.selectLogin(email,password);
 		if(email == null || (email.trim()).isEmpty()){
-			throw new IllegalArgumentException("未輸入信箱");
+			exMsgs.add("未輸入信箱");
 		}
 		if(password == null || (password.trim()).isEmpty()){
-			throw new IllegalArgumentException("未輸入密碼");
+			exMsgs.add("未輸入密碼");
 		}
 		if(mem ==null){
-			throw new IllegalArgumentException("無此信箱或密碼錯誤");
+			exMsgs.add("無此信箱或密碼錯誤");
 		}
-//		String emailCheck = "[]";
+
 
 		return mem;
 
 	}
+
+
 }
