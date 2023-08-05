@@ -1,5 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.cha102.diyla.empmodel.*"%>
+
+<% //見com.emp.controller.EmpServlet.java第238行存入req的empVO物件 (此為輸入格式有錯誤時的empVO物件)
+   EmpVO empVO = (EmpVO) request.getAttribute("empVO");
+%>
 
 <!DOCTYPE HTML PUBLIC>
 <HTML>
@@ -42,11 +47,11 @@ table#table-1 {
 <table>
    <tr>
         <td>管理員名稱:</td>
+        <td><input type="TEXT" name="name" value="<%= (empVO==null)? "吳永志" : empVO.getEmpName()%>" size="45"/></td>
 
    </tr>
    <tr>
         <td>管理員帳號:</td>
-        <td><input type="TEXT" name="account" value="<%= (empVO==null)? "吳永志" : empVO.getEname()%>" size="45"/></td>
    </tr>
    <tr>
         <td>管理員密碼:</td>
@@ -63,7 +68,7 @@ table#table-1 {
 
    </tr>
 
-    <INPUT TYPE="TEXT" NAME="id" VALUE="">
+
 </table>
 </FORM>
 </BODY>
