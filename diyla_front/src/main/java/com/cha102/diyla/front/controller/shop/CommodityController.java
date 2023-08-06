@@ -43,6 +43,8 @@ public class CommodityController extends HttpServlet {
         if ("findByID".equals(action)) {
             Integer comNO = Integer.valueOf(req.getParameter("comNO"));
             CommodityVO commodityVO = service.findByID(comNO);
+            CommodityClassVO commodityClassVO = classService.findById(commodityVO.getComClassNo());
+            req.setAttribute("comClassName",commodityClassVO);
             req.setAttribute("commodity", commodityVO);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/shop/commodityPage.jsp");
             requestDispatcher.forward(req, resp);
