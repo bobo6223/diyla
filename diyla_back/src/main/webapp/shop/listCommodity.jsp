@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <div class="header">商品列表</div>
-    <a href="${ctxPath}/shop/insertNewCommodity.jsp"><button class="add-button">新增商品</button></a>
+    <a href="${ctxPath}/shop/CommodityController?action=insertPage"><button class="add-button">新增商品</button></a>
     <div class="search-bar">
     </div>
     <table>
@@ -23,7 +23,7 @@
         <c:forEach items="${commodityList}" var="commodity"  >
             <tr>
                 <td>${classNameMap[commodity.comClassNo]}</td>
-                <td>${commodity.comNAME}</td>
+                <td><a href="${ctxPath}/shop/CommodityController?action=findByID&comNO=${commodity.comNO}">${commodity.comName}</a></td>
                 <td>${commodity.comPri}</td>
                 <td>${commodity.comQua}</td>
                 <td>${commodityState[commodity.comState]}</td>

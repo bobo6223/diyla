@@ -32,7 +32,7 @@ public class CommodityDaoImpl implements CommodityDao {
              PreparedStatement ps = conn.prepareStatement(INSERT_SQL);) {
             conn.setAutoCommit(false);
             ps.setInt(1, commodity.getComClassNo());
-            ps.setString(2, commodity.getComNAME());
+            ps.setString(2, commodity.getComName());
             ps.setBytes(3, commodity.getComPic());
             ps.setString(4, commodity.getComDes());
             ps.setDouble(5, commodity.getComPri());
@@ -61,6 +61,7 @@ public class CommodityDaoImpl implements CommodityDao {
                 buildCommodityVO(commodity, rs);
                 commodities.add(commodity);
             }
+            rs.close();
             return commodities;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,6 +80,7 @@ public class CommodityDaoImpl implements CommodityDao {
             if (rs.next()) {
                 CommodityVO commodity = new CommodityVO();
                 buildCommodityVO(commodity, rs);
+                rs.close();
                 return commodity;
             }
         } catch (SQLException e) {
@@ -91,7 +93,7 @@ public class CommodityDaoImpl implements CommodityDao {
     private static void buildCommodityVO(CommodityVO commodity, ResultSet rs) throws SQLException {
         commodity.setComNO(rs.getInt(1));
         commodity.setComClassNo(rs.getInt(2));
-        commodity.setComNAME(rs.getString(3));
+        commodity.setComName(rs.getString(3));
         commodity.setComPic(rs.getBytes(4));
         commodity.setComDes(rs.getString(5));
         commodity.setComPri(rs.getInt(6));
