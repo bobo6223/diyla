@@ -9,27 +9,18 @@ public class LatService {
         dao = new LatDAO();
     }
 
-    public LatestnewsVO addLat(String newsContext, byte[] annPic) {
+    public LatestnewsVO addLat(LatestnewsVO latestnewsVO){
 
-        LatestnewsVO latVO = new LatestnewsVO();
+        dao.insert(latestnewsVO);
 
-        latVO.setNewsContext(newsContext);
-        latVO.setAnnPic(annPic);
-        dao.insert(latVO);
-
-        return latVO;
+        return latestnewsVO;
     }
 
-    public LatestnewsVO updateLat(Integer newsNo, String newsContext, byte annStatus, byte[] annPic) {
-        LatestnewsVO latVO = new LatestnewsVO();
+    public LatestnewsVO updateLat(LatestnewsVO latestnewsVO) {
 
-        latVO.setNewsNo(newsNo);
-        latVO.setNewsContext(newsContext);
-        latVO.setAnnStatus(annStatus);
-        latVO.setAnnPic(annPic);
 
-        dao.update(latVO);
-        return latVO;
+        dao.update(latestnewsVO);
+        return latestnewsVO;
     }
 
     public void deleteLat(Integer newsNo) {
@@ -43,4 +34,7 @@ public class LatService {
     public List<LatestnewsVO> getAll() {
         return dao.getAll();
     }
+
+
+
 }

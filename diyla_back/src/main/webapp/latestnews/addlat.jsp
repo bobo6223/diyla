@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.cha102.diyla.IatestnewsModel.*"%>
-
+<jsp:include page="/index.jsp"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +11,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-
+<link rel="stylesheet" href="../css/style.css">
   <style>
     *{
       box-sizing: border-box;
@@ -66,12 +66,12 @@
 
 <body>
   <h1>新增最新公告</h1>
-  <FORM METHOD="post" ACTION="#" name="form1"></FORM>
+  <FORM METHOD="post" ACTION="latServlet" enctype="multipart/form-data" name="form1">
   <table>
     <tr>
       <td class="td1">公告狀態</td>
       <td class="td2">
-        <select name="">
+        <select name="annStatus">
           <option value="1">上架</option>
           <option value="0">下架</option>
         </select>
@@ -83,13 +83,13 @@
     </tr>
     <tr>
       <td class="td1">公告圖片</td>
-      <td class="td2"> <input type="file" name="annPic"></td>
+      <td class="td2"> <input type="file" name="annPic" accept="image/*"></td>
     </tr>
-  </table>
-  <div>
     <input type="hidden" name="action" value="lat_insert">
-    <input id="submit" type="submit" value="送出新增"></form>
-  </div>
+    <input id="submit" type="submit" value="送出新增">
+    </form>
+  </table>
+
 </body>
 
 </html>

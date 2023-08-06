@@ -1,0 +1,36 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.cha102.diyla.IatestnewsModel.*"%>
+<jsp:include page="/index.jsp"/>
+<%
+    LatestnewsVO latVO = (LatestnewsVO) request.getAttribute("latVO");
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>編輯公告</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body bgcolor='white'>
+
+<div class="container">
+    <h2>編輯公告</h2>
+    <form method="post" action="latServlet">
+        <input type="hidden" name="action" value="update_latnews">
+        <input type="hidden" name="newsNo" value="<%= latVO.getNewsNo() %>">
+
+        <label for="newsContext">公告內容：</label>
+        <textarea name="newsContext" id="newsContext"><%= latVO.getNewsContext() %></textarea><br>
+
+        <label for="annStatus">公告狀態：</label>
+        <select name="annStatus" id="annStatus">
+            <option value="1" <%= (latVO.getAnnStatus() == 1) ? "selected" : "" %>>上架</option>
+            <option value="0" <%= (latVO.getAnnStatus() == 0) ? "selected" : "" %>>下架</option>
+        </select><br>
+
+        <button type="submit">更新</button>
+    </form>
+</div>
+
+</body>
+</html>

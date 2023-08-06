@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:include page="/index.html"/>
+<jsp:include page="/index.jsp"/>
 <!DOCTYPE html>
 <html lang="zh-Hant">
 
@@ -10,53 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
      <link rel="stylesheet" href="../css/style.css">
-    <style>
-      body {
-                background-color: white;
-            }
- h1.h1 {
-            width: 100%;
-            height: 100px;
-            background-color: #b45f06;
-            font-size: 50px;
-            text-align: center;
-            color: #fce5cd;
-        }
+     <link rel="stylesheet" href="../css/lat.css">
 
-        div.lathome{
-            width: calc(100% - 300px);
-            margin-left: 300px;
-            padding: 0;
-        }
-         ul.ul {
-                    list-style: none;
-                    padding: 0;
-                    font-size: 24px;
-                    text-align: center;
-                    line-height: 60px;
-                }
-
-                ul.ul>li.li {
-                    height: 60px;
-                    background-color: #fce5cd;
-                    color: #b45f06;
-                }
-
-                ul.ul>li.li a.a {
-                    text-decoration: none;
-                    color: #b45f06;
-
-                }
-
-                ul.ul li.li>form input {
-                    vertical-align: middle;
-                    width: 100px;
-                }
-
-                .a {
-                    width: 100%;
-                }
-       </style>
 </head>
 
 <body>
@@ -64,7 +19,9 @@
 
     <div class="lathome">
     <ul>
-        <li class="li"><a class="a" href='getlistone.jsp'>查詢全部最新公告</a><br><br></li>
+        <li class="li">
+          <a class="a" href='getlistone.jsp'>查詢全部最新公告</a>
+        </li>
 
         <li class="li">
             <FORM METHOD="post" ACTION="latServlet">

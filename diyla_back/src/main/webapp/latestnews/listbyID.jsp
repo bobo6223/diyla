@@ -1,14 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.cha102.diyla.IatestnewsModel.*"%>
-
+<%@ page import="java.util.Base64" %>
+<jsp:include page="/index.jsp"/>
 <%
-  LatestnewsVO latVO = (LatestnewsVO) request.getAttribute("latVO"); //EmpServlet.java(Concroller), 存入req的empVO物件
+  LatestnewsVO latVO = (LatestnewsVO) request.getAttribute("latVO");
 %>
 
 <html>
 <head>
 <title>員工資料 - listOneEmp.jsp</title>
-
+<link rel="stylesheet" href="../css/style.css">
 
 
 </head>
@@ -32,7 +33,7 @@
 	<tr>
 		<td><%=latVO.getNewsNo()%></td>
 		<td><%=latVO.getNewsContext()%></td>
-		<td><%=latVO.getAnnPic()%></td>
+		<td><p><img src="data:image/jpeg;base64,<%= Base64.getEncoder().encodeToString(latVO.getAnnPic()) %>" alt="公告圖片"></p></td>
 		<td><%=latVO.getAnnStatus()%></td>
 		<td><%=latVO.getAnnTime()%></td>
 	</tr>

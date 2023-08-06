@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.cha102.diyla.IatestnewsModel.*"%>
-<%-- 此頁暫練習採用 Script 的寫法取值 --%>
+<jsp:include page="/index.jsp"/>
 
 <%
      LatService latSvc = new LatService();
@@ -13,26 +13,43 @@
 <html>
 <head>
 <title>員工資料 - listOneEmp.jsp</title>
+<link rel="stylesheet" href="../css/style.css">
 </head>
 <body bgcolor='white'>
 
 <table>
-	<tr>
-		<th>員工編號${newsNo}</th>
+    <tr>
+        <th>公告編號</th>
+        <th>公告內容</th>
+        <th>操作</th>
+    </tr>
+    <tr>
+    <% List<LatestnewsVO> scvList = (List)pageContext.getAttribute("list"); %>
+    <% if (scvList != null) { %>
+        <% for (LatestnewsVO a : scvList) { %>
+            <tr>
+                <td><%= a.getNewsNo() %></td>
+                <td><%= a.getNewsContext() %></td>
+                <td>
+                <hr style="border-color: #fce5cd" >
+                  <form method="post" action="latServlet">
+                                        <input type="hidden" name="newsNo" value="<%= a.getNewsNo() %>">
+                                       <input type="hidden" name="action" value="update_start">
+                                       <button type="submit">✏️編輯</button>
+                   </form>
 
-	</tr>
-	<tr>
-<% List<LatestnewsVO> scvList = (List)pageContext.getAttribute("list");%>
-<% if (scvList != null) { %>
-            <% for (LatestnewsVO a : scvList) { %>
-        <%--         <p>會員編號: <%= a.getNewsNo() %></p> --%>
-                <p>商品編號: <%= a.getNewsContext() %></p>
-                <p>商品數量: <%= a.getAnnTime() %></p>
-                <hr>
-                <% } %>
-                <% } %>
+                  <form method="post" action="latServlet">
+                      <input type="hidden" name="newsNo" value="<%= a.getNewsNo() %>">
+                      <input type="hidden" name="action" value="delete_latnews">
+                      <button type="submit">❌刪除</button>
+                  </form>
 
+
+                </td>
+            </tr>
+        <% } %>
+    <% } %>
+    </tr>
 </table>
-
 </body>
 </html>
