@@ -49,6 +49,14 @@ public class CommodityController extends HttpServlet {
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/shop/commodityPage.jsp");
             requestDispatcher.forward(req, resp);
         }
+
+        if ("search".equals(action)) {
+            String keyword = req.getParameter("keyword");
+            List<CommodityVO> commodityVOS = service.findByNameKeyword(keyword);
+            req.setAttribute("commodityList", commodityVOS);
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/shop/listCommodity.jsp");
+            requestDispatcher.forward(req, resp);
+        }
     }
 }
 
