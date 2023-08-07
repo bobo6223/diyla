@@ -1,15 +1,12 @@
 package com.cha102.diyla.shoppongcart;
 
-import java.lang.reflect.Member;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
-
-import com.cha102.diyla.commodityModel.CommodityVO;
 
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
@@ -71,24 +68,16 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 	public void update(Integer memId, Integer comNo, Integer amount) {
 		try (Connection con = DriverManager.getConnection(url, username, password);
 				PreparedStatement pstmtUpdate = con.prepareStatement(
-						"UPDATE shopping_cart_list set com_amount = ? where MEM_Id = ? and COM_NO = ?");
-				PreparedStatement pstmtSelect = con.prepareStatement(
-						"Select com_amount from shopping_cart_list where MEM_Id = ? and COM_NO = ?");) {
-			pstmtSelect.setInt(1, memId);
-			pstmtSelect.setInt(2, 1);
-			try (ResultSet rs = pstmtSelect.executeQuery();) {
-				if (rs.next()) {
+						"UPDATE shopping_cart_list set com_amount = ? where MEM_Id = ? and COM_NO = ?");) {
+			
 					pstmtUpdate.setInt(1, amount);
 					pstmtUpdate.setInt(2, memId);
 					pstmtUpdate.setInt(3, comNo);
 					pstmtUpdate.executeUpdate();
-//					if(existingQuantity<=0) {}
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			
 
-		} catch (Exception e) {
+		 catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -107,18 +96,32 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 		}
 	}
 
-	public ShoppingCartVO getone(Integer memId, Integer comNo) {
+	@Override
+	public void clear(Integer memId) {
+		try (Connection con = DriverManager.getConnection(url, username, password);
+				PreparedStatement pstmtClear = con
+						.prepareStatement("DELETE FROM shopping_cart_list where MEM_Id = ?");) {
+			pstmtClear.setInt(1, memId);
+			pstmtClear.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public ShoppingCartVO getOne(Integer memId, Integer comNo) {
 		ShoppingCartVO cartVO = new ShoppingCartVO();
 		try (Connection con = DriverManager.getConnection(url, username, password);
 				PreparedStatement pstmtget = con
-						.prepareStatement("SELETE * ROM shopping_cart_list where MEM_Id = ? and COM_NO = ? ");) {
+						.prepareStatement("SELECT * FROM shopping_cart_list where MEM_Id = ? and COM_NO = ? ");) {
 			pstmtget.setInt(1, memId);
 			pstmtget.setInt(2, comNo);
-			try (ResultSet rs = pstmtget.executeQuery()) {
-				
-				cartVO.setMemId(memId);
-				cartVO.setComNo(comNo);
-				cartVO.setMemId(rs.getInt("COM_AMOUNT"));
+			try (ResultSet rs = pstmtget.executeQuery();) {
+				if (rs.next()) {
+					cartVO.setMemId(memId);
+					cartVO.setComNo(comNo);
+					cartVO.setComAmount(rs.getInt("COM_AMOUNT"));
+				}
+				return cartVO;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -162,13 +165,14 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
 	public static void main(String[] args) {
 		ShoppingCartDaoImpl shoppingCartDaoImp = new ShoppingCartDaoImpl();
-		shoppingCartDaoImp.insert(2, 4, 5);
+//		shoppingCartDaoImp.insert(2, 4, 5);
 //		shoppingCartDaoImp.delete(2, 1);
 //		shoppingCartDaoImp.update(2, 1, 20);
-		List<ShoppingCartVO> cartlist = shoppingCartDaoImp.getAll(2);
-		for (ShoppingCartVO scv : cartlist) {
-			System.out.println("會員" + scv.getMemId() + "購買商品編號:" + scv.getComNo() + ":數量" + scv.getComAmount());
+//		List<ShoppingCartVO> cartlist = shoppingCartDaoImp.getAll(2);
+//		for (ShoppingCartVO scv : cartlist) {
+//			System.out.println("會員" + scv.getMemId() + "購買商品編號:" + scv.getComNo() + ":數量" + scv.getComAmount());
 
-		}
+//		}
+		System.out.println(shoppingCartDaoImp.getOne(2, 3));
 	}
 }
