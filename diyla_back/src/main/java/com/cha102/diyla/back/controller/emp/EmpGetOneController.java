@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebServlet("/emp/empFun")
+@WebServlet("/emp/empFun") // form表單送入的ACTION對應路徑註冊在WebServlet
+//另一種註冊在Web的 XML檔裡面
 public class EmpGetOneController extends HttpServlet {
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

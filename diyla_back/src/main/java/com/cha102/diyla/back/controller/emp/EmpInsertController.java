@@ -45,7 +45,8 @@ public class EmpInsertController extends HttpServlet {
         if(!ObjectUtils.isEmpty(errorMsgs)) {
             req.setAttribute("empVO", empVO);
             req.setAttribute("errorMsgs", errorMsgs);
-            RequestDispatcher failureView = req.getRequestDispatcher("/emp/form.jsp");
+            RequestDispatcher failureView = req.getRequestDispatcher("/emp/insert.jsp");
+            // RequestDispatcher為物件,裡面的failureView方法可設定將資料打包帶往專案的相對路徑
             failureView.forward(req, res);
             return;//程式中斷
         } else {

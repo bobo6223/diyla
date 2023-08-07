@@ -15,7 +15,7 @@ public class EmpService {
 //        }
 //        EmpVO empVO = new EmpVO(empName, empAccount, empPassword, empEmail, empStatus);
         daoImpl = new EmpDAOImpl();
-        daoImpl.insert(empVO);
+        daoImpl.insertEmp(empVO);
 
     }
 
@@ -27,21 +27,34 @@ public class EmpService {
             errorMsgs.add("請輸入管理員名稱");
         } else {
             empName = empName.trim();
-
+            if (empName.length() > 10) {
+                errorMsgs.add(("管理員名稱不得超過10個字"));
+            }
         }
         if (ObjectUtils.isEmpty(empAccount)) {
             errorMsgs.add("請輸入管理員帳號");
+        } else {
+            empAccount = empAccount.trim();
         }
+
         if (ObjectUtils.isEmpty(empPassword)) {
             errorMsgs.add("請輸入管理員密碼");
+        } else {
+            empPassword = empPassword.trim();
         }
+
         // TODO e-mail驗證(正則表達式)
 //        if(empEmail.matches(     )){
 //        }
         if (ObjectUtils.isEmpty(empEmail)) {
             errorMsgs.add("請輸入管理員email");
+        } else {
+            empEmail = empEmail.trim();
+            daoImpl.checkEmpEmailForRegister(empEmail);
         }
+
         if (ObjectUtils.isEmpty(empStatus)) {
+
             errorMsgs.add("請輸入管理員狀態");
         }
         return new EmpVO(empName, empAccount, empPassword, empEmail, empStatus);

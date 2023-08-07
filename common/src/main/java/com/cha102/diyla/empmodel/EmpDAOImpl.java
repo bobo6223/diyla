@@ -13,6 +13,7 @@ public class EmpDAOImpl implements EmpDAO {
     private static final String INSERT_STMT = "INSERT INTO employee (EMP_NAME,EMP_ACCOUNT,EMP_PASSWORD,EMP_EMAIL,EMP_STATUS) VALUES(?,?,?,?,?)";
     private static final String UPDATE = "UPDATE employee set EMP_NAME=?,EMP_ACCOUNT=?,EMP_PASSWORD=?,EMP_EMAIL=?,EMP_STATUS=? WHERE EMP_ID=?";
     private static final String DELETE = "DELETE FROM employee WHERE EMP_ID=? ";
+    private static final String CHECK_EMP_EMAIL_FOR_REGISTER ="SELECT count(1) FROM employee  WHERE EMP_EMAIL = ?";
     private static final String GET_ALL_STMT = "SELECT EMP_ID,EMP_NAME,EMP_ACCOUNT,EMP_PASSWORD,EMP_EMAIL,EMP_STATUS FROM employee order by EMP_ID";
     private static final String GET_ONE = "SELECT * FROM employee WHERE EMP_ID = ?";
         public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -39,7 +40,7 @@ public class EmpDAOImpl implements EmpDAO {
 //        }
 //    }
     @Override
-    public void insert(EmpVO empVO) {
+    public void insertEmp(EmpVO empVO) {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -63,7 +64,7 @@ public class EmpDAOImpl implements EmpDAO {
     }
 
     @Override
-    public void update(EmpVO empVO) {
+    public void updateEmp(EmpVO empVO) {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -87,7 +88,7 @@ public class EmpDAOImpl implements EmpDAO {
     }
 
     @Override
-    public void delete(Integer empId) {
+    public void deleteEmp(Integer empId) {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -102,6 +103,22 @@ public class EmpDAOImpl implements EmpDAO {
             throw new RuntimeException("A database error occured. " + rte.getMessage());
         } finally {
             closeResource(con, pstmt);
+        }
+    }
+
+    @Override
+    public void checkEmpEmailForRegister(String empEmail) {
+
+        try(Connection con = ds.getConnection();
+            //取得連線
+            PreparedStatement pstmt = con.prepareStatement(CHECK_EMP_EMAIL_FOR_REGISTER);
+            // 執行SQL語句前先編譯SQL語句,通過Connection的prepareStatement()方法獲取prepareStatement對方
+            //使用set XXX () 綁定參數值, XXX是參數資料類型
+
+            ResultSet rs = pstmt.executeQuery();
+                ) {
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -219,16 +236,16 @@ public class EmpDAOImpl implements EmpDAO {
 
     public static void main(String[] args) {
         EmpDAOImpl empDAO = new EmpDAOImpl();
-//        EmpVO insertEmp = new EmpVO("貓貓","3","123","333@gmail.com",true);
-//        empDAO.insert(insertEmp);
-//        System.out.println(insertEmp);
+        EmpVO insertEmp = new EmpVO("貓貓","3","123","333@gmail.com",true);
+        empDAO.insertEmp(insertEmp);
+        System.out.println(insertEmp);
 
         EmpVO update = new EmpVO("汪汪","師傅","123456","123@yahoo.com.tw",false,3);
-        empDAO.update(update);
+        empDAO.updateEmp(update);
         System.out.println(update);
-//
-//        empDAO.delete(4);
-//
+
+        empDAO.deleteEmp(4);
+
         EmpVO getOne = empDAO.getOne(1);
         System.out.println(getOne);
 

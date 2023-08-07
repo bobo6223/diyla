@@ -36,6 +36,7 @@
 		</c:forEach>
 	</ul>
 </c:if>
+         <!--ACTION送資料到指定路徑-->
 <FORM METHOD="get" ACTION="empFun">
 
     請輸入員工編號 :

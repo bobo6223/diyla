@@ -42,32 +42,38 @@ table#table-1 {
 </style>
 </HEAD>
 <BODY>
-<table id="empTable-1">
-<FORM METHOD="post" ACTION="insertEmp">
+<table id="empTable-1"></table>
+<FORM METHOD="post" ACTION="empInsert">
 <table>
    <tr>
         <td>管理員名稱:</td>
-        <td><input type="TEXT" name="name" value="<%= (empVO==null)? "吳永志" : empVO.getEmpName()%>" size="45"/></td>
+        <td><input type="TEXT" name="name" value="<%= (empVO==null)? "請輸入管理員名稱" : empVO.getEmpName()%>" size="45"/></td>
 
    </tr>
-   <tr>
-        <td>管理員帳號:</td>
-   </tr>
+
+           <!--input欄位要key in的內容要和inut欄位的name要有相對應關聯,才容易透過key的name得知該欄位的value內容-->
+
+
    <tr>
         <td>管理員密碼:</td>
-
+        <td><input type="TEXT" name="password" value="<%= (empVO==null)? "請輸入管理員密碼" : empVO.getEmpPassword()%>" size="45"/></td>
    </tr>
    <tr>
 
         <td>管理員信箱:</td>
-
+        <td><input type="TEXT" name="email" value="<%= (empVO==null)? "請輸入管理員信箱" : empVO.getEmpEmail()%>" size="45"/></td>
    </tr>
    <tr>
 
         <td>管理員狀態:</td>
-
+        <td><input type="TEXT" name="status" value="<%= (empVO==null)? "請輸入管理員狀態" : empVO.getEmpStatus()%>" size="45"/></td>
    </tr>
 
+    <tr>
+    <td>
+    <INPUT TYPE="SUBMIT">
+    <td>
+    </tr>
 
 </table>
 </FORM>
