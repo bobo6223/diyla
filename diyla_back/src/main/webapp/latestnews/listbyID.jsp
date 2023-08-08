@@ -2,6 +2,8 @@
 <%@ page import="com.cha102.diyla.IatestnewsModel.*"%>
 <%@ page import="java.util.Base64" %>
 <jsp:include page="/index.jsp"/>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page isELIgnored="false" %>
 <%
   LatestnewsVO latVO = (LatestnewsVO) request.getAttribute("latVO");
 %>
@@ -9,6 +11,14 @@
 <html>
 <head>
 <title>員工資料 - listOneEmp.jsp</title>
+<style>
+body{
+margin-left:500px;
+}
+img{
+width:300px;
+}
+</style>
 <link rel="stylesheet" href="../css/style.css">
 
 
@@ -31,8 +41,8 @@
 		<th>發布時間</th>
 	</tr>
 	<tr>
-		<td><%=latVO.getNewsNo()%></td>
-		<td><%=latVO.getNewsContext()%></td>
+		<td>S{latVO.newsNo}</td>
+		<td>${latVO.newsContext}</td>
 		<td><p><img src="data:image/jpeg;base64,<%= Base64.getEncoder().encodeToString(latVO.getAnnPic()) %>" alt="公告圖片"></p></td>
 		<td><%=latVO.getAnnStatus()%></td>
 		<td><%=latVO.getAnnTime()%></td>

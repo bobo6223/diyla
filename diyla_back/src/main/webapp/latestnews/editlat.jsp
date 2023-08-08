@@ -10,6 +10,11 @@
 <head>
     <title>編輯公告</title>
     <link rel="stylesheet" href="../css/style.css">
+    <style>
+    body{
+    margin-left:300px
+    }
+    </style>
 </head>
 <body bgcolor='white'>
 
