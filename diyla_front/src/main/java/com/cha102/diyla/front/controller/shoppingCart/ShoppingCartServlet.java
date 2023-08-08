@@ -73,6 +73,12 @@ public class ShoppingCartServlet extends HttpServlet {
 			Integer comNo = Integer.valueOf(req.getParameter("comNo"));
 			Integer amount = Integer.valueOf(req.getParameter("amount"));
 			ShoppingCartVO cartVO = new ShoppingCartVO(memId, comNo,amount);
+			if(amount==0) {
+				//更改之數量為0
+				shoppingCartService.delete(memId, comNo);
+				shoppingCartList.removeIf(delCartVO -> delCartVO.getComNo() == comNo && delCartVO.getMemId() == memId);
+			}else {
+			
 			
 			cartVO = shoppingCartService.update(memId, comNo, amount);
 			for (int i = 0; i < shoppingCartList.size(); i++) {
@@ -82,6 +88,7 @@ public class ShoppingCartServlet extends HttpServlet {
 					existingCartItem.setComAmount(amount);
 					break;
 				}
+			}
 			}
 			int totalPrice = shoppingCartService.getTotalPrice(shoppingCartList);
 			session.setAttribute("totalPrice", totalPrice);

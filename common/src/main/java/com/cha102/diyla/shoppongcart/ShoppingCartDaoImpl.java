@@ -8,19 +8,34 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShoppingCartDaoImpl implements ShoppingCartDao {
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
-	// 運用static區塊讓驅動載入僅需一次
+public class ShoppingCartDaoImpl implements ShoppingCartDao {
+	public static DataSource ds = null;
+
 	static {
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (ClassNotFoundException ce) {
-			ce.printStackTrace();
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/diyla");
+		} catch (NamingException e) {
+			e.printStackTrace();
 		}
 	}
-	String url = "jdbc:mysql://localhost:3306/diyla?serverTimezone=Asia/Taipei";
-	String username = "root";
-	String password = "123456";
+
+	// 運用static區塊讓驅動載入僅需一次
+//	static {
+//		try {
+//			Class.forName("com.mysql.cj.jdbc.Driver");
+//		} catch (ClassNotFoundException ce) {
+//			ce.printStackTrace();
+//		}
+//	}
+//	public static final String URL = "jdbc:mysql://localhost:3306/diyla?serverTimezone=Asia/Taipei";
+//	public static final String USERNAME = "root";
+//	public static final String PASSWORD = "123456";
 
 //	private static final String INSERT_STMT = "INSERT INTO shopping_cart_list (memId,com_no,com_amount) VALUES (?, ?, ?)";
 //	private static final String UPDATE = "UPDATE shopping_cart_list set com_amount = ? where com_no = ?";
@@ -29,7 +44,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 	@Override
 	public void insert(Integer memId, Integer comNo, Integer amount) {
 
-		try (Connection con = DriverManager.getConnection(url, username, password);
+		try (Connection con = ds.getConnection();
 				PreparedStatement pstmtSelect = con
 						.prepareStatement("Select com_amount from shopping_cart_list where MEM_Id = ? and COM_NO = ?");
 				PreparedStatement pstmtInsertCom = con
@@ -66,25 +81,24 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
 	@Override
 	public void update(Integer memId, Integer comNo, Integer amount) {
-		try (Connection con = DriverManager.getConnection(url, username, password);
+		try (Connection con = ds.getConnection();
 				PreparedStatement pstmtUpdate = con.prepareStatement(
 						"UPDATE shopping_cart_list set com_amount = ? where MEM_Id = ? and COM_NO = ?");) {
-			
-					pstmtUpdate.setInt(1, amount);
-					pstmtUpdate.setInt(2, memId);
-					pstmtUpdate.setInt(3, comNo);
-					pstmtUpdate.executeUpdate();
-				}
-			
 
-		 catch (Exception e) {
+			pstmtUpdate.setInt(1, amount);
+			pstmtUpdate.setInt(2, memId);
+			pstmtUpdate.setInt(3, comNo);
+			pstmtUpdate.executeUpdate();
+		}
+
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void delete(Integer memId, Integer comNo) {
-		try (Connection con = DriverManager.getConnection(url, username, password);
+		try (Connection con = ds.getConnection();
 				PreparedStatement pstmtDel = con
 						.prepareStatement("DELETE FROM shopping_cart_list where MEM_Id = ? and COM_NO = ?");) {
 			pstmtDel.setInt(1, memId);
@@ -98,7 +112,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
 	@Override
 	public void clear(Integer memId) {
-		try (Connection con = DriverManager.getConnection(url, username, password);
+		try (Connection con = ds.getConnection();
 				PreparedStatement pstmtClear = con
 						.prepareStatement("DELETE FROM shopping_cart_list where MEM_Id = ?");) {
 			pstmtClear.setInt(1, memId);
@@ -110,7 +124,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
 	public ShoppingCartVO getOne(Integer memId, Integer comNo) {
 		ShoppingCartVO cartVO = new ShoppingCartVO();
-		try (Connection con = DriverManager.getConnection(url, username, password);
+		try (Connection con = ds.getConnection();
 				PreparedStatement pstmtget = con
 						.prepareStatement("SELECT * FROM shopping_cart_list where MEM_Id = ? and COM_NO = ? ");) {
 			pstmtget.setInt(1, memId);
@@ -137,7 +151,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 	public List<ShoppingCartVO> getAll(Integer memId) {
 		List<ShoppingCartVO> cartList = new ArrayList();
 		ShoppingCartVO shoppingCartVO = null;
-		try (Connection con = DriverManager.getConnection(url, username, password);
+		try (Connection con = ds.getConnection();
 				PreparedStatement pstmtGetAll = con
 						.prepareStatement("SELECT * FROM shopping_cart_list SC WHERE MEM_Id = ?");
 

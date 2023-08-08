@@ -28,7 +28,7 @@ CommodityVO comVo = null;
 	href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
 
 <!-- bootstrap core css -->
-<%-- <link rel="stylesheet" type="text/css" href="${ctxPath}/css/bootstrap.css" /> --%>
+<link rel="stylesheet" type="text/css" href="${ctxPath}/css/bootstrap.css" />
 
 <!-- Custom styles for this template -->
 <link href="${ctxPath}/css/style.css" rel="stylesheet" />
@@ -41,23 +41,25 @@ CommodityVO comVo = null;
 </style>
 </HEAD>
 <BODY>
+<div class="topPage">
 	<jsp:include page="../front_header.jsp" />
+</div>
 	<div class="mainContent">
-
 		<h1 class="heading">我的購物車</h1>
+
 		<%
 		if (scvList != null && !scvList.isEmpty()) {
 		%>
 
-		<table width="80%" class="cartTable" cellspacing="0"
+		<table width="85%" class="cartTable" cellspacing="0"
 			cellpadding="10px">
 			<tr class="title">
-				<td>商品名稱</td>
-				<td>商品圖片</td>
-				<td>單價</td>
-				<td>數量</td>
-				<td>金額</td>
-				<td>操作</td>
+				<td class="subtitle compic">商品圖片</td>
+				<td class="subtitle">商品名稱</td>
+				<td class="subtitle">單價</td>
+				<td class="subtitle">數量</td>
+				<td class="subtitle">小計</td>
+				<td class="subtitle">刪除商品</td>
 			</tr>
 
 			<%
@@ -65,27 +67,26 @@ CommodityVO comVo = null;
 				int comNo = cartItem.getComNo();
 				comVo = commodityService.findByID(comNo);
 			%>
-			<tr class="row">
-				<td class="itemInfo"><%=comVo.getComName()%></td>
-				<td class="itemInfo"><a
-					href="${ctxPath}/shop/CommodityController?action=findByID&comNO=${comVo.comNO}"></a><img
-					src="<%=comVo.getShowPic()%>" class="comPic"></td>
+			<tr class="itemrow">
+				<td class="itemInfo compic" ><a href="${ctxPath}/shop/CommodityController?action=findByID&comNO=<%=comVo.getComNO() %>" class="commodityPage"><img
+					src="<%=comVo.getShowPic()%>" class="comPic"></a></td>
+				<td class="itemInfo"><a href="${ctxPath}/shop/CommodityController?action=findByID&comNO=<%=comVo.getComNO() %>" class="commodityPage"><%=comVo.getComName()%></a></td>
 				<td class="itemInfo"><%=comVo.getComPri()%></td>
 				<td class="itemInfo">
 					<form action="ShoppingCartServlet" method="post">
 						<input type="hidden" name="comNo" value="<%=cartItem.getComNo()%>">
 						<input type="hidden" name="memId" value="<%=cartItem.getMemId()%>">
-						<input class="quantity-input" type="number" name="amount"
-							value="<%=cartItem.getComAmount()%>" /> <input type="hidden"
+						<input class="quantity-input" type="number" name="amount" min =0
+							value="<%=cartItem.getComAmount()%>" data-original-amount="<%=cartItem.getComAmount()%>" /> <input type="hidden"
 							name="action" value="changeAmount" />
 						<button type="submit" class="updateButton">更新</button>
 					</form>
 				<td class="itemInfo"><%=(comVo.getComPri() * cartItem.getComAmount())%></td>
-				<td>
+				<td class="itemInfo">
 					<form action="ShoppingCartServlet" method="post" id="deleteForm">
 						<input type="hidden" name="comNo" value="<%=cartItem.getComNo()%>">
 						<input type="hidden" name="memId" value="<%=cartItem.getMemId()%>">
-						<input type="hidden" name="action" value="delete">
+						<input type="hidden" name="action" value="delete" id="delaction">
 						<button type="submit" class="deleteButton">刪除</button>
 					</form>
 				</td>
@@ -93,20 +94,19 @@ CommodityVO comVo = null;
 			<%
 			}
 			%>
-
-			<tr>
-
-			</tr>
+			
 		</table>
+
 		<div class="handle">
 			<form action="ShoppingCartServlet" method="post">
 				<button type="submit" class="clearButton">清空購物車 </button>
 				<input type="hidden"
 					name="action" value="clear">
 			</form>
-			<span class="total-price">總金額: ${totalPrice}</span> 
+			<a href="${ctxPath}/shop/CommodityController?action=listAll" class="shopPage">繼續購物</a>
+			<span class="total-price">總金額: ${totalPrice}元</span> 
+			<a class="checkout-btn" href="checkout">結帳</a>
 		</div>
-		<a class="checkout-btn" href="checkout">結帳</a>
 		<%
 		} else {
 		%>
@@ -124,7 +124,20 @@ CommodityVO comVo = null;
 
 	<script src="../js/jquery-3.4.1.min.js"></script>
 	<script>
-		
+	  $(document).ready(function() {
+	        $('.updateButton').on('click', function() {
+	            const inputField = $(this).closest('form').find('.quantity-input');
+	            const originalAmount = parseInt(inputField.data('original-amount'));
+	            const amount = parseInt(inputField.val());
+
+	            if (amount === 0) {
+	                const confirmDelete = confirm('數量為 0，確定要從購物車移除嗎？');
+	                if (!confirmDelete) {
+	                    inputField.val(originalAmount); // 恢復到原始數量
+	                }
+	            } 
+	        });
+	    });
 	</script>
 </BODY>
 </HTML>
