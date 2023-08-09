@@ -1,13 +1,8 @@
 package com.cha102.diyla.back.controller;
 
 
-import com.cha102.diyla.IatestnewsModel.*;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
+import com.cha102.diyla.IatestnewsModel.LatService;
+import com.cha102.diyla.IatestnewsModel.LatestnewsVO;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import java.io.IOException;
+import java.io.InputStream;
 
 @WebServlet("/latestnews/latServlet")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024,
@@ -34,8 +31,8 @@ public class latServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
-//        String newsNo = req.getParameter("newsNo");
 
+        //單筆查詢
         if ("getOne_For_Display".equals(action)) {
 
             //***************************2.開始查詢資料*****************************************/
@@ -48,6 +45,8 @@ public class latServlet extends HttpServlet {
             RequestDispatcher successView = req.getRequestDispatcher(url);
             successView.forward(req, res);
         }
+
+        //刪除公告
         if ("delete_latnews".equals(action)) {
             LatService latSvc = new LatService();
             String newsNo = req.getParameter("newsNo");
@@ -57,7 +56,9 @@ public class latServlet extends HttpServlet {
             RequestDispatcher successView = req.getRequestDispatcher(url);
             successView.forward(req, res);
         }
-        if("update_start".equals(action)){
+
+        //修改觸發
+        if ("update_start".equals(action)) {
             LatService latSvc = new LatService();
             LatestnewsVO latVO = latSvc.getOneLat(Integer.valueOf(req.getParameter("newsNo")));
             req.setAttribute("latVO", latVO);
@@ -67,10 +68,12 @@ public class latServlet extends HttpServlet {
             RequestDispatcher successView = req.getRequestDispatcher(url);
             successView.forward(req, res);
         }
+
+        //修改公告
         if ("update_latnews".equals(action)) {
             LatService latSvc = new LatService();
-            String newsNo = req.getParameter("newsNo");
 
+            int newsNo = Integer.valueOf(req.getParameter("newsNo"));
             String newsContext = req.getParameter("newsContext");
             Byte annStatus = Byte.valueOf(req.getParameter("annStatus"));
             Part annPicPart = req.getPart("annPic");
@@ -81,15 +84,18 @@ public class latServlet extends HttpServlet {
             latVO.setNewsContext(newsContext);
             latVO.setAnnStatus(annStatus);
             latVO.setAnnPic(buffer);
+            latVO.setNewsNo(newsNo);
 
 
             latSvc.updateLat(latVO);
 
             ips.close();
-            String url = "/latestnews/getlstone.jsp";
+            String url = "/latestnews/getlistone.jsp";
             RequestDispatcher successView = req.getRequestDispatcher(url);
             successView.forward(req, res);
         }
+
+        //新增公告
         if ("lat_insert".equals(action)) {
 
             String newsContext = req.getParameter("newsContext");
@@ -110,7 +116,6 @@ public class latServlet extends HttpServlet {
                 latVO.setAnnPic(buffer);
 
                 LatService latSvc = new LatService();
-                latSvc.addLat(latVO);
                 LatestnewsVO addedLat = latSvc.addLat(latVO);
                 req.setAttribute("addedLat", addedLat);
 
