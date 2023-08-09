@@ -12,5 +12,9 @@ public interface CommodityDao {
 
     List<CommodityVO> findByNameKeyword(String nameKeyword);
 
+    List<CommodityVO> findByComClass(Integer comClassNO);
+
+    List<CommodityVO> getAllState();
+
 
 }
