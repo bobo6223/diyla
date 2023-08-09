@@ -119,6 +119,7 @@ CommodityVO comVo = null;
 		<%
 		}
 		%>
+		<button  class="goTopButton">返回頂部</button>
 	</div>
 	<jsp:include page="../front_footer.jsp" />
 
@@ -136,6 +137,21 @@ CommodityVO comVo = null;
 	                    inputField.val(originalAmount); // 恢復到原始數量
 	                }
 	            } 
+	        });
+	        
+	        
+	        $(window).scroll(function() {
+	            if ($(this).scrollTop() > 20) {
+	            	$(".goTopButton").fadeIn();
+	            } else {
+	            	$(".goTopButton").fadeOut();
+	            }
+	        });
+	        
+	        // 点击按钮滚动到页面顶部
+	        $(".goTopButton").click(function() {
+	            $("html, body").animate({ scrollTop: 0 }, "slow");
+	            return false;
 	        });
 	    });
 	</script>
