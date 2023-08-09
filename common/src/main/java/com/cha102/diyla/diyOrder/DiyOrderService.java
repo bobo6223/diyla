@@ -8,11 +8,11 @@ public class DiyOrderService {
 	private DiyOrderDAO_interface dao;
 
 	public DiyOrderService() {
-		dao = new DiyOrderDAO();
+		dao = new DiyOrderDaoImpl();
 	}
 
 	public void addOD(int memId, int diyNo, String contactPerson, String contactPhone, int reservationNum,
-			int diyPeriod, Date diyReserveDate, Timestamp createTime, Byte reservationStatus, Byte paymentStatus,
+			int diyPeriod, Date diyReserveDate,  int reservationStatus, int paymentStatus,
 			int diyPrice) {
 		DiyOrderVO DOVO = new DiyOrderVO();
 		DOVO.setMemId(memId);
@@ -28,9 +28,10 @@ public class DiyOrderService {
 		dao.insert(DOVO);
 	}
 
-	public void upOD(int memId, int diyNo, String contactPerson, String contactPhone, int reservationNum,
-			int diyPeriod, Date diyReserveDate, Timestamp createTime, Byte reservationStatus, Byte paymentStatus,
-			int diyPrice) {
+	public void upOD(int memId, int diyNo, String contactPerson, 
+			String contactPhone, int reservationNum, int diyPeriod, 
+			Date diyReserveDate, int reservationStatus, 
+			int paymentStatus,int diyPrice, int diyOrderNo) {
 
 		DiyOrderVO DOVO = new DiyOrderVO();
 		DOVO.setMemId(memId);
@@ -40,10 +41,11 @@ public class DiyOrderService {
 		DOVO.setReservationNum(reservationNum);
 		DOVO.setDiyPeriod(diyPeriod);
 		DOVO.setDiyReserveDate(diyReserveDate);
-		DOVO.setCreateTime(createTime);
+//		DOVO.setCreateTime(createTime);
 		DOVO.setReservationStatus(reservationStatus);
 		DOVO.setPaymentStatus(paymentStatus);
 		DOVO.setDiyPrice(diyPrice);
+		DOVO.setDiyOrderNo(diyOrderNo);
 		dao.update(DOVO);
 
 	}
@@ -56,7 +58,7 @@ public class DiyOrderService {
 		return dao.findByPrimaryKey(diyOrderNo);
 	}
 	
-	public List<DiyOrderVO> getAllDO(){
+	public List<DiyOrderVO> getAll(){
 		return dao.getAll();
 	}
 

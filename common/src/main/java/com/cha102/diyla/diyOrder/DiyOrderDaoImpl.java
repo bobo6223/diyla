@@ -15,26 +15,26 @@ public class DiyOrderDaoImpl implements DiyOrderDAO_interface {
     static {
         try {
             Context ctx = new InitialContext();
-            ds = (DataSource) ctx.lookup("java:comp/env/jdbc/diyla");
+            ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB2");
         } catch (NamingException e) {
             e.printStackTrace();
         }
     }
 
     // SQL指令 - 新增訂單
-    private final String INSERT_SQL = "INSERT INTO DIY_ORDER (MEM_ID, DIY_NO, CONTACT_PERSON, ARTICLE_CONTENT, RESERVATION_NUM, DIY_PERIOD, DIY_RESERVE_DATE, CREATE_TIME, RESERVATION_STATUS, PAYMENT_STATUS, DIY_PRICE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    private final String INSERT_SQL = "INSERT INTO DIYLA.DIY_ORDER (MEM_ID, DIY_NO, CONTACT_PERSON, CONTACT_PHONE, RESERVATION_NUM, DIY_PERIOD, DIY_RESERVE_DATE, RESERVATION_STATUS, PAYMENT_STATUS, DIY_PRICE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     // SQL指令 - 更新訂單
-    private final String UPDATE_SQL = "UPDATE DIY_ORDER SET MEM_ID=?, DIY_NO=?, CONTACT_PERSON=?, ARTICLE_CONTENT=?, RESERVATION_NUM=?, DIY_PERIOD=?, DIY_RESERVE_DATE=?, CREATE_TIME=?, RESERVATION_STATUS=?, PAYMENT_STATUS=?, DIY_PRICE=? WHERE DIY_ORDER_NO=?;";
+    private final String UPDATE_SQL = "UPDATE DIYLA.DIY_ORDER SET MEM_ID=?, DIY_NO=?, CONTACT_PERSON=?, CONTACT_PHONE=?, RESERVATION_NUM=?, DIY_PERIOD=?, DIY_RESERVE_DATE=?, RESERVATION_STATUS=?, PAYMENT_STATUS=?, DIY_PRICE=? WHERE DIY_ORDER_NO=?;";
 
     // SQL指令 - 刪除訂單
-    private final String DELETE_SQL = "DELETE FROM DIY_ORDER WHERE DIY_ORDER_NO=?;";
+    private final String DELETE_SQL = "DELETE FROM DIYLA.DIY_ORDER WHERE DIY_ORDER_NO=?;";
 
     // SQL指令 - 查詢單筆訂單
-    private final String FIND_BY_PK_SQL = "SELECT * FROM DIY_ORDER WHERE DIY_ORDER_NO=?;";
+    private final String FIND_BY_PK_SQL = "SELECT * FROM DIYLA.DIY_ORDER WHERE DIY_ORDER_NO=?;";
 
     // SQL指令 - 查詢所有訂單
-    private final String GET_ALL_SQL = "SELECT * FROM DIY_ORDER;";
+    private final String GET_ALL_SQL = "SELECT * FROM DIYLA.DIY_ORDER;";
 
     @Override
     public void insert(DiyOrderVO diyOrderVO) {
@@ -49,10 +49,10 @@ public class DiyOrderDaoImpl implements DiyOrderDAO_interface {
             ps.setInt(5, diyOrderVO.getReservationNum());
             ps.setInt(6, diyOrderVO.getDiyPeriod());
             ps.setDate(7, diyOrderVO.getDiyReserveDate());
-            ps.setTimestamp(8, diyOrderVO.getCreateTime());
-            ps.setByte(9, diyOrderVO.getReservationStatus());
-            ps.setByte(10, diyOrderVO.getPaymentStatus());
-            ps.setInt(11, diyOrderVO.getDiyPrice());
+//            ps.setTimestamp(8, diyOrderVO.getCreateTime());
+            ps.setInt(8, diyOrderVO.getReservationStatus());
+            ps.setInt(9, diyOrderVO.getPaymentStatus());
+            ps.setInt(10, diyOrderVO.getDiyPrice());
 
             ps.executeUpdate();
 
@@ -63,6 +63,9 @@ public class DiyOrderDaoImpl implements DiyOrderDAO_interface {
         }
     }
 
+    
+//  SET MEM_ID=?, DIY_NO=?, CONTACT_PERSON=?, CONTACT_PHONE=?, RESERVATION_NUM=?, DIY_PERIOD=?
+//, DIY_RESERVE_DATE=?, RESERVATION_STATUS=?, PAYMENT_STATUS=?, DIY_PRICE=? WHERE DIY_ORDER_NO=?
     @Override
     public void update(DiyOrderVO diyOrderVO) {
         try (Connection conn = ds.getConnection();
@@ -76,11 +79,11 @@ public class DiyOrderDaoImpl implements DiyOrderDAO_interface {
             ps.setInt(5, diyOrderVO.getReservationNum());
             ps.setInt(6, diyOrderVO.getDiyPeriod());
             ps.setDate(7, diyOrderVO.getDiyReserveDate());
-            ps.setTimestamp(8, diyOrderVO.getCreateTime());
-            ps.setByte(9, diyOrderVO.getReservationStatus());
-            ps.setByte(10, diyOrderVO.getPaymentStatus());
-            ps.setInt(11, diyOrderVO.getDiyPrice());
-            ps.setInt(12, diyOrderVO.getDiyOrderNo());
+//            ps.setTimestamp(8, diyOrderVO.getCreateTime());
+            ps.setInt(8, diyOrderVO.getReservationStatus());
+            ps.setInt(9, diyOrderVO.getPaymentStatus());
+            ps.setInt(10, diyOrderVO.getDiyPrice());
+            ps.setInt(11, diyOrderVO.getDiyOrderNo());
 
             ps.executeUpdate();
 
@@ -126,8 +129,8 @@ public class DiyOrderDaoImpl implements DiyOrderDAO_interface {
                     diyOrderVO.setDiyPeriod(rs.getInt("DIY_PERIOD"));
                     diyOrderVO.setDiyReserveDate(rs.getDate("DIY_RESERVE_DATE"));
                     diyOrderVO.setCreateTime(rs.getTimestamp("CREATE_TIME"));
-                    diyOrderVO.setReservationStatus(rs.getByte("RESERVATION_STATUS"));
-                    diyOrderVO.setPaymentStatus(rs.getByte("PAYMENT_STATUS"));
+                    diyOrderVO.setReservationStatus(rs.getInt("RESERVATION_STATUS"));
+                    diyOrderVO.setPaymentStatus(rs.getInt("PAYMENT_STATUS"));
                     diyOrderVO.setDiyPrice(rs.getInt("DIY_PRICE"));
                 }
             }
@@ -154,8 +157,8 @@ public class DiyOrderDaoImpl implements DiyOrderDAO_interface {
                 diyOrderVO.setDiyPeriod(rs.getInt("DIY_PERIOD"));
                 diyOrderVO.setDiyReserveDate(rs.getDate("DIY_RESERVE_DATE"));
                 diyOrderVO.setCreateTime(rs.getTimestamp("CREATE_TIME"));
-                diyOrderVO.setReservationStatus(rs.getByte("RESERVATION_STATUS"));
-                diyOrderVO.setPaymentStatus(rs.getByte("PAYMENT_STATUS"));
+                diyOrderVO.setReservationStatus(rs.getInt("RESERVATION_STATUS"));
+                diyOrderVO.setPaymentStatus(rs.getInt("PAYMENT_STATUS"));
                 diyOrderVO.setDiyPrice(rs.getInt("DIY_PRICE"));
                 diyOrderList.add(diyOrderVO);
             }

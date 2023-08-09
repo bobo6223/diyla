@@ -15,8 +15,8 @@ public class DiyOrderVO implements Serializable {
     private Integer diyPeriod;
     private Date diyReserveDate;
     private Timestamp createTime;
-    private Byte reservationStatus;
-    private Byte paymentStatus;
+    private Integer reservationStatus;
+    private Integer paymentStatus;
     private Integer diyPrice;
     
     // 無參數
@@ -27,8 +27,8 @@ public class DiyOrderVO implements Serializable {
     // 帶參數的
     public DiyOrderVO(Integer diyOrderNo, Integer memId, Integer diyNo, String contactPerson,
                       String contactPhone, Integer reservationNum, Integer diyPeriod,
-                      Date diyReserveDate, Timestamp createTime, Byte reservationStatus,
-                      Byte paymentStatus, Integer diyPrice) {
+                      Date diyReserveDate, Timestamp createTime, Integer reservationStatus,
+                      Integer paymentStatus, Integer diyPrice) {
         this.diyOrderNo = diyOrderNo;
         this.memId = memId;
         this.diyNo = diyNo;
@@ -98,16 +98,16 @@ public class DiyOrderVO implements Serializable {
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
-    public Byte getReservationStatus() {
+    public Integer getReservationStatus() {
         return reservationStatus;
     }
-    public void setReservationStatus(Byte reservationStatus) {
+    public void setReservationStatus(Integer reservationStatus) {
         this.reservationStatus = reservationStatus;
     }
-    public Byte getPaymentStatus() {
+    public Integer getPaymentStatus() {
         return paymentStatus;
     }
-    public void setPaymentStatus(Byte paymentStatus) {
+    public void setPaymentStatus(Integer paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
     public Integer getDiyPrice() {

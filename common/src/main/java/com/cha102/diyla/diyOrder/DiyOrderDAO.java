@@ -44,8 +44,8 @@ public class DiyOrderDAO implements DiyOrderDAO_interface{
             pstmt.setInt(6, diyOrderVO.getDiyPeriod());
             pstmt.setDate(7, diyOrderVO.getDiyReserveDate());
 //            pstmt.setTimestamp(8, diyOrderVO.getCreateTime());
-            pstmt.setByte(8, diyOrderVO.getReservationStatus());
-            pstmt.setByte(9, diyOrderVO.getPaymentStatus());
+            pstmt.setInt(8, diyOrderVO.getReservationStatus());
+            pstmt.setInt(9, diyOrderVO.getPaymentStatus());
             pstmt.setInt(10, diyOrderVO.getDiyPrice());
 
             // 執行更新
@@ -96,8 +96,8 @@ public class DiyOrderDAO implements DiyOrderDAO_interface{
             pstmt.setInt(6, diyOrderVO.getDiyPeriod());
             pstmt.setDate(7, diyOrderVO.getDiyReserveDate());
             pstmt.setTimestamp(8, diyOrderVO.getCreateTime());
-            pstmt.setByte(9, diyOrderVO.getReservationStatus());
-            pstmt.setByte(10, diyOrderVO.getPaymentStatus());
+            pstmt.setInt(9, diyOrderVO.getReservationStatus());
+            pstmt.setInt(10, diyOrderVO.getPaymentStatus());
             pstmt.setInt(11, diyOrderVO.getDiyPrice());
             pstmt.setInt(12, diyOrderVO.getDiyOrderNo());
 
@@ -201,8 +201,8 @@ public class DiyOrderDAO implements DiyOrderDAO_interface{
                 diyOrderVO.setDiyPeriod(rs.getInt("Diy_Period"));
                 diyOrderVO.setDiyReserveDate(rs.getDate("Diy_Reserve_Date"));
                 diyOrderVO.setCreateTime(rs.getTimestamp("Create_Time"));
-                diyOrderVO.setReservationStatus(rs.getByte("Reservation_Status"));
-                diyOrderVO.setPaymentStatus(rs.getByte("Payment_Status"));
+                diyOrderVO.setReservationStatus(rs.getInt("Reservation_Status"));
+                diyOrderVO.setPaymentStatus(rs.getInt("Payment_Status"));
                 diyOrderVO.setDiyPrice(rs.getInt("Diy_Price"));
             }
 
@@ -269,8 +269,8 @@ public class DiyOrderDAO implements DiyOrderDAO_interface{
                 diyOrderVO.setDiyPeriod(rs.getInt("Diy_Period"));
                 diyOrderVO.setDiyReserveDate(rs.getDate("Diy_Reserve_Date"));
                 diyOrderVO.setCreateTime(rs.getTimestamp("Create_Time"));
-                diyOrderVO.setReservationStatus(rs.getByte("Reservation_Status"));
-                diyOrderVO.setPaymentStatus(rs.getByte("Payment_Status"));
+                diyOrderVO.setReservationStatus(rs.getInt("Reservation_Status"));
+                diyOrderVO.setPaymentStatus(rs.getInt("Payment_Status"));
                 diyOrderVO.setDiyPrice(rs.getInt("Diy_Price"));
                 list.add(diyOrderVO);
             }

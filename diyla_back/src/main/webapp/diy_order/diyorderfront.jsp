@@ -18,12 +18,12 @@
 		<br></li>
 
 		<li>
-        <FORM METHOD="post" ACTION="latServlet" >
+        <FORM METHOD="post" ACTION="DiyOrderController" >
             <b>輸入訂單編號 (如1):</b><input type="text" name="diyorderno">
             <input type="hidden" name="action" value="getOne_For_Display">
             <input type="submit" value="查詢單筆資料">
         </FORM>
-        </li><br><br>
+        </li>
 	</ul>
 
 </body>
