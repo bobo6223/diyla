@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,7 +26,6 @@ public class LoginServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
         res.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = res.getWriter();
         String user = req.getParameter("user");
         String password = req.getParameter("password");
 
@@ -39,11 +36,11 @@ public class LoginServlet extends HttpServlet {
         if (!exMsgs.isEmpty()){
             RequestDispatcher failure = req.getRequestDispatcher("/member/mem_login.jsp");
             failure.forward(req,res);
-            return;
         } else {
-            RequestDispatcher success = req.getRequestDispatcher(req.getServletPath());
+            String url = "/";
+            req.setAttribute("m", m);
+            RequestDispatcher success = req.getRequestDispatcher(url);
             success.forward(req,res);
-            return;
         }
 
 
@@ -55,7 +52,12 @@ public class LoginServlet extends HttpServlet {
 
 //    登入後會有等待畫面或是登入成功畫面後再跳轉？
 //    忘記密碼
+<<<<<<< HEAD
 //    驗證碼
 //    三次密碼錯誤要發驗證信
 //    記住我
+=======
+//    三次密碼錯誤要發驗證信
+//    會員未驗證無法登入
+>>>>>>> member
 }
