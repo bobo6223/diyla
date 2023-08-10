@@ -20,7 +20,7 @@ public class MemberService {
 		mem.setMemBirthday(mem_birthday);
 		mem.setMemGender(mem_gender);
 		mem.setMemAddress(mem_address);
-		dao.insert(mem);
+
 		if (mem_name == null || (mem_name.trim()).length()==0){
 			exMsgs.add("請輸入姓名");
 		}
@@ -28,6 +28,9 @@ public class MemberService {
 		if (mem_email == null || (mem_email.trim()).length()==0){
 			exMsgs.add("請輸入信箱");
 		}
+//		if (mem_email.equals()){
+//			exMsgs.add("此信箱已註冊");
+//		}
 		//		EmailValidator emailValidator = EmailValidator.getInstance();
 //		if(!emailValidator.isValid(mem_email)){
 //			exMsgs.add("信箱格式錯誤，請重新輸入");
@@ -37,17 +40,17 @@ public class MemberService {
 			exMsgs.add("請輸入密碼");
 		}
 		String pwReg = "^\\w{6,12}$";
-		if (!mem_password.matches(pwReg)){
+		if (!(mem_password.matches(pwReg))){
 			exMsgs.add("密碼格式錯誤，請重新輸入");
 		}
 
 		if (mem_phone == null || (mem_phone.trim()).length()==0){
 			exMsgs.add("請輸入電話");
 		}
-//		String phoneReg ="^\\d{10,}$";
-//		if(!mem_phone.matches(phoneReg)){
-//			exMsgs.add("電話格式錯誤，請重新輸入");
-//		}
+		String phoneReg ="^\\d{10,}$";
+		if(!(mem_phone.matches(phoneReg))){
+			exMsgs.add("電話格式錯誤，請重新輸入");
+		}
 
 //		if (mem_birthday == null){
 //			exMsgs.add("請輸入生日");
@@ -62,7 +65,7 @@ public class MemberService {
 		if (mem_address == null || (mem_phone.trim()).length()==0){
 			exMsgs.add("請輸入地址");
 		}
-
+		dao.insert(mem);
 		return mem;
 
 //		保留正確的資訊
@@ -120,8 +123,8 @@ public class MemberService {
 
 	}
 
-//	public MemVO register(String exMsgs,MemVO mem){
-//		MemVO
+//	public boolean email(String email){
+//		L
 //	}
 
 

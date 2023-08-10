@@ -54,10 +54,10 @@
                 <input type="radio" name="gender" value="0" >男
                 <input type="radio" name="gender" value="1" >女</label><br>
                 <label >生日
-                <input type="date" name="birthday"></label><br>
-                <label>連絡電話<br>
-                <input type="text" name="phone" minlength="10" ></label><br>
-                <label>連絡地址</label><br>
+                <input type="date" name="birthday" id="birthday" max=""></label><br>
+                <label>聯絡電話<br>
+                <input type="tel" name="phone" minlength="10" ></label><br>
+                <label>聯絡地址</label><br>
                 <input type="text" name="address" ><br>
                 <label for="agree" class="agree">
                     <input type="checkbox" class="agree" name="agree" style="vertical-align:middle;"  required="required">
@@ -69,11 +69,17 @@
                 </label><br>
                 <button type="submit" value="register">註冊</button>
             <!-- 滑到最底下才能打勾 or 另跳頁面-->
-            <!-- 生日的日期不顯示今天以後的日期 -->
             <!-- 地址要選擇區郵遞區號 -->
             </form>
     </div>
+    <script>
 
+        window.addEventListener("load",function(){
+            let today = new Date().toISOString().split('T')[0];
+            document.getElementById('birthday').setAttribute('max',today);
+        })
+
+    </script>
 	<jsp:include page="../front_footer.jsp"/>
 </body>
 </html>

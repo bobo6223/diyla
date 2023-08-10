@@ -1,16 +1,29 @@
 package com.cha102.diyla.member;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MemDAO implements MemDAO_interface {
-    String driver = "com.mysql.cj.jdbc.Driver";
-    String url = "jdbc:mysql://localhost:3306/diyla?serverTimezone=Asia/Taipei";
-    String userid = "root";
-    String passwd = "T2012w1221";
+//    String driver = "com.mysql.cj.jdbc.Driver";
+//    String url = "jdbc:mysql://localhost:3306/diyla?serverTimezone=Asia/Taipei";
+//    String userid = "root";
+//    String passwd = "T2012w1221";
 
+    private  static DataSource ds = null;
+    static {
+        try {
+            Context ctx = new InitialContext();
+            ds = (DataSource) ctx.lookup("java:comp/env/jdbc/diyla");
+        } catch (NamingException ne) {
+            ne.printStackTrace();
+        }
+    }
     @Override
     public void insert(MemVO memVo) {
 
@@ -18,23 +31,22 @@ public class MemDAO implements MemDAO_interface {
         PreparedStatement pre = null;
 
         try {
-            Class.forName(driver);
-            con = DriverManager.getConnection(url, userid, passwd);
+//            Class.forName(driver);
+//            con = DriverManager.getConnection(url, userid, passwd);
+            con = ds.getConnection();
             pre = con.prepareStatement(
                     "INSERT into member(mem_name,mem_email,mem_password,mem_phone,mem_birthday,mem_gender,mem_address)VALUES(?,?,?,?,?,?,?)");
             pre.setString(1, memVo.getMemName());
             pre.setString(2, memVo.getMemEmail());
             pre.setString(3, memVo.getMemPassword());
             pre.setString(4, memVo.getMemPhone());
-            pre.setDate(5, memVo.getMemDate());
+            pre.setDate(5, memVo.getMemBirthday());
             pre.setInt(6, memVo.getMemGender());
             pre.setString(7, memVo.getMemAddress());
 
             pre.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }  catch (SQLException e) {
+            throw new RuntimeException("A database error occured. "+ e.getMessage());
         } finally {
             if (pre != null) {
                 try {
@@ -51,6 +63,7 @@ public class MemDAO implements MemDAO_interface {
                 }
 
             }
+
         }
 
     }
@@ -61,14 +74,13 @@ public class MemDAO implements MemDAO_interface {
         PreparedStatement pre = null;
 
         try {
-            Class.forName(driver);
-            con = DriverManager.getConnection(url, userid, passwd);
+//            Class.forName(driver);
+//            con = DriverManager.getConnection(url, userid, passwd);
+            con = ds.getConnection();
             pre = con.prepareStatement("DELETE from member where mem_id =?");
             pre.setInt(1, mem_id);
             pre.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        }  catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (pre != null) {
@@ -94,8 +106,9 @@ public class MemDAO implements MemDAO_interface {
         PreparedStatement pre = null;
 
         try {
-            Class.forName(driver);
-            con = DriverManager.getConnection(url, userid, passwd);
+//            Class.forName(driver);
+//            con = DriverManager.getConnection(url, userid, passwd);
+            con = ds.getConnection();
             pre = con.prepareStatement(
                     "UPDATE member set mem_name=?,mem_password=?,mem_phone=?,mem_address=?,mem_status=?,mem_token=?,blacklist_com=?,blacklist_art=?,blacklist_diy=?,blacklist_class=?,rpmsg_count=? where mem_id = ?");
             pre.setString(1, memVo.getMemName());
@@ -113,9 +126,7 @@ public class MemDAO implements MemDAO_interface {
 
             pre.executeUpdate();
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        }  catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (pre != null) {
@@ -143,8 +154,9 @@ public class MemDAO implements MemDAO_interface {
         MemVO memVo = null;
 
         try {
-            Class.forName(driver);
-            con = DriverManager.getConnection(url, userid, passwd);
+//            Class.forName(driver);
+//            con = DriverManager.getConnection(url, userid, passwd);
+            con = ds.getConnection();
             pre = con.prepareStatement(
                     "SELECT mem_name,mem_email,mem_password,mem_phone,mem_birthday,mem_gender,mem_address,mem_status,mem_token,mem_date,blacklist_com,blacklist_art,blacklist_diy,blacklist_class,rpmsg_count FROM MEMBER WHERE MEM_ID = ?");
             pre.setInt(1, memId);
@@ -169,9 +181,7 @@ public class MemDAO implements MemDAO_interface {
                 memVo.setRpmsgCount(rs.getInt("rpmsg_count"));
 
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        }  catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (rs != null) {
@@ -209,8 +219,9 @@ public class MemDAO implements MemDAO_interface {
         MemVO memVo = null;
 
         try {
-            Class.forName(driver);
-            con = DriverManager.getConnection(url, userid, passwd);
+//            Class.forName(driver);
+//            con = DriverManager.getConnection(url, userid, passwd);
+            con = ds.getConnection();
             pre = con.prepareStatement(
                     "SELECT mem_id,mem_name,mem_email,mem_password,mem_phone,mem_birthday,mem_gender,mem_address,mem_status,mem_token,mem_date,blacklist_com,blacklist_art,blacklist_diy,blacklist_class,rpmsg_count from member order by mem_id");
             rs = pre.executeQuery();
@@ -236,9 +247,7 @@ public class MemDAO implements MemDAO_interface {
                 memList.add(memVo);
 
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        }  catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (rs != null) {
@@ -269,14 +278,15 @@ public class MemDAO implements MemDAO_interface {
     @Override
     public MemVO selectLogin(String memEmail, String memPassword) {
 
-        try {
-            Class.forName(driver);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Class.forName(driver);
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
         try (
-             Connection con = DriverManager.getConnection(url, userid, passwd);
+//             Connection con = DriverManager.getConnection(url, userid, passwd);
+             Connection con = ds.getConnection();
              PreparedStatement pre = con.prepareStatement("SELECT * from member where mem_email=? and mem_password=?")) {
             pre.setString(1, memEmail);
             pre.setString(2, memPassword);
@@ -312,15 +322,15 @@ public class MemDAO implements MemDAO_interface {
     public static void main(String[] args) {
         MemDAO mem = new MemDAO();
         // 新增
-//        MemVO memVo = new MemVO();
-//        memVo.setMemName("xxx");
-//        memVo.setMemEmail("abc@diyla.com.tw");
-//        memVo.setMemPassword("123456");
-//        memVo.setMemPhone("0933444555");
-//        memVo.setMemDate(java.sql.Date.valueOf("2020-01-01"));
-//        memVo.setMemGender(1);
-//        memVo.setMemAddress("花蓮市北濱街");
-//        mem.insert(memVo);
+        MemVO memVo = new MemVO();
+        memVo.setMemName("xxx");
+        memVo.setMemEmail("abc@diyla.com.tw");
+        memVo.setMemPassword("123456");
+        memVo.setMemPhone("0933444555");
+        memVo.setMemDate(java.sql.Date.valueOf("2020-01-01"));
+        memVo.setMemGender(1);
+        memVo.setMemAddress("花蓮市北濱街");
+        mem.insert(memVo);
 //        // 修改
 //        MemVO memVo2 = new MemVO();
 //        memVo2.setMemId(1);

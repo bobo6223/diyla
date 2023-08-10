@@ -1,5 +1,6 @@
 package controller;
 
+import com.cha102.diyla.member.MemDAO;
 import com.cha102.diyla.member.MemVO;
 import com.cha102.diyla.member.MemberService;
 
@@ -32,11 +33,19 @@ public class RegisterServlet extends HttpServlet {
         String email = req.getParameter("user");
         String pw = req.getParameter("password");
         String pwcheck = req.getParameter("pwcheck");
-        Integer gender = Integer.valueOf(req.getParameter("gender"));
+        Integer gender=null;
+        try {
+            gender = Integer.valueOf(req.getParameter("gender"));
+        }catch (NumberFormatException e){
+            gender = 0;
+            exMsgs.add("請填入性別");
+        }
+
         Date birthday = null;
         try {
             birthday = Date.valueOf(req.getParameter("birthday"));
         }catch (IllegalArgumentException e){
+            birthday=new java.sql.Date(System.currentTimeMillis());
             exMsgs.add("請輸入日期");
         }
 
@@ -51,11 +60,9 @@ public class RegisterServlet extends HttpServlet {
         if (!exMsgs.isEmpty()){
             RequestDispatcher failure = req.getRequestDispatcher("/member/mem_register.jsp");
             failure.forward(req,res);
-            return;
         } else {
             RequestDispatcher success = req.getRequestDispatcher("/member/mem_login.jsp");
             success.forward(req,res);
-            return;
         }
 
 
