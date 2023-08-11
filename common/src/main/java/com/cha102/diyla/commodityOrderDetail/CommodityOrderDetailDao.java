@@ -7,7 +7,7 @@ import com.cha102.diyla.shoppongcart.ShoppingCartVO;
 
 public interface CommodityOrderDetailDao {
 	
-	void insert(CommodityOrderVO commodityOrderVO, List<ShoppingCartVO> cartVOs);
+	void insert(Integer orderNo, ShoppingCartVO cartVO);
 
 	List<CommodityOrderDetailVO> getAll(Integer orderNo);
 }

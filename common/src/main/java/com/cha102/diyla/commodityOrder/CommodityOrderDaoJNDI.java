@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,24 +34,33 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 	public static final String GET_ALL = "SELECT * FROM commodity_order WHERE MEM_ID = ?";
 	public static final String FIND_BY_ORDER_NO = "SELECT * FROM commodity_order WHERE ORDER_NO = ?";
 
-	public int insert(ShoppingCartVO shoppingCartVO) {
-		try (Connection con = ds.getConnection(); PreparedStatement pstm = con.prepareStatement(INSERT);) {
-			ShoppingCartService cartService = new ShoppingCartService(); 
-			List<ShoppingCartVO>cartVOs = cartService.getAll(shoppingCartVO.getMemId());
+	public int insert(Integer memId) {
+		Integer generatedOrderNo = -1;
+
+		try (Connection con = ds.getConnection();
+				PreparedStatement pstm = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);) {
+			ShoppingCartService cartService = new ShoppingCartService();
+			List<ShoppingCartVO> cartVOs = cartService.getAll(memId);
 			Integer totalPrice = cartService.getTotalPrice(cartVOs);
-			pstm.setInt(1, shoppingCartVO.getMemId());
-			//先以未結帳做預設
+			pstm.setInt(1, memId);
+			// 先以未結帳做預設
 			pstm.setInt(2, 1);
 			pstm.setInt(3, totalPrice);
-			//目前代幣上為完善 先以0帶入
+			// 目前代幣完善前 先以0帶入
 			pstm.setInt(4, 0);
 			pstm.setInt(5, totalPrice);
 			int i = pstm.executeUpdate();
-			return i;
+			if (i > 0) {
+				try (ResultSet generatedKeys = pstm.getGeneratedKeys()) {
+					if (generatedKeys.next()) {
+						generatedOrderNo = generatedKeys.getInt(1); // 獲取自動生成的訂單編號
+					}
+				}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return -1;
+		return generatedOrderNo;
 	}
 
 	public void delete(Integer orderNo) {
@@ -62,20 +72,18 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 		}
 	}
 
-	public void update(CommodityOrderVO commodityOrderVO,Integer status) {
-		try (Connection con = ds.getConnection(); PreparedStatement pstm = con.prepareStatement(UPDATE);){
+	public void update(CommodityOrderVO commodityOrderVO, Integer status) {
+		try (Connection con = ds.getConnection(); PreparedStatement pstm = con.prepareStatement(UPDATE);) {
 			pstm.setInt(1, status);
 			pstm.setInt(2, commodityOrderVO.getOrderNO());
-			 pstm.executeUpdate();
+			pstm.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}	
+		}
 	}
 
-	
 	public CommodityOrderVO findByOrderNo(Integer orderNo) {
-		try (Connection con = ds.getConnection(); 
-				PreparedStatement pstm = con.prepareStatement(FIND_BY_ORDER_NO);) {
+		try (Connection con = ds.getConnection(); PreparedStatement pstm = con.prepareStatement(FIND_BY_ORDER_NO);) {
 			CommodityOrderVO commodityOrderVO = new CommodityOrderVO();
 			pstm.setInt(1, orderNo);
 
@@ -107,8 +115,8 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 			CommodityOrderVO commodityOrderVO = null;
 			pstm.setInt(1, memId);
 			try (ResultSet rs = pstm.executeQuery();) {
-				while(rs.next()) {
-					commodityOrderVO=new CommodityOrderVO();
+				while (rs.next()) {
+					commodityOrderVO = new CommodityOrderVO();
 					commodityOrderVO.setOrderNO(rs.getInt("ORDER_NO"));
 					commodityOrderVO.setMemId(rs.getInt("MEM_ID"));
 					commodityOrderVO.setOrderTime(rs.getTimestamp("ORDER_TIME"));
@@ -130,5 +138,4 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 		return null;
 	}
 
-	
 }

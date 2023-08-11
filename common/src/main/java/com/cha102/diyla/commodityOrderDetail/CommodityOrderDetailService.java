@@ -9,8 +9,8 @@ import com.mysql.cj.x.protobuf.MysqlxCrud.Insert;
 public class CommodityOrderDetailService {
 	CommodityOrderDetailDaoJNDI dao = new CommodityOrderDetailDaoJNDI();
 	
-	public void insert(CommodityOrderVO commodityOrderVO, List<ShoppingCartVO> cartVOs) {
-		dao.insert(commodityOrderVO, cartVOs);
+	public void insert(Integer orderNo, ShoppingCartVO cartVO) {
+		dao.insert(orderNo, cartVO);
 	}
 
 

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,6 @@ import com.cha102.diyla.shoppongcart.ShoppingCartVO;
 
 public class CommodityOrderDaoJDBC implements CommodityOrderDao {
 
-	
 	static {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -21,59 +21,70 @@ public class CommodityOrderDaoJDBC implements CommodityOrderDao {
 			ce.printStackTrace();
 		}
 	}
-	
+
 	public static final String URL = "jdbc:mysql://localhost:3306/diyla?serverTimezone=Asia/Taipei";
-	public static final String USERNAME= "root";
-	public static final String PASSWORD= "123456";
-	
+	public static final String USERNAME = "root";
+	public static final String PASSWORD = "123456";
+
 	public static final String INSERT = "INSERT INTO commodity_order (MEM_ID,ORDER_PRICE,DISCOUNT_PRICE,ACTUAL_PRICE) VALUES (?,?,?,?);";
 	public static final String DLEETE = "SELECT * FROM commodity_order WHERE ORDER_NO = ? ";
 	public static final String UPDATE = "UPDATE commodity_order set ORDER_STATUS = ? where ORDER_NO = ?";
 	public static final String GET_ALL = "SELECT * FROM commodity_order WHERE MEM_ID = ?";
 	public static final String FIND_BY_ORDER_NO = "SELECT * FROM commodity_order WHERE ORDER_NO = ?";
 
-	public int insert(ShoppingCartVO shoppingCartVO) {
+	public int insert(Integer memId) {
+		Integer generatedOrderNo = -1;
+
 		try (Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-				PreparedStatement pstm = con.prepareStatement(INSERT);) {
-			ShoppingCartService cartService = new ShoppingCartService(); 
-			List<ShoppingCartVO>cartVOs = cartService.getAll(shoppingCartVO.getMemId());
+				PreparedStatement pstm = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);) {
+			ShoppingCartService cartService = new ShoppingCartService();
+			List<ShoppingCartVO> cartVOs = cartService.getAll(memId);
 			Integer totalPrice = cartService.getTotalPrice(cartVOs);
-			pstm.setInt(1, shoppingCartVO.getMemId());
-			//先以未結帳做預設
+			pstm.setInt(1, memId);
+			// 先以未結帳做預設
 			pstm.setInt(2, 1);
 			pstm.setInt(3, totalPrice);
-			//目前代幣上為完善 先以0帶入
+			// 目前代幣上為完善 先以0帶入
 			pstm.setInt(3, 0);
 			pstm.setInt(5, totalPrice);
 			int i = pstm.executeUpdate();
-			return i;
+			if (i > 0) {
+				try (ResultSet generatedKeys = pstm.getGeneratedKeys()) {
+					if (generatedKeys.next()) {
+						generatedOrderNo = generatedKeys.getInt(1); // 獲取自動生成的訂單編號
+					}
+				}
+			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return -1;
+		return generatedOrderNo;
 	}
 
 	public void delete(Integer orderNo) {
-		try (Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD); PreparedStatement pstm = con.prepareStatement(DLEETE);) {
+		try (Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement pstm = con.prepareStatement(DLEETE);) {
 			pstm.setInt(1, orderNo);
 			pstm.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void update(CommodityOrderVO commodityOrderVO,Integer status) {
-		try (Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD); PreparedStatement pstm = con.prepareStatement(UPDATE);){
+
+	public void update(CommodityOrderVO commodityOrderVO, Integer status) {
+		try (Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement pstm = con.prepareStatement(UPDATE);) {
 			pstm.setInt(1, status);
 			pstm.setInt(2, commodityOrderVO.getOrderNO());
-			 pstm.executeUpdate();
+			pstm.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}	
+		}
 	}
 
 	public CommodityOrderVO findByOrderNo(Integer orderNo) {
-		try (Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD); 
+		try (Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstm = con.prepareStatement(FIND_BY_ORDER_NO);) {
 			CommodityOrderVO commodityOrderVO = new CommodityOrderVO();
 			pstm.setInt(1, orderNo);
@@ -102,12 +113,13 @@ public class CommodityOrderDaoJDBC implements CommodityOrderDao {
 
 	public List<CommodityOrderVO> getAll(Integer memId) {
 		List<CommodityOrderVO> commodityOrderlist = new ArrayList<>();
-		try (Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD); PreparedStatement pstm = con.prepareStatement(GET_ALL);) {
+		try (Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement pstm = con.prepareStatement(GET_ALL);) {
 			CommodityOrderVO commodityOrderVO = null;
 			pstm.setInt(1, memId);
 			try (ResultSet rs = pstm.executeQuery();) {
-				while(rs.next()) {
-					commodityOrderVO=new CommodityOrderVO();
+				while (rs.next()) {
+					commodityOrderVO = new CommodityOrderVO();
 					commodityOrderVO.setOrderNO(rs.getInt("ORDER_NO"));
 					commodityOrderVO.setMemId(rs.getInt("MEM_ID"));
 					commodityOrderVO.setOrderTime(rs.getTimestamp("ORDER_TIME"));
@@ -128,10 +140,5 @@ public class CommodityOrderDaoJDBC implements CommodityOrderDao {
 
 		return null;
 	}
-public static void main(String[] args) {
-	CommodityOrderDaoJDBC commodityOrderDaoJDBC = new CommodityOrderDaoJDBC();
-//	System.out.println(commodityOrderDaoJDBC.findByOrderNo(2).getOrderPrice());
-	ShoppingCartVO shoppingCartVO = new ShoppingCartVO(2, 3, 4);
-	commodityOrderDaoJDBC.insert(shoppingCartVO);
-}
+
 }

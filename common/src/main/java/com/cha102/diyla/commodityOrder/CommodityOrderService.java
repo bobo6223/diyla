@@ -2,6 +2,7 @@ package com.cha102.diyla.commodityOrder;
 
 import java.util.List;
 
+import com.cha102.diyla.shoppongcart.ShoppingCartService;
 import com.cha102.diyla.shoppongcart.ShoppingCartVO;
 
 public class CommodityOrderService {
@@ -11,8 +12,8 @@ public class CommodityOrderService {
 		dao.update(commodityOrderVO, status);
 	}
 
-	public void insert(ShoppingCartVO cartItem) {
-		dao.insert(cartItem);
+	public Integer insert(Integer memId) {
+		return dao.insert(memId);
 	}
 
 	public List<CommodityOrderVO> getAll(Integer memNo) {
@@ -27,5 +28,11 @@ public class CommodityOrderService {
 
 	public void delete(Integer orderNo) {
 		dao.delete(orderNo);
+	}
+	//查詢該會員目前購物車所有:結帳用
+	public List<ShoppingCartVO> findByMemId(Integer memId) {
+		ShoppingCartService cartService = new ShoppingCartService();
+		List<ShoppingCartVO> cartVOs = cartService.getAll(memId);
+		return cartVOs;
 	}
 }

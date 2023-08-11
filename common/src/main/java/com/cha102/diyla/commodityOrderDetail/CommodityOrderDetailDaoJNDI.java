@@ -32,18 +32,17 @@ public class CommodityOrderDetailDaoJNDI implements CommodityOrderDetailDao {
 	public static final String GET_ALL = "SELECT * FROM commodity_order_detail WHERE ORDER_NO = ?";
 
 	@Override
-	public void insert(CommodityOrderVO commodityOrderVO, List<ShoppingCartVO> cartVOs) {
+	public void insert(Integer orderNo, ShoppingCartVO cartVO) {
 		try (Connection con = ds.getConnection(); PreparedStatement pstm = con.prepareStatement(INSERT);) {
-			for (ShoppingCartVO cartVO : cartVOs) {
 				CommodityVO commodityVO = commodityService.findByID(cartVO.getComNo());
 				Integer comPri = commodityVO.getComPri();
 				Integer amount = cartVO.getComAmount();
-				pstm.setInt(1, commodityOrderVO.getOrderNO());
+				pstm.setInt(1, orderNo);
 				pstm.setInt(2, cartVO.getComNo());
-				pstm.setInt(3, comPri);
+				pstm.setInt(3, amount);
 				pstm.setInt(4, comPri * amount);
 				pstm.executeUpdate();
-			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

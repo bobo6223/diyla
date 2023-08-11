@@ -5,7 +5,7 @@ import java.util.List;
 import com.cha102.diyla.shoppongcart.ShoppingCartVO;
 
 public interface CommodityOrderDao {
-	int insert(ShoppingCartVO cartItem);
+	int insert(Integer memId);
 
 	void delete(Integer orderNo);
 	
@@ -13,5 +13,5 @@ public interface CommodityOrderDao {
 
 	CommodityOrderVO findByOrderNo(Integer OrderNo);
 
-	List<CommodityOrderVO> getAll(Integer memNo);
+//	List<ShoppingCartVO> findByMemId(Integer  memId);
 }

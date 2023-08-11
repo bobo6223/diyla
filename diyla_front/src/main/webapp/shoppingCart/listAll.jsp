@@ -3,7 +3,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.cha102.diyla.shoppongcart.*"%>
 <%@ page import="java.util.List"%>
-<%@page import="org.json.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page isELIgnored="false"%>
 
@@ -36,7 +35,6 @@ CommodityVO comVo = null;
 <!-- responsive style -->
 <link href="${ctxPath}/css/responsive.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="../css/shoppingcart.css">
-</head>
 <style>
 </style>
 </HEAD>
