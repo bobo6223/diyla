@@ -53,6 +53,10 @@ public class CommodityController extends HttpServlet {
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/shop/commodityPage.jsp");
             requestDispatcher.forward(req,resp);
         }
+
+        if ("toUpdate".equals(action)) {
+
+        }
     }
 
     @Override
