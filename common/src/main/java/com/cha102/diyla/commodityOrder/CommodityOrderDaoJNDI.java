@@ -13,6 +13,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.cha102.diyla.shoppongcart.ShoppingCartService;
+import com.cha102.diyla.shoppongcart.ShoppingCartVO;
+
 public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 	public static DataSource ds = null;
 
@@ -24,18 +27,24 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 			e.printStackTrace();
 		}
 	}
-	public static final String INSERT = "INSERT INTO commodity_order (MEM_ID,ORDER_PRICE,DISCOUNT_PRICE,ACTUAL_PRICE) VALUES (?,?,?,?);";
+	public static final String INSERT = "INSERT INTO commodity_order (MEM_ID,ORDER_STATUS,ORDER_PRICE,DISCOUNT_PRICE,ACTUAL_PRICE) VALUES (?,?,?,?,?);";
 	public static final String DLEETE = "SELECT * FROM commodity_order WHERE ORDER_NO = ? ";
 	public static final String UPDATE = "UPDATE commodity_order set ORDER_STATUS = ? where ORDER_NO = ?";
 	public static final String GET_ALL = "SELECT * FROM commodity_order WHERE MEM_ID = ?";
 	public static final String FIND_BY_ORDER_NO = "SELECT * FROM commodity_order WHERE ORDER_NO = ?";
 
-	public int insert(CommodityOrderVO commodityOrderVO) {
+	public int insert(ShoppingCartVO shoppingCartVO) {
 		try (Connection con = ds.getConnection(); PreparedStatement pstm = con.prepareStatement(INSERT);) {
-			pstm.setInt(1, commodityOrderVO.getMemId());
-			pstm.setInt(2, commodityOrderVO.getOrderPrice());
-			pstm.setInt(3, commodityOrderVO.getDiscountPrice());
-			pstm.setInt(4, commodityOrderVO.getActualPrice());
+			ShoppingCartService cartService = new ShoppingCartService(); 
+			List<ShoppingCartVO>cartVOs = cartService.getAll(shoppingCartVO.getMemId());
+			Integer totalPrice = cartService.getTotalPrice(cartVOs);
+			pstm.setInt(1, shoppingCartVO.getMemId());
+			//先以未結帳做預設
+			pstm.setInt(2, 1);
+			pstm.setInt(3, totalPrice);
+			//目前代幣上為完善 先以0帶入
+			pstm.setInt(4, 0);
+			pstm.setInt(5, totalPrice);
 			int i = pstm.executeUpdate();
 			return i;
 		} catch (SQLException e) {

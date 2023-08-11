@@ -15,7 +15,9 @@ public class CommodityOrderDetailVO {
         this.comQuantity = comQuantity;
         this.comPrice = comPrice;
     }
-
+    public CommodityOrderDetailVO() {
+    	
+    }
     // Getter 和 Setter
     public Integer getOrderNo() {
         return orderNo;

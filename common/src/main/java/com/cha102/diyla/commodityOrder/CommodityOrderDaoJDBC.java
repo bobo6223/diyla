@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cha102.diyla.shoppongcart.ShoppingCartService;
+import com.cha102.diyla.shoppongcart.ShoppingCartVO;
+
 public class CommodityOrderDaoJDBC implements CommodityOrderDao {
 
 	
@@ -29,13 +32,19 @@ public class CommodityOrderDaoJDBC implements CommodityOrderDao {
 	public static final String GET_ALL = "SELECT * FROM commodity_order WHERE MEM_ID = ?";
 	public static final String FIND_BY_ORDER_NO = "SELECT * FROM commodity_order WHERE ORDER_NO = ?";
 
-	public int insert(CommodityOrderVO commodityOrderVO) {
+	public int insert(ShoppingCartVO shoppingCartVO) {
 		try (Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement pstm = con.prepareStatement(INSERT);) {
-			pstm.setInt(1, commodityOrderVO.getMemId());
-			pstm.setInt(2, commodityOrderVO.getOrderPrice());
-			pstm.setInt(3, commodityOrderVO.getDiscountPrice());
-			pstm.setInt(4, commodityOrderVO.getActualPrice());
+			ShoppingCartService cartService = new ShoppingCartService(); 
+			List<ShoppingCartVO>cartVOs = cartService.getAll(shoppingCartVO.getMemId());
+			Integer totalPrice = cartService.getTotalPrice(cartVOs);
+			pstm.setInt(1, shoppingCartVO.getMemId());
+			//先以未結帳做預設
+			pstm.setInt(2, 1);
+			pstm.setInt(3, totalPrice);
+			//目前代幣上為完善 先以0帶入
+			pstm.setInt(3, 0);
+			pstm.setInt(5, totalPrice);
 			int i = pstm.executeUpdate();
 			return i;
 		} catch (SQLException e) {
@@ -121,6 +130,8 @@ public class CommodityOrderDaoJDBC implements CommodityOrderDao {
 	}
 public static void main(String[] args) {
 	CommodityOrderDaoJDBC commodityOrderDaoJDBC = new CommodityOrderDaoJDBC();
-	System.out.println(commodityOrderDaoJDBC.findByOrderNo(2).getOrderPrice());
+//	System.out.println(commodityOrderDaoJDBC.findByOrderNo(2).getOrderPrice());
+	ShoppingCartVO shoppingCartVO = new ShoppingCartVO(2, 3, 4);
+	commodityOrderDaoJDBC.insert(shoppingCartVO);
 }
 }
