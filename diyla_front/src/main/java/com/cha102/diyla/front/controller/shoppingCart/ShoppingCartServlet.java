@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import com.cha102.diyla.commodityModel.CommodityService;
 
 import com.cha102.diyla.commodityModel.CommodityVO;
-import com.cha102.diyla.member.MemVo;
+import com.cha102.diyla.member.MemVO;
 import com.cha102.diyla.shoppongcart.ShoppingCartVO;
 import com.cha102.diyla.shoppongcart.ShoppingCartDaoImpl;
 import com.cha102.diyla.shoppongcart.ShoppingCartService;

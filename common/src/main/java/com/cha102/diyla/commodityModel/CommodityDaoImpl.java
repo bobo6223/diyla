@@ -25,7 +25,11 @@ public class CommodityDaoImpl implements CommodityDao {
 
     public static final String GET_ALL_SQL = "SELECT * FROM COMMODITY";
     public static final String INSERT_SQL = "INSERT INTO COMMODITY (COM_CLASS_NO,COM_NAME,COM_PIC,COM_DES,COM_PRI,COM_QUA,COM_STATE) VALUES (?,?,?,?,?,?,?);";
-    public static final String FIND_BY_ID = "SELECT * FROM commodity where COM_NO = ?";
+    public static final String FIND_BY_ID = "SELECT * FROM COMMODITY where COM_NO = ?";
+    public static final String FIND_BY_NAME_KEYWORD = "SELECT * FROM COMMODITY WHERE COM_NAME LIKE ? ";
+    public static final String FIND_BY_COM_CLASS_NO = "SELECT * FROM COMMODITY WHERE COM_CLASS_NO = ? and COM_STATE != 0";
+    public static final String GET_ALL_STATE = "SELECT * FROM COMMODITY WHERE COM_STATE != 0";
+    public static final String GET_ONE_STATE = "SELECT * FROM COMMODITY where COM_NO = ? and COM_STATE != 0";
 
     public int insert(CommodityVO commodity) {
         try (Connection conn = ds.getConnection();
@@ -69,10 +73,8 @@ public class CommodityDaoImpl implements CommodityDao {
         return null;
     }
 
-
     @Override
     public CommodityVO findByID(Integer comNO) {
-
         try (Connection connection = ds.getConnection();
              PreparedStatement pstt = connection.prepareStatement(FIND_BY_ID)) {
             pstt.setInt(1, comNO);
@@ -87,6 +89,68 @@ public class CommodityDaoImpl implements CommodityDao {
             e.printStackTrace();
         }
 
+        return null;
+    }
+
+    @Override
+    public List<CommodityVO> findByNameKeyword(String nameKeyword) {
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement(FIND_BY_NAME_KEYWORD)) {
+
+            ps.setString(1, "%" + nameKeyword + "%");
+            ResultSet rs = ps.executeQuery();
+            List<CommodityVO> commodityVOS = new ArrayList<>();
+            while (rs.next()) {
+                CommodityVO commodityVO = new CommodityVO();
+                buildCommodityVO(commodityVO,rs);
+                commodityVOS.add(commodityVO);
+            }
+            rs.close();
+            return commodityVOS;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<CommodityVO> findByComClass(Integer comClassNO) {
+        try (Connection connection = ds.getConnection();
+             PreparedStatement pstt = connection.prepareStatement(FIND_BY_COM_CLASS_NO)) {
+            pstt.setInt(1, comClassNO);
+            ResultSet rs = pstt.executeQuery();
+            List<CommodityVO> commodityVOS = new ArrayList<>();
+            while (rs.next()) {
+                CommodityVO commodityVO = new CommodityVO();
+                buildCommodityVO(commodityVO,rs);
+                commodityVOS.add(commodityVO);
+            }
+            rs.close();
+            return commodityVOS;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<CommodityVO> getAllState() {
+        List<CommodityVO> commodities = new ArrayList<>();
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement(GET_ALL_STATE)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                CommodityVO commodity = new CommodityVO();
+                buildCommodityVO(commodity, rs);
+                commodities.add(commodity);
+            }
+            rs.close();
+            return commodities;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
