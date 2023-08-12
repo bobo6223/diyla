@@ -1,6 +1,9 @@
+<%@ page import="com.cha102.diyla.commodityModel.CommodityVO" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isELIgnored="false" %>
+
+
 <html>
 <head>
     <title>修改商品</title>
@@ -13,35 +16,53 @@
 <div id="CONTENT">
     <!--商品欄開始-->
     <div class="prod">
-        <form action="CommodityController" method="post" enctype="multipart/form-data">
+        <form action="${ctxPath}/shop/CommodityController" method="post" enctype="multipart/form-data">
+            <input type="text" value="update" name="action" hidden="hidden">
+            <input type="text" value="${commodity.comNO}" name="comNO" hidden="hidden">
+
             <div class="img">
                 <img src="${commodity.showPic}" class="commodityPhoto" style="width: 100%">
             </div>
-            <span style="display: block; color: red;">${errMsg["commodityPic"]}</span>
             <label for="product_image">商品圖片:</label>
             <input type="file" id="product_image" name="commodityPic" accept="image/*">
 
             <div class="commodityPage">
 				<span class="commodityDescription">
-					<span style="display: block; color: red;">${errMsg["commodityName"]}</span>
+                    <span style="display: block; color: red;">${errMsg["commodityName"]}</span>
                     <label for="product_name">商品名稱:</label>
-                    <input type="text" id="product_name" name="commodityName">
+                    <input type="text" id="product_name" name="commodityName" value="${commodity.comName}">
 					<br>
 
 					<label>商品類別：</label>
-					<span>${classNameMap[commodity.comClassNo]}</span>
+                    <select id="category_id" name="comClassNo">
+                  <c:forEach var="i" begin="1" end="${classNameMapSize}">
+                      <option value="${i}"  ${commodity.comClassNo == i?"selected":""}>${classNameMap[i]}</option>
+                  </c:forEach>
+                    </select>
 					<br>
+                    <span style="display: block; color: red;">${errMsg["commodityDes"]}</span>
 					<label>商品描述：</label>
-					<span>${commodity.comDes}</span> <br>
+					<input type="text" id="product_description" name="commodityDes" value="${commodity.comDes}"
+                           style="resize: both;">
+                    <br>
+                    <span style="display: block; color: red;">${errMsg["commodityPri"]}</span>
+					<label>價格：</label>
+                    <input type="text" id="price" name="commodityPri" value="${commodity.comPri}">
 					<br>
-					<label>價格：</label><span id="price">${commodity.comPri}</span>
-					<br>
-					<label>商品狀態：</label><span>${commodityState[commodity.comState]}</span>
-					<br>
-					<label>更新時間：</label>
-				<fmt:formatDate value="${commodity.updateTime}"
-                                pattern="yyyy-MM-dd HH:mm:ss"/> <br>
-					<button type="submit" class="button">修改資料</button>
+                    <span style="display: block; color: red;">${errMsg["commodityQua"]}</span>
+                    <label for="quantity">數量:</label>
+                    <input type="number" id="quantity" name="commodityQua" value="${commodity.comQua}">
+                    <br>
+					<label>商品狀態：</label>
+                    <select id="product_status" name="commodityStatus"> ${commodityState[commodity.comState]}
+                        <option value="0" selected>下架</option>
+                        <option value="1">上架中</option>
+                        <option value="2">完售</option>
+                    </select>
+                    <br>
+
+					<button type="submit" class="button">完成修改</button>
+                </span>
             </div>
         </form>
     </div>
