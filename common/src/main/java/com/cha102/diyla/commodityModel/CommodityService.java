@@ -48,6 +48,14 @@ public class CommodityService {
         return commodityVOS;
     }
 
+    public CommodityVO updateCommodity(CommodityVO commodity) {
+
+        CommodityVO commodityVO = dao.update(commodity);
+        setShowPic(commodityVO);
+        return commodityVO;
+
+    }
+
     private static void setShowPic(CommodityVO commodityVO) {
         commodityVO.setShowPic("data:image/png;base64," + Base64.getEncoder().encodeToString(commodityVO.getComPic()));
     }

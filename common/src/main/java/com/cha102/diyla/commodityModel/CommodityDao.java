@@ -16,5 +16,7 @@ public interface CommodityDao {
 
     List<CommodityVO> getAllState();
 
+    CommodityVO update(CommodityVO commodity);
+
 
 }
