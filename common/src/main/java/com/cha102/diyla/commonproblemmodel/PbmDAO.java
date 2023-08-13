@@ -1,7 +1,5 @@
 package com.cha102.diyla.commonproblemmodel;
 
-import com.cha102.diyla.IatestnewsModel.LatestnewsVO;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -20,7 +18,7 @@ public class PbmDAO implements PbmDAO_interface {
     static {
         try {
             Context ctx = new InitialContext();
-            ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB2");
+            ds = (DataSource) ctx.lookup("java:comp/env/jdbc/diyla");
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -44,7 +42,7 @@ public class PbmDAO implements PbmDAO_interface {
 
             pstmt.setByte(1, pbmVO.getPbmSort());
             pstmt.setString(2, pbmVO.getPbmTitle());
-            pstmt.setString(3, pbmVO.getPbmConext());
+            pstmt.setString(3, pbmVO.getPbmContext());
 
             pstmt.executeUpdate();
         } catch (SQLException se) {
@@ -78,9 +76,11 @@ public class PbmDAO implements PbmDAO_interface {
             con = ds.getConnection();
             pstmt = con.prepareStatement(UPDATE);
 
-            pstmt.setString(1, pbmVO.getPbmConext());
+            pstmt.setString(1, pbmVO.getPbmContext());
             pstmt.setString(2, pbmVO.getPbmTitle());
             pstmt.setByte(3, pbmVO.getPbmSort());
+            pstmt.setInt(4, pbmVO.getPbmNo());
+
 
             pstmt.executeUpdate();
         } catch (SQLException se) {
@@ -112,6 +112,8 @@ public class PbmDAO implements PbmDAO_interface {
         try {
             con = ds.getConnection();
             pstmt = con.prepareStatement(DELETE);
+
+            pstmt.setInt(1, pbmNo);
 
             pstmt.executeUpdate();
         } catch (SQLException se) {
@@ -154,9 +156,9 @@ public class PbmDAO implements PbmDAO_interface {
             while (rs.next()) {
                 pbmvo = new PbmVO();
                 pbmvo.setPbmNo(rs.getInt("pbm_NO"));
-                pbmvo.setPbmSort(rs.getByte("pbn_sort"));
+                pbmvo.setPbmSort(rs.getByte("pbm_sort"));
                 pbmvo.setPbmTitle(rs.getString("pbm_title"));
-                pbmvo.setPbmConext(rs.getString("pbm_Context"));
+                pbmvo.setPbmContext(rs.getString("pbm_Context"));
 
             }
         } catch (SQLException se) {
@@ -207,9 +209,9 @@ public class PbmDAO implements PbmDAO_interface {
             while (rs.next()) {
                 pbmvo = new PbmVO();
                 pbmvo.setPbmNo(rs.getInt("pbm_NO"));
-                pbmvo.setPbmSort(rs.getByte("pbn_sort"));
+                pbmvo.setPbmSort(rs.getByte("pbm_sort"));
                 pbmvo.setPbmTitle(rs.getString("pbm_title"));
-                pbmvo.setPbmConext(rs.getString("pbm_Context"));
+                pbmvo.setPbmContext(rs.getString("pbm_Context"));
                 list.add(pbmvo);
             }
         } catch (SQLException se) {

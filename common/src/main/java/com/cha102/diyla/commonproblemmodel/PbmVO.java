@@ -15,5 +15,5 @@ public class PbmVO implements Serializable{
     private Integer pbmNo;
     private  Byte pbmSort;
     private  String pbmTitle;
-    private  String pbmConext;
+    private  String pbmContext;
 }
