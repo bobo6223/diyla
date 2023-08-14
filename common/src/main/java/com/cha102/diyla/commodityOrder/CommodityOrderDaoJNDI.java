@@ -14,8 +14,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import com.cha102.diyla.shoppongcart.ShoppingCartService;
-import com.cha102.diyla.shoppongcart.ShoppingCartVO;
+import com.cha102.diyla.shoppingcart.ShoppingCartService;
+import com.cha102.diyla.shoppingcart.ShoppingCartVO;
 
 public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 	public static DataSource ds = null;
@@ -72,10 +72,10 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 		}
 	}
 
-	public void update(CommodityOrderVO commodityOrderVO, Integer status) {
+	public void update(Integer status, Integer orderNO) {
 		try (Connection con = ds.getConnection(); PreparedStatement pstm = con.prepareStatement(UPDATE);) {
 			pstm.setInt(1, status);
-			pstm.setInt(2, commodityOrderVO.getOrderNO());
+			pstm.setInt(2, orderNO);
 			pstm.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -101,7 +101,7 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 				return commodityOrderVO;
 			} catch (Exception e) {
 				// TODO: handle exception
-			}
+			} 
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -110,8 +110,9 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 	}
 
 	public List<CommodityOrderVO> getAll(Integer memId) {
-		List<CommodityOrderVO> commodityOrderlist = new ArrayList<>();
-		try (Connection con = ds.getConnection(); PreparedStatement pstm = con.prepareStatement(GET_ALL);) {
+		List<CommodityOrderVO> commodityOrderlist = new ArrayList<CommodityOrderVO>();
+		try (Connection con = ds.getConnection(); 
+				PreparedStatement pstm = con.prepareStatement(GET_ALL);) {
 			CommodityOrderVO commodityOrderVO = null;
 			pstm.setInt(1, memId);
 			try (ResultSet rs = pstm.executeQuery();) {
@@ -135,7 +136,7 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 			e.printStackTrace();
 		}
 
-		return null;
+		return commodityOrderlist;
 	}
 
 }

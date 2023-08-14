@@ -2,23 +2,22 @@ package com.cha102.diyla.commodityOrder;
 
 import java.util.List;
 
-import com.cha102.diyla.shoppongcart.ShoppingCartService;
-import com.cha102.diyla.shoppongcart.ShoppingCartVO;
+import com.cha102.diyla.shoppingcart.ShoppingCartService;
+import com.cha102.diyla.shoppingcart.ShoppingCartVO;
 
 public class CommodityOrderService {
 	CommodityOrderDaoJNDI dao = new CommodityOrderDaoJNDI();
 
-	public void update(CommodityOrderVO commodityOrderVO, Integer status) {
-		dao.update(commodityOrderVO, status);
+	public void update(Integer status, Integer orderNO) {
+		dao.update( status,  orderNO);
 	}
 
 	public Integer insert(Integer memId) {
 		return dao.insert(memId);
 	}
 
-	public List<CommodityOrderVO> getAll(Integer memNo) {
-		dao.getAll(memNo);
-		return null;
+	public List<CommodityOrderVO> getAll(Integer memId) {
+		return dao.getAll(memId);
 	}
 
 	public CommodityOrderVO findByOrderNo(Integer OrderNo) {

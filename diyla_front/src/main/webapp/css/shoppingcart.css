@@ -18,6 +18,7 @@ div.topPage {
 }
 
 .mainContent {
+	float:inherit;;
 	z-index: 3;
 	flex: 1;
 	padding: 10px;

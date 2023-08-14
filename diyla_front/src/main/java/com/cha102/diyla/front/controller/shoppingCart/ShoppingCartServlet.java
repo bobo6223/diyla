@@ -12,10 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.cha102.diyla.commodityModel.CommodityService;
-import com.cha102.diyla.commodityModel.CommodityVO;
-import com.cha102.diyla.shoppongcart.ShoppingCartService;
-import com.cha102.diyla.shoppongcart.ShoppingCartVO;
+import com.cha102.diyla.commodityModel.*;
+import com.cha102.diyla.shoppingcart.*;
+import java.lang.reflect.Method;
 
 @WebServlet("/shop/ShoppingCartServlet")
 public class ShoppingCartServlet extends HttpServlet {
@@ -32,16 +31,22 @@ public class ShoppingCartServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 
-//		session.getAttribute("memId");
-
 		List<ShoppingCartVO> shoppingCartList = (ArrayList<ShoppingCartVO>) session.getAttribute("shoppingCartList");
 		List<CommodityVO> comList = null;
 		if ("getAll".equals(action)) {
-//			ShoppingCartDaoImpl dao = new ShoppingCartDaoImpl();
 			Integer memId = Integer.valueOf(req.getParameter("memId"));
+			int totalPrice = 0;
 			shoppingCartList = shoppingCartService.getAll(Integer.valueOf(memId));// 取出該會員所有購買商品
-
-			int totalPrice = shoppingCartService.getTotalPrice(shoppingCartList);
+			List<CommodityVO> commodityList = null;
+			if (shoppingCartList.size()>0) {
+				List<Integer> comNoList = shoppingCartService.getComNoList(shoppingCartList);
+				commodityList = commodityService.getAllByComNo(comNoList);
+				totalPrice = shoppingCartService.getTotalPrice(shoppingCartList);
+				for (CommodityVO commodityVO : commodityList) {
+					CommodityService.setShowPic(commodityVO);
+				}
+			}
+			session.setAttribute("commodityList", commodityList);
 			session.setAttribute("shoppingCartList", shoppingCartList);
 			session.setAttribute("memId", memId);
 			session.setAttribute("totalPrice", totalPrice);
@@ -62,33 +67,32 @@ public class ShoppingCartServlet extends HttpServlet {
 				shoppingCartList.add(cartVO);
 			}
 //			session.setAttribute("commodityVO", commodityVO);
-			int totalPrice = shoppingCartService.getTotalPrice(shoppingCartList);
-			session.setAttribute("totalPrice", totalPrice);
+//			int totalPrice = shoppingCartService.getTotalPrice(shoppingCartList);
+//			session.setAttribute("totalPrice", totalPrice);
 			session.setAttribute("shoppingCartList", shoppingCartList);
-			res.sendRedirect(req.getContextPath() +  "/shop/CommodityController?action=findByID&comNO="+comNo);
+			res.sendRedirect(req.getContextPath() + "/shop/CommodityController?action=findByID&comNO=" + comNo);
 
 		}
 		if ("changeAmount".equals(action)) {
 			Integer memId = (Integer) session.getAttribute("memId");
 			Integer comNo = Integer.valueOf(req.getParameter("comNo"));
 			Integer amount = Integer.valueOf(req.getParameter("amount"));
-			ShoppingCartVO cartVO = new ShoppingCartVO(memId, comNo,amount);
-			if(amount==0) {
-				//更改之數量為0
+			ShoppingCartVO cartVO = new ShoppingCartVO(memId, comNo, amount);
+			if (amount == 0) {
+				// 更改之數量為0
 				shoppingCartService.delete(memId, comNo);
 				shoppingCartList.removeIf(delCartVO -> delCartVO.getComNo() == comNo && delCartVO.getMemId() == memId);
-			}else {
-			
-			
-			cartVO = shoppingCartService.update(memId, comNo, amount);
-			for (int i = 0; i < shoppingCartList.size(); i++) {
-				ShoppingCartVO existingCartItem = shoppingCartList.get(i);
-				if (cartVO.getComNo() == existingCartItem.getComNo()
-						&& cartVO.getMemId() == existingCartItem.getMemId()) {
-					existingCartItem.setComAmount(amount);
-					break;
+			} else {
+
+				cartVO = shoppingCartService.update(memId, comNo, amount);
+				for (int i = 0; i < shoppingCartList.size(); i++) {
+					ShoppingCartVO existingCartItem = shoppingCartList.get(i);
+					if (cartVO.getComNo() == existingCartItem.getComNo()
+							&& cartVO.getMemId() == existingCartItem.getMemId()) {
+						existingCartItem.setComAmount(amount);
+						break;
+					}
 				}
-			}
 			}
 			int totalPrice = shoppingCartService.getTotalPrice(shoppingCartList);
 			session.setAttribute("totalPrice", totalPrice);
