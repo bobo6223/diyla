@@ -31,8 +31,9 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 	public static final String INSERT = "INSERT INTO commodity_order (MEM_ID,ORDER_STATUS,ORDER_PRICE,DISCOUNT_PRICE,ACTUAL_PRICE) VALUES (?,?,?,?,?);";
 	public static final String DLEETE = "SELECT * FROM commodity_order WHERE ORDER_NO = ? ";
 	public static final String UPDATE = "UPDATE commodity_order set ORDER_STATUS = ? where ORDER_NO = ?";
-	public static final String GET_ALL = "SELECT * FROM commodity_order WHERE MEM_ID = ?";
+	public static final String GET_ALL_BY_MEMID = "SELECT * FROM commodity_order WHERE MEM_ID = ?";
 	public static final String FIND_BY_ORDER_NO = "SELECT * FROM commodity_order WHERE ORDER_NO = ?";
+	public static final String GET_ALL = "SELECT * FROM commodity_order";
 
 	public int insert(Integer memId) {
 		Integer generatedOrderNo = -1;
@@ -44,7 +45,7 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 			Integer totalPrice = cartService.getTotalPrice(cartVOs);
 			pstm.setInt(1, memId);
 			// 先以未結帳做預設
-			pstm.setInt(2, 1);
+			pstm.setInt(2, 0);
 			pstm.setInt(3, totalPrice);
 			// 目前代幣完善前 先以0帶入
 			pstm.setInt(4, 0);
@@ -72,7 +73,7 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 		}
 	}
 
-	public void update(Integer status, Integer orderNO) {
+	public void updateStatus(Integer status, Integer orderNO) {
 		try (Connection con = ds.getConnection(); PreparedStatement pstm = con.prepareStatement(UPDATE);) {
 			pstm.setInt(1, status);
 			pstm.setInt(2, orderNO);
@@ -83,8 +84,8 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 	}
 
 	public CommodityOrderVO findByOrderNo(Integer orderNo) {
+		CommodityOrderVO commodityOrderVO = new CommodityOrderVO();
 		try (Connection con = ds.getConnection(); PreparedStatement pstm = con.prepareStatement(FIND_BY_ORDER_NO);) {
-			CommodityOrderVO commodityOrderVO = new CommodityOrderVO();
 			pstm.setInt(1, orderNo);
 
 			try (ResultSet rs = pstm.executeQuery();) {
@@ -101,18 +102,17 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 				return commodityOrderVO;
 			} catch (Exception e) {
 				// TODO: handle exception
-			} 
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return commodityOrderVO;
 	}
 
-	public List<CommodityOrderVO> getAll(Integer memId) {
+	public List<CommodityOrderVO> getAllByMemId(Integer memId) {
 		List<CommodityOrderVO> commodityOrderlist = new ArrayList<CommodityOrderVO>();
-		try (Connection con = ds.getConnection(); 
-				PreparedStatement pstm = con.prepareStatement(GET_ALL);) {
+		try (Connection con = ds.getConnection(); PreparedStatement pstm = con.prepareStatement(GET_ALL_BY_MEMID);) {
 			CommodityOrderVO commodityOrderVO = null;
 			pstm.setInt(1, memId);
 			try (ResultSet rs = pstm.executeQuery();) {
@@ -136,7 +136,65 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 			e.printStackTrace();
 		}
 
-		return commodityOrderlist;
+		return null;
+	}
+
+	public List<CommodityOrderVO> getAll() {
+		List<CommodityOrderVO> commodityOrderlist = new ArrayList<CommodityOrderVO>();
+		try (Connection con = ds.getConnection(); PreparedStatement pstm = con.prepareStatement(GET_ALL);) {
+			CommodityOrderVO commodityOrderVO = null;
+			try (ResultSet rs = pstm.executeQuery();) {
+				while (rs.next()) {
+					commodityOrderVO = new CommodityOrderVO();
+					commodityOrderVO.setOrderNO(rs.getInt("ORDER_NO"));
+					commodityOrderVO.setMemId(rs.getInt("MEM_ID"));
+					commodityOrderVO.setOrderTime(rs.getTimestamp("ORDER_TIME"));
+					commodityOrderVO.setOrderStatus(rs.getInt("ORDER_STATUS"));
+					commodityOrderVO.setOrderPrice(rs.getInt("ORDER_PRICE"));
+					commodityOrderVO.setDiscountPrice(rs.getInt("DISCOUNT_PRICE"));
+					commodityOrderVO.setActualPrice(rs.getInt("ACTUAL_PRICE"));
+					commodityOrderVO.setUpdateTime(rs.getTimestamp("UPDATE_TIME"));
+					commodityOrderlist.add(commodityOrderVO);
+				}
+				return commodityOrderlist;
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public List<CommodityOrderVO> sortBy(String sql) {
+		List<CommodityOrderVO> commodityOrderlist = new ArrayList<CommodityOrderVO>();
+		try (Connection con = ds.getConnection(); PreparedStatement pstm = con.prepareStatement(sql);) {
+			CommodityOrderVO commodityOrderVO = null;
+			try (ResultSet rs = pstm.executeQuery();) {
+				while (rs.next()) {
+					commodityOrderVO = new CommodityOrderVO();
+					commodityOrderVO.setOrderNO(rs.getInt("ORDER_NO"));
+					commodityOrderVO.setMemId(rs.getInt("MEM_ID"));
+					commodityOrderVO.setOrderTime(rs.getTimestamp("ORDER_TIME"));
+					commodityOrderVO.setOrderStatus(rs.getInt("ORDER_STATUS"));
+					commodityOrderVO.setOrderPrice(rs.getInt("ORDER_PRICE"));
+					commodityOrderVO.setDiscountPrice(rs.getInt("DISCOUNT_PRICE"));
+					commodityOrderVO.setActualPrice(rs.getInt("ACTUAL_PRICE"));
+					commodityOrderVO.setUpdateTime(rs.getTimestamp("UPDATE_TIME"));
+					commodityOrderlist.add(commodityOrderVO);
+				}
+				return commodityOrderlist;
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 }

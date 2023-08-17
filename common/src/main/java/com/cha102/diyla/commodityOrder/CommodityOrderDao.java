@@ -2,18 +2,22 @@ package com.cha102.diyla.commodityOrder;
 
 import java.util.List;
 
-
-import com.cha102.diyla.shoppingcart.ShoppingCartVO;
-
 public interface CommodityOrderDao {
 	int insert(Integer memId);
 
 	void delete(Integer orderNo);
-	
-	void update(Integer status, Integer orderNO);
 
+	void updateStatus(Integer status, Integer orderNO);
+
+//	void update(CommodityOrderVO commodityOrderVO);
+	
 	CommodityOrderVO findByOrderNo(Integer OrderNo);
 
-//	List<ShoppingCartVO> findByMemId(Integer  memId);
+	List<CommodityOrderVO> getAllByMemId(Integer memId);
+
+	List<CommodityOrderVO> getAll();
+	
+
+	List<CommodityOrderVO> sortBy(String sql);
 
 }

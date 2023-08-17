@@ -1,6 +1,7 @@
 package com.cha102.diyla.commodityOrder;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class CommodityOrderVO {
 	private Integer orderNO;
@@ -87,6 +88,26 @@ public class CommodityOrderVO {
 		this.discountPrice = discountPrice;
 		this.actualPrice = actualPrice;
 		this.updateTime = updateTime;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(actualPrice, discountPrice, memId, orderNO, orderPrice, orderStatus, orderTime, updateTime);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CommodityOrderVO other = (CommodityOrderVO) obj;
+		return Objects.equals(actualPrice, other.actualPrice) && Objects.equals(discountPrice, other.discountPrice)
+				&& Objects.equals(memId, other.memId) && Objects.equals(orderNO, other.orderNO)
+				&& Objects.equals(orderPrice, other.orderPrice) && Objects.equals(orderStatus, other.orderStatus)
+				&& Objects.equals(orderTime, other.orderTime) && Objects.equals(updateTime, other.updateTime);
 	}
 
 	public CommodityOrderVO() {

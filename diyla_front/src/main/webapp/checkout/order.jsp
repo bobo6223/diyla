@@ -14,7 +14,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>訂單確認</title>
+<title>填寫付款資訊</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- 引入其他所需的 CSS 和 JavaScript 檔案 -->
 <link rel="shortcut icon" href="${ctxPath}/images/DIYLA_cakeLOGO.png"
@@ -32,13 +32,14 @@
 <link href="${ctxPath}/css/style.css" rel="stylesheet" />
 <!-- responsive style -->
 <link href="${ctxPath}/css/responsive.css" rel="stylesheet" />
+
 </head>
 <body>
 	<div class="topPage">
 		<jsp:include page="../front_header.jsp" />
 	</div>
 	<div class="mainContent">
-		<h1>訂單確認</h1>
+		<h1>付款資訊</h1>
 
 		<div class="orderDetail">
 			<table cellspacing="0">
@@ -71,8 +72,8 @@
 			</select>
 		</div>
 		<div class="orderForm">
-			<h2>填寫訂單資訊</h2>
-			<form action="ConfirmOrderController" method="post">
+			<h2>填寫付款資訊</h2>
+			<form action="${ctxPath}/memberOrder/OrderController" method="post">
 				<div class="form-row">
 					<label for="recipientName">收件人姓名：</label> <input type="text"
 						id="recipientName" name="recipientName" required>

@@ -21,7 +21,7 @@ import com.cha102.diyla.commodityOrderDetail.CommodityOrderDetailVO;
 import com.cha102.diyla.shoppingcart.ShoppingCartService;
 import com.cha102.diyla.shoppingcart.ShoppingCartVO;
 
-@WebServlet("/shop/OrderController")
+@WebServlet("/memberOrder/OrderController")
 public class OrderController extends HttpServlet {
 	CommodityService commodityService = new CommodityService();
 	ShoppingCartService shoppingCartService = new ShoppingCartService();
@@ -61,16 +61,17 @@ public class OrderController extends HttpServlet {
 			//避免刷新重複生成空訂單
 			res.sendRedirect(req.getContextPath()+"/checkout/order.jsp");
 		}
-		//顯示訂單
+		//前台顯示訂單
 		if ("listOrder".equals(action)) {
 			Integer memId = Integer.valueOf(req.getParameter("memId"));
-			List<CommodityOrderVO> list = commodityOrderService.getAll(memId);
+			List<CommodityOrderVO> list = commodityOrderService.getAllByMemId(memId);
 			session.setAttribute("memId", memId);
 			session.setAttribute("commodityOrderVOList", list);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/memberOrder/memberOrder.jsp");
 			dispatcher.forward(req, res);
 
 		}
+		
 		//顯示明細
 		if("showDetail".equals(action)) {
 			Integer orderNo =Integer.valueOf(req.getParameter("orderNO"));
@@ -89,13 +90,16 @@ public class OrderController extends HttpServlet {
 		if("cancelOrder".equals(action)) {
 			Integer memId = (Integer) session.getAttribute("memId");
 			Integer orderNo =Integer.valueOf(req.getParameter("orderNO"));
-			commodityOrderService.update(5,orderNo);
-			List<CommodityOrderVO> list = commodityOrderService.getAll(memId);
+			commodityOrderService.updateStatus(4,orderNo);
+			List<CommodityOrderVO> list = commodityOrderService.getAllByMemId(memId);
 			session.setAttribute("memId", memId);
 			session.setAttribute("commodityOrderVOList", list);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/memberOrder/memberOrder.jsp");
 			dispatcher.forward(req, res);
 			
+		}
+		if("sortByOrderPrice".equals(action)) {
+			Integer memId = (Integer) session.getAttribute("memId");
 		}
 
 	}

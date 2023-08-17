@@ -1,4 +1,3 @@
-
 <%@page
 	import="com.cha102.diyla.commodityOrderDetail.CommodityOrderDetailService"%>
 <%@page
@@ -7,6 +6,7 @@
 	pageEncoding="UTF-8"%>
 <%@page import="com.cha102.diyla.commodityOrder.CommodityOrderVO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page isELIgnored="false"%>
 
 <!DOCTYPE html>
@@ -38,12 +38,13 @@ table {
 	border-collapse: collapse;
 	width: 80%;
 	margin: 20px auto;
+	text-align: center;
 }
 
 th, td {
 	border: 1px solid #ccc;
 	padding: 8px;
-	text-align: left;
+	text-align: center;
 }
 
 .btn {
@@ -52,8 +53,8 @@ th, td {
 
 #main_content {
 	height: 600px;
-	padding-top: 80px;
-	width: 90%;
+	padding-top: 50px;
+	width: 100%;
 	margin: 20px auto;
 	background-color: #fff;
 	padding: 20px;
@@ -172,8 +173,10 @@ div.goShopping {
 	text-align: center;
 	padding-top: 50px;
 }
-.noneOrder{
-padding-bottom: 50px;}
+
+.noneOrder {
+	padding-bottom: 50px;
+}
 </style>
 </head>
 <body>
@@ -188,12 +191,13 @@ padding-bottom: 50px;}
 					<table>
 						<thead>
 							<tr class="tr_title">
-								<th class="title">訂單編號</th>
-								<th class="title">訂單金額</th>
-								<th class="title">訂單狀態</th>
+								<th class="title"style="width:80px;">訂單編號</th>
+								<th class="title" style="width:100px;">訂單金額</th>
+								<th class="title"style="width:100px;">訂單狀態</th>
+								<th class="title" style="width:200px;">下單時間</th>
 								<th class="title">收件地址</th>
-								<th class="title">查看明細</th>
-								<th class="title">訂單處理</th>
+								<th class="title" style="width:120px;">查看明細</th>
+								<th class="title" style="width:120px;">訂單處理</th>
 							</tr>
 						</thead>
 						<c:forEach var="orderVO" items="${commodityOrderVOList}"
@@ -204,9 +208,13 @@ padding-bottom: 50px;}
 									<td class="order_content">${orderVO.orderNO}</td>
 									<td class="order_content">${orderVO.actualPrice}</td>
 									<td class="order_content orderStatus"><span class="status">${orderVO.orderStatus}</span></td>
+									<td class="order_content"><fmt:formatDate
+											value="${orderVO.orderTime}" pattern="yyyy-MM-dd HH:mm:ss" />
+									</td>
 									<td class="order_content">111</td>
 									<td class="order_content" class="orderAction">
-										<form action="OrderController" method="post">
+										<form action="${ctxPath}/memberOrder/OrderController"
+											method="post">
 											<input name="action" value="showDetail" type="hidden">
 											<input name="orderNO" value="${orderVO.orderNO}"
 												type="hidden">
@@ -216,8 +224,8 @@ padding-bottom: 50px;}
 									</td>
 
 									<td>
-										<form action="OrderController" method="post"
-											id="form${loop.index}">
+										<form action="${ctxPath}/memberOrder/OrderController"
+											method="post" id="form${loop.index}">
 											<input name="action" value="cancelOrder" type="hidden">
 											<input name="orderNO" value="${orderVO.orderNO}"
 												type="hidden">
@@ -267,7 +275,7 @@ padding-bottom: 50px;}
 					  let form = $(this).closest("form"); // 找到最近的父級 form
 					  var orderStatus = parseInt($(this).data('order-status'));
 					  console.log(orderStatus);
-					  if (orderStatus >= 4) {
+					  if (orderStatus >= 3) {
 						  swal({
 							    title: "訂單狀態為已結案，無法取消訂單",
 							    icon:"warning",
@@ -291,26 +299,27 @@ padding-bottom: 50px;}
 
 		  
 		  const statusMapping = {
-			        "1": "未結帳",
-			        "2": "已付款",
-			        "3": "備貨中",
-			        "4": "已完成",
-			        "5": "已取消"
+			        "0": "未結帳",
+			        "1": "已付款",
+			        "2": "備貨中",
+			        "3": "已完成",
+			        "4": "已取消"
 			    };
 			    // 找到所有的訂單狀態欄位
 		  $(".orderStatus").each(function() {
 		        const orderStatus = $(this).text().trim(); // 取得表格內容的文字，並移除前後空白
 		        const textStatus = statusMapping[orderStatus]; // 取得對應的文字狀態
 		        $(this).text(textStatus); // 將文字狀態設定回表格欄位
-		        if (orderStatus === "1") {
+		        if (orderStatus === "0") {
 		            $(this).addClass("status-unpaid");
-		        } else if (orderStatus === "2") {
+		            
+		        } else if (orderStatus === "1") {
 		            $(this).addClass("status-paid");
-		        } else if (orderStatus === "3") {
+		        } else if (orderStatus === "2") {
 		            $(this).addClass("status-processing");
-		        } else if (orderStatus === "4") {
+		        } else if (orderStatus === "3") {
 		            $(this).addClass("status-completed");
-		        } else if (orderStatus === "5") {
+		        } else if (orderStatus === "4") {
 		            $(this).addClass("status-canceled");
 		        }
 		    });
