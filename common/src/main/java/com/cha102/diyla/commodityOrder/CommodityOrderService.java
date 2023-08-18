@@ -12,8 +12,8 @@ public class CommodityOrderService {
 		dao.updateStatus( status,  orderNO);
 	}
 
-	public Integer insert(Integer memId) {
-		return dao.insert(memId);
+	public Integer insert(CommodityOrderVO commodityOrderVO) {
+		return dao.insert(commodityOrderVO);
 	}
 
 	public List<CommodityOrderVO> getAllByMemId(Integer memId) {

@@ -39,67 +39,67 @@
 		<jsp:include page="../front_header.jsp" />
 	</div>
 	<div class="mainContent">
-		<h1>付款資訊</h1>
+		<h1>填寫付款資訊</h1>
 
-		<div class="orderDetail">
-			<table cellspacing="0">
-				<tr class="title">
-					<td class="subtitle">商品名稱</td>
-					<td class="subtitle">單價</td>
-					<td class="subtitle">數量</td>
-					<td class="subtitle">小計</td>
-				</tr>
-				<c:forEach var="detail" items="${detailList}">
-					<c:forEach var="comVO" items="${commodityList}">
-						<c:if test="${detail.comNo == comVO.comNO}">
-							<tr class="itemrow">
-								<td class="itemInfo">${comVO.comName}</td>
-								<td class="itemInfo">${comVO.comPri}</td>
-								<td class="itemInfo">${detail.comQuantity}</td>
-								<td class="itemInfo">${comVO.comPri*detail.comQuantity}</td>
-							</tr>
-						</c:if>
+		<form action="${ctxPath}/memberOrder/OrderController" method="post">
+			<div class="orderDetail">
+				<table>
+					<tr class="title">
+						<td class="subtitle">商品名稱</td>
+						<td class="subtitle">單價</td>
+						<td class="subtitle">數量</td>
+						<td class="subtitle">小計</td>
+					</tr>
+					<c:forEach var="cartItem" items="${shoppingCartList}">
+						<c:forEach var="comVO" items="${commodityList}">
+							<c:if test="${cartItem.comNo == comVO.comNO}">
+								<tr class="itemrow">
+									<td class="itemInfo">${comVO.comName}</td>
+									<td class="itemInfo">${comVO.comPri}</td>
+									<td class="itemInfo">${cartItem.comAmount}</td>
+									<td class="itemInfo">${comVO.comPri*cartItem.comAmount}</td>
+								</tr>
+							</c:if>
+						</c:forEach>
 					</c:forEach>
-				</c:forEach>
-			</table>
-			<span>總金額${totalPrice}</span>
-		</div>
+				</table>
+				<span>總金額${totalPrice}</span>
+			</div>
 
-		<div>
-			<label for="useTokens">使用代幣：</label> <select id="useTokens">
-				<option value="true">是</option>
-				<option value="false">否</option>
-			</select>
-		</div>
-		<div class="orderForm">
+			<div>
+				<label for="useTokens">使用代幣：</label> <select id="useTokens">
+					<option value="true">是</option>
+					<option value="false">否</option>
+				</select>
+			</div>
 			<h2>填寫付款資訊</h2>
-			<form action="${ctxPath}/memberOrder/OrderController" method="post">
-				<div class="form-row">
-					<label for="recipientName">收件人姓名：</label> <input type="text"
-						id="recipientName" name="recipientName" required>
-				</div>
-				<div class="form-row">
-					<label for="recipientPhone">收件人電話：</label> <input type="tel"
-						id="recipientPhone" name="recipientPhone" required>
-				</div>
-				<div class="form-row">
-					<label for="recipientAddress">收件人地址：</label> <input type="text"
-						id="recipientAddress" name="recipientAddress" required>
-				</div>
-				<div class="form-row">
-					<label for="paymentMethod">付款方式：</label> <select id="paymentMethod"
-						name="paymentMethod" required>
-						<option value="creditCard">信用卡</option>
-						<option value="cashOnDelivery">貨到付款</option>
-					</select>
-				</div>
-				<div class="form-row">
-					<button type="submit" class="confirmButton">前往付款</button>
-				</div>
-			</form>
-		</div>
-
+			<div class="form-row">
+				<span style="display: block; color: red;">${errMsg["recipient"]}</span>
+				<label for="recipient">收件人姓名：</label> <input type="text"
+					id="recipientName" name="recipient">
+			</div>
+			<div class="form-row">
+				<span style="display: block; color: red;">${errMsg["phone"]}</span>
+				<label for="phone">收件人電話：</label> <input type="tel"
+					id="recipientPhone" name="phone">
+			</div>
+			<div class="form-row">
+				<span style="display: block; color: red;">${errMsg["recipientAddress"]}</span>
+				<label for="recipientAddress">收件人地址：</label> <input type="text"
+					id="recipientAddress" name="recipientAddress">
+			</div>
+			<div class="form-row">
+				<label for="paymentMethod">付款方式：</label> <select id="paymentMethod"
+					name="paymentMethod" required>
+					<option value="creditCard">信用卡</option>
+					<option value="cashOnDelivery">貨到付款</option>
+				</select>
+			</div>
+			<input type="hidden" name="action" value="orderConfirm"> <input
+				type="submit" class="confirmButton" value="確認">
+		</form>
 	</div>
+
 	<jsp:include page="../front_footer.jsp" />
 
 	<script>

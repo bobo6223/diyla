@@ -12,6 +12,47 @@ public class CommodityOrderVO {
 	private Integer discountPrice;
 	private Integer actualPrice;
 	private Timestamp updateTime;
+	private String recipient;
+	private String recipientAddress;
+
+	public String getRecipient() {
+		return recipient;
+	}
+
+	public void setRecipient(String recipient) {
+		this.recipient = recipient;
+	}
+
+	public CommodityOrderVO(Integer memId, Integer orderStatus, Integer orderPrice, Integer discountPrice,
+			Integer actualPrice, String recipient, String recipientAddress, String phone) {
+		super();
+		this.memId = memId;
+		this.orderStatus = orderStatus;
+		this.orderPrice = orderPrice;
+		this.discountPrice = discountPrice;
+		this.actualPrice = actualPrice;
+		this.recipient = recipient;
+		this.recipientAddress = recipientAddress;
+		this.phone = phone;
+	}
+
+	public String getRecipientAddress() {
+		return recipientAddress;
+	}
+
+	public void setRecipientAddress(String recipientAddress) {
+		this.recipientAddress = recipientAddress;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	private String phone;
 
 	public Integer getOrderNO() {
 		return orderNO;

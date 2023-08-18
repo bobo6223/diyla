@@ -3,7 +3,7 @@ package com.cha102.diyla.commodityOrder;
 import java.util.List;
 
 public interface CommodityOrderDao {
-	int insert(Integer memId);
+	int insert(CommodityOrderVO commodityOrderVO);
 
 	void delete(Integer orderNo);
 

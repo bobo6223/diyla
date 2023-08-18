@@ -28,28 +28,31 @@ public class CommodityOrderDaoJNDI implements CommodityOrderDao {
 			e.printStackTrace();
 		}
 	}
-	public static final String INSERT = "INSERT INTO commodity_order (MEM_ID,ORDER_STATUS,ORDER_PRICE,DISCOUNT_PRICE,ACTUAL_PRICE) VALUES (?,?,?,?,?);";
+	public static final String INSERT = "INSERT INTO commodity_order (MEM_ID,ORDER_STATUS,ORDER_PRICE,DISCOUNT_PRICE,ACTUAL_PRICE,RECIPIENT,RECIPIENT_ADDRESS,PHONE) VALUES (?,?,?,?,?,?,?,?);";
 	public static final String DLEETE = "SELECT * FROM commodity_order WHERE ORDER_NO = ? ";
 	public static final String UPDATE = "UPDATE commodity_order set ORDER_STATUS = ? where ORDER_NO = ?";
 	public static final String GET_ALL_BY_MEMID = "SELECT * FROM commodity_order WHERE MEM_ID = ?";
 	public static final String FIND_BY_ORDER_NO = "SELECT * FROM commodity_order WHERE ORDER_NO = ?";
 	public static final String GET_ALL = "SELECT * FROM commodity_order";
 
-	public int insert(Integer memId) {
+	public int insert(CommodityOrderVO commodityOrderVO) {
 		Integer generatedOrderNo = -1;
 
 		try (Connection con = ds.getConnection();
 				PreparedStatement pstm = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);) {
-			ShoppingCartService cartService = new ShoppingCartService();
-			List<ShoppingCartVO> cartVOs = cartService.getAll(memId);
-			Integer totalPrice = cartService.getTotalPrice(cartVOs);
-			pstm.setInt(1, memId);
+//			ShoppingCartService cartService = new ShoppingCartService();
+//			List<ShoppingCartVO> cartVOs = cartService.getAll(memId);
+//			Integer totalPrice = cartService.getTotalPrice(cartVOs);
+			pstm.setInt(1, commodityOrderVO.getMemId());
 			// 先以未結帳做預設
-			pstm.setInt(2, 0);
-			pstm.setInt(3, totalPrice);
+			pstm.setInt(2, commodityOrderVO.getOrderStatus());
+			pstm.setInt(3, commodityOrderVO.getOrderPrice());
 			// 目前代幣完善前 先以0帶入
-			pstm.setInt(4, 0);
-			pstm.setInt(5, totalPrice);
+			pstm.setInt(4, commodityOrderVO.getDiscountPrice());
+			pstm.setInt(5, commodityOrderVO.getActualPrice());
+			pstm.setString(6, commodityOrderVO.getRecipient());
+			pstm.setString(7, commodityOrderVO.getRecipientAddress());
+			pstm.setString(8, commodityOrderVO.getPhone());
 			int i = pstm.executeUpdate();
 			if (i > 0) {
 				try (ResultSet generatedKeys = pstm.getGeneratedKeys()) {
