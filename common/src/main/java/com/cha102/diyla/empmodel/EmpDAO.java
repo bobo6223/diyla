@@ -1,20 +1,29 @@
 package com.cha102.diyla.empmodel;
 
+import com.cha102.diyla.backstageauthmodel.BackStageAuthVO;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface EmpDAO {
-    public void insertEmp(EmpVO empVO);
+
+
+    public Integer insertEmp(EmpVO empVO, Connection con);
+
+    public  Integer insertBackStageAuthVO( List<BackStageAuthVO> backStageAuthVOList,Connection con);
 
     public  void updateEmp(EmpVO empVO);
 
     public void deleteEmp(Integer empId);
 
-    public void checkEmpEmailForRegister(String empEmail);
+    public String checkFinalAccountNumber();
+
+    public Boolean checkEmpEmailForRegister(String empEmail);
 
     public EmpVO getOne(Integer empId);
 
     public List<EmpVO> getAll();
 
-
-
+    public Connection getConnectionForTx() throws SQLException;
 }

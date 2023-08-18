@@ -39,13 +39,5 @@ public class EmpVO implements java.io.Serializable {
         this.empStatus = empStatus;
         this.empId =empId;
     }
-//    public static void main(String args[]) {
-//        String str = "020";
-//        String pattern ="" ;
-//
-//        boolean matches = Pattern.compile("^[0-9]*$").matcher(str).matches();
-//
-//        System.out.println(matches);
-//    }
 }
 
