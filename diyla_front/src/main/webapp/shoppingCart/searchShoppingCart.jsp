@@ -26,7 +26,6 @@
 後臺管理訂單:
 <form action="${ctxPath}/orderManage/OrderManageController" method="post">
             <input type="hidden" name="action" value="listAllOrder">
-            <input type="submit" value="送出">
 
 </form>
 
