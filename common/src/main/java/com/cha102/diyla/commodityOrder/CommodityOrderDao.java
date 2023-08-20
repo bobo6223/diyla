@@ -6,7 +6,7 @@ import java.util.List;
 import com.cha102.diyla.shoppingcart.ShoppingCartVO;
 
 public interface CommodityOrderDao {
-	int insert(Integer memId);
+	int insert(CommodityOrderVO commodityOrderVO);
 
 	void delete(Integer orderNo);
 
