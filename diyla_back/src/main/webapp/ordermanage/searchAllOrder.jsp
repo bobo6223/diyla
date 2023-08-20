@@ -15,6 +15,6 @@
             <input type="submit" value="送出">
 
 </form>
-
+<a href="${ctxPath}/orderManage/OrderManageController?action=listAllOrder">訂單管理</a>
 </body>
 </html>

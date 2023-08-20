@@ -1,29 +1,34 @@
-<%@page
-	import="com.cha102.diyla.commodityOrderDetail.CommodityOrderDetailService"%>
-<%@page
-	import="com.cha102.diyla.commodityOrderDetail.CommodityOrderDetailVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="com.cha102.diyla.commodityOrder.CommodityOrderVO"%>
+<%@page
+	import="com.cha102.diyla.commodityOrderDetail.CommodityOrderDetailVO"%>
+<%@page import="com.cha102.diyla.commodityOrder.*"%>
+<%@ page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page isELIgnored="false"%>
-
+<%
+CommodityOrderService service = new CommodityOrderService();
+List<CommodityOrderVO> commodityOrderVOList = service.getAll();
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <title>訂單查詢</title>
 
-<link rel="shortcut icon" href="${ctxPath}/images/DIYLA_cakeLOGO.png"
+<link rel="shortcut icon" href="${ctxPath}/ima/DIYLA_LOGO.png"
 	type="image/x-icon">
 <link rel="stylesheet" href="../css/style.css">
-
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
 <style>
 body {
 	font-family: Arial, sans-serif;
 	margin: 0;
 	padding: 0;
 	background-color: #f4f4f4;
+	 overflow: hidden;
+	
 }
 
 table {
@@ -31,12 +36,14 @@ table {
 	width: 80%;
 	margin: 20px auto;
 	text-align: center;
+	justify-content: center;
 }
 
 th, td {
 	border: 1px solid #ccc;
 	padding: 8px;
 	text-align: center;
+	justify-content: center;
 }
 
 .btn {
@@ -44,27 +51,27 @@ th, td {
 }
 
 #main_content {
+box-sizing:border-box;
 	float: inherit;
-	height: 600px;
-	padding-top: 50px;
-	width: 100%;
-	margin: 20px auto;
+	height: 100vh;
+	margin: 0px auto;
 	background-color: #fff;
-	padding: 20px;
+	padding: 5px;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-	height: 600px;
-}
-
-.swal-button-container {
-	display: flex;
-	justify-content: center;
+	padding: 0px;
+	float: right;
+	width: 980px;
 }
 
 .heading {
-	width: 100%;
+	width: 960px;
 	text-align: center;
 	margin-bottom: 20px;
-	font-size: 24px;
+	font-size: 30px;
+	padding: 10px 30px;
+	background-color: #FFEEDD;
+	border-radius: 5px;
+	background-color: #FFEEDD;
 }
 
 .status {
@@ -75,12 +82,12 @@ th, td {
 	background-color: #FFCC00; /* 未結帳的顏色 */
 }
 
-.status-paid {
-	background-color: #00CC00; /* 已付款的顏色 */
-}
-
 .status-processing {
 	background-color: #3399FF; /* 備貨中的顏色 */
+}
+
+.status-shipping {
+	background-color: #FF79BC;
 }
 
 .status-completed {
@@ -91,6 +98,15 @@ th, td {
 	background-color: #FF3333; /* 已取消的顏色 */
 }
 
+@media ( max-width :767.98px) {
+	aside.topPage {
+		top: 0;
+		height: 100%;
+		transform: translateX(-100%);
+		transition: all 1s;
+	}
+}
+
 table {
 	width: 100%;
 	border-collapse: collapse;
@@ -98,22 +114,22 @@ table {
 }
 
 .tr_title {
-	background-color: #f2f2f2;
+	background-color: #ECECFF;
 }
 
-.title th {
-	padding: 10px;
-	font-weight: bold;
-	text-align: center;
-}
-
+/* .title th { */
+/* 	padding: 10px; */
+/* 	font-weight: bold; */
+/* 	text-align: center; */
+/* } */
 .order_content_title td {
-	padding: 10px;
+	font-size: 16px;
+	padding: 4px;
 	text-align: center;
 }
 
 .order_content {
-	padding: 10px;
+	padding: 6px;
 	text-align: center;
 }
 
@@ -141,53 +157,87 @@ form {
 	cursor: pointer;
 }
 
-/* .cancel_order:hover { */
-/* 	background-color: #c9302c; */
-/* } */
 #main_content {
-	padding-bottom: 150px;
-	padding-left: 300px;
-	width:90%;
+	/* 	padding-bottom: 150px; */
+	/* 	padding-left: 300px; */
+	
 }
 
-.orderTable {
-	overflow: scroll;
+.dataTables_wrapper no-footer {
+	padding: 5px 10px;
+}
+
+#orderTable {
+	padding: 5px 12px;
+}
+
+table {
+	width: 100%;
+}
+
+aside.topPage {
+	height: 100%;
+	width: 25%; /* 或任何您認為合適的寬度百分比 */
+	/* ... 其他樣式 */
+}
+
+.container {
+	display: flex;
+}
+
+aside.topPage {
+	flex: 1; /* 可以使用其他數值調整彈性佈局比例 */
+	/* ... 其他樣式 */
+}
+
+table {
+	flex: 3; /* 可以使用其他數值調整彈性佈局比例 */
+	/* ... 其他樣式 */
+}
+
+@media ( max-width : 768px) {
+	aside.topPage {
+		position: relative; /* 或其他您認為適當的定位屬性 */
+		z-index: 1; /* 將 aside 設定為比表格更高的 z-index 值 */
+	}
 }
 </style>
 </head>
 <body>
-	<div class="topPage">
+	<aside class="topPage">
 		<jsp:include page="../index.jsp" />
-	</div>
+	</aside>
 	<div id="main_content">
 		<h1 class="heading">訂單一覽</h1>
 
 		<div id="orderTable">
-			<table>
+			<table id="allOrder">
 				<thead>
 					<tr class="tr_title">
-						<th class="title" style="width: 8%;"><a href="${ctxPath}/orderManage/OrderSortController?action=sortByOrderNo">訂單編號</a></th>
-						<th class="title" style="width: 8%;">會員編號</th>
-						<th class="title" style="width: 10%;"><a href="${ctxPath}/orderManage/OrderSortController?action=sortByActualPrice">訂單金額</a></th>
+						<th class="title" style="width: 10%;">訂單編號</th>
+						<th class="title" style="width: 10%;">會員編號</th>
+						<th class="title" style="width: 10%;">訂單金額</th>
 						<th class="title" style="width: 8%;">訂單狀態</th>
-						<th class="title" style="width: 15%;">下單時間</th>
-						<th class="title" style="width: 20%;">收件地址</th>
+						<th class="title" style="width: 12%;">下單時間</th>
+						<th class="title" style="width: 12%;">收件人姓名</th>
+						<th class="title" style="width: 16%;">收件地址</th>
 						<th class="title" style="width: 8%;">查看明細</th>
 						<th class="title" style="width: 8%;">訂單處理</th>
 					</tr>
 				</thead>
-				<c:forEach var="orderVO" items="${commodityOrderVOList}"
-					varStatus="loop">
 
-					<tbody id="order-list">
+				<tbody id="order-list">
+					<c:forEach var="orderVO" items="${commodityOrderVOList}"
+						varStatus="loop">
 						<tr class="order_content_title">
 							<td class="order_content">${orderVO.orderNO}</td>
 							<td class="order_content">${orderVO.memId}</td>
 							<td class="order_content">${orderVO.actualPrice}</td>
 							<td class="order_content orderStatus"><span class="status">${orderVO.orderStatus}</span></td>
 							<td class="order_content"><fmt:formatDate
-									value="${orderVO.orderTime}" pattern="yyyy-MM-dd" /></td>
-							<td class="order_content">地址地址地址地址地址地址地址</td>
+									value="${orderVO.orderTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+							<td class="order_content">${orderVO.recipient}</td>
+							<td class="order_content">${orderVO.recipientAddress}</td>
 							<td class="order_content" class="orderAction">
 								<form action="${ctxPath}/orderManage/OrderManageController"
 									method="post">
@@ -201,11 +251,12 @@ form {
 							<td>
 								<form action="${ctxPath}/orderManage/OrderManageController"
 									method="post" id="form${loop.index}">
-									<input name="action" value="editOrder" type="hidden"> 
-									<input name="orderNO" value="${orderVO.orderNO}" type="hidden">
+									<input name="action" value="editOrder" type="hidden"> <input
+										name="orderNO" value="${orderVO.orderNO}" type="hidden">
 									<input name="memId" value="${orderVO.memId}" type="hidden">
-									<input name="actualPrice" value="${orderVO.actualPrice}" type="hidden"> 
-									<input name="orderStatus" value="${orderVO.orderStatus}" type="hidden">
+									<input name="actualPrice" value="${orderVO.actualPrice}"
+										type="hidden"> <input name="orderStatus"
+										value="${orderVO.orderStatus}" type="hidden">
 									<button type="submit" class="cancel_order"
 										data-order-status="${orderVO.orderStatus}
 											form="form${loop.index}">
@@ -222,22 +273,24 @@ form {
 							</td>
 						</tr>
 
-					</tbody>
-				</c:forEach>
+					</c:forEach>
+				</tbody>
 
 			</table>
 		</div>
 
 	</div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 	<script>
 		$(document).ready(function() {
 			const statusMapping = {
-				"0" : "未結帳",
-				"1" : "已付款",
-				"2" : "備貨中",
+				"0" : "訂單成立",
+				"1" : "備貨中",
+				"2" : "已出貨",
 				"3" : "已完成",
 				"4" : "已取消"
 			};
@@ -250,16 +303,53 @@ form {
 					$(this).addClass("status-unpaid");
 
 				} else if (orderStatus === "1") {
-					$(this).addClass("status-paid");
-				} else if (orderStatus === "2") {
 					$(this).addClass("status-processing");
+				} else if (orderStatus === "2") {
+					$(this).addClass("status-shipping");
 				} else if (orderStatus === "3") {
 					$(this).addClass("status-completed");
 				} else if (orderStatus === "4") {
 					$(this).addClass("status-canceled");
 				}
 			});
+
 		});
+	</script>
+	<script>
+		$(document)
+				.ready(
+						function() {
+							$('#allOrder')
+									.DataTable(
+											{
+												"lengthMenu" : [ 5, 10 ],
+												"searching" : true, //搜尋功能, 預設是開啟
+												"paging" : true, //分頁功能, 預設是開啟
+												"ordering" : true, //排序功能, 預設是開啟
+												"language" : {
+													"processing" : "處理中...",
+													"loadingRecords" : "載入中...",
+													"lengthMenu" : "顯示 _MENU_ 筆結果",
+													"zeroRecords" : "沒有符合的結果",
+													"info" : "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+													"infoEmpty" : "顯示第 0 至 0 筆結果，共 0 筆",
+													"infoFiltered" : "(從 _MAX_ 筆結果中過濾)",
+													"infoPostFix" : "",
+													"search" : "搜尋:",
+													"paginate" : {
+														"first" : "第一頁",
+														"previous" : "上一頁",
+														"next" : "下一頁",
+														"last" : "最後一頁"
+													},
+													"aria" : {
+														"sortAscending" : ": 升冪排列",
+														"sortDescending" : ": 降冪排列"
+													}
+												}
+
+											});
+						});
 	</script>
 
 </body>

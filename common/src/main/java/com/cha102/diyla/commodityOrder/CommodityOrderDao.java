@@ -17,7 +17,7 @@ public interface CommodityOrderDao {
 
 	List<CommodityOrderVO> getAll();
 	
-
-	List<CommodityOrderVO> sortBy(String sql);
+	void update(Integer status,Integer orderNo,String recipient,String recipientAddress,String phone);
+//	List<CommodityOrderVO> sortBy(String sql);
 
 }

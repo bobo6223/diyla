@@ -1,6 +1,8 @@
 package com.cha102.diyla.front.controller.shoppingCart;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +19,10 @@ import com.cha102.diyla.commodityModel.CommodityService;
 import com.cha102.diyla.commodityModel.CommodityVO;
 import com.cha102.diyla.commodityOrder.CommodityOrderService;
 import com.cha102.diyla.commodityOrder.CommodityOrderVO;
+import com.cha102.diyla.commodityOrder.MailService;
 import com.cha102.diyla.commodityOrderDetail.CommodityOrderDetailService;
 import com.cha102.diyla.commodityOrderDetail.CommodityOrderDetailVO;
+import com.cha102.diyla.member.MemberService;
 import com.cha102.diyla.shoppingcart.ShoppingCartService;
 import com.cha102.diyla.shoppingcart.ShoppingCartVO;
 
@@ -38,30 +42,23 @@ public class OrderController extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		String action = req.getParameter("action");
-		// 結帳==>生成訂單
+		// 結帳
 		if ("checkout".equals(action)) {
 			Integer memId = (Integer) session.getAttribute("memId");
 			List<ShoppingCartVO> shoppingCartList = shoppingCartService.getAll(memId);
 			Integer totalPrice = shoppingCartService.getTotalPrice(shoppingCartList);
-//			CommodityOrderVO commodityOrderVO = new CommodityOrderVO(memId, 0, totalPrice, 0, totalPrice);
-//			Integer orderNo = commodityOrderService.insert(memId);
-			// 加入商品訂單明細
-//			commodityOrderDetailService.insert(orderNo, shoppingCartList);
-//			List<CommodityOrderDetailVO>detailList =commodityOrderDetailService.getAll(orderNo);
-
-			// 購買完清除購物車
-//			shoppingCartService.clear(memId);
-//			session.setAttribute("detailList", detailList);
 			session.setAttribute("totalPrice", totalPrice);
 			session.setAttribute("shoppingCartList", shoppingCartList);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/checkout/order.jsp");
 			dispatcher.forward(req, res);
-			// 避免刷新重複生成空訂單
-//			res.sendRedirect(req.getContextPath() + "/checkout/order.jsp");
 		}
 		// 前台顯示訂單
 		if ("listOrder".equals(action)) {
 			Integer memId = Integer.valueOf(req.getParameter("memId"));
+//			Integer memId = (Integer) session.getAttribute("memId"); //之後改用這個
+//			if(memId==null) {
+//				//請先登入會員，跳轉到登入頁面
+//			}
 			List<CommodityOrderVO> list = commodityOrderService.getAllByMemId(memId);
 			session.setAttribute("memId", memId);
 			session.setAttribute("commodityOrderVOList", list);
@@ -96,6 +93,11 @@ public class OrderController extends HttpServlet {
 
 		}
 		if ("orderConfirm".equals(action)) {
+			LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = currentDate.format(formatter);
+			MailService mailService = new MailService();
+			MemberService memberService =new MemberService();
 			HashMap<String, String> errMsg = new HashMap<>();
 
 			String recipient = (String)req.getParameter("recipient");
@@ -124,13 +126,21 @@ public class OrderController extends HttpServlet {
 			CommodityOrderVO commodityOrderVO = new CommodityOrderVO(memId, 0, totalPrice, 0, totalPrice-0, recipient,
 					recipientAddress, phone);
 			Integer orderNo = commodityOrderService.insert(commodityOrderVO);
+//			String memMail = memberService.selectMem(memId).getMemEmail();
+			String messageContent =
+                    "訂單詳情:\n" +
+                    "訂單編號:" +orderNo+ "\n" +
+                    "收件人:"+ recipient+"\n" +
+                    "收件地址:"+recipientAddress+ "\n" +
+                    "購買日期:"+formattedDate+ "\n" +
+                    "_____________________\n"+
+                    "DIYLA感謝您的訂購，我們將盡快將商品寄出"
+                    ;
+			mailService.sendMail("t1993626@gmail.com", "訂購成功", messageContent);
 			commodityOrderDetailService.insert(orderNo, shoppingCartList);
 			//訂單生成清空購物車
 			shoppingCartService.clear(memId);
-//			RequestDispatcher dispatcher = req.getRequestDispatcher("/checkout/checkoutSucess.jsp");
-//			dispatcher.forward(req, res);
 			res.sendRedirect(req.getContextPath() + "/checkout/checkoutSucess.jsp");
-
 
 		}
 

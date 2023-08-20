@@ -11,6 +11,9 @@ public class CommodityOrderService {
 	public void updateStatus(Integer status, Integer orderNO) {
 		dao.updateStatus( status,  orderNO);
 	}
+	public void update(Integer status,Integer orderNo,String recipient,String recipientAddress,String phone) {
+		dao.update(status, orderNo,recipient,recipientAddress,phone);
+	}
 
 	public Integer insert(CommodityOrderVO commodityOrderVO) {
 		return dao.insert(commodityOrderVO);
@@ -37,16 +40,16 @@ public class CommodityOrderService {
 	public List<CommodityOrderVO> getAll() {
 		return dao.getAll();
 	}
-	//依訂單編號排序
-	public List<CommodityOrderVO> sortByOrderNo(){
-		String  sql = "SELECT * FROM commodity_order ORDER BY ORDER_NO";
-		
-		return dao.sortBy(sql);
-	}
-	//依訂單價格排序
-	public List<CommodityOrderVO> sortByActualPrice(){
-		String  sql = "SELECT * FROM commodity_order ORDER BY ACTUAL_PRICE";
-		return dao.sortBy(sql);
-	}
+//	//依訂單編號排序
+//	public List<CommodityOrderVO> sortByOrderNo(){
+//		String  sql = "SELECT * FROM commodity_order ORDER BY ORDER_NO";
+//		
+//		return dao.sortBy(sql);
+//	}
+//	//依訂單價格排序
+//	public List<CommodityOrderVO> sortByActualPrice(){
+//		String  sql = "SELECT * FROM commodity_order ORDER BY ACTUAL_PRICE";
+//		return dao.sortBy(sql);
+//	}
 }
  

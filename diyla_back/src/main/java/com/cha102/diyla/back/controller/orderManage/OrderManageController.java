@@ -67,8 +67,11 @@ public class OrderManageController extends HttpServlet {
 		if("editcomplete".equals(action)) {
 			Integer orderNo = Integer.valueOf(req.getParameter("orderNO"));
 			Integer status =Integer.valueOf(req.getParameter("orderStatus"));
-			commodityOrderService.updateStatus(status, orderNo);
-			List<CommodityOrderVO> list = commodityOrderService.getAll();
+			String recipient =req.getParameter("recipient");
+			String recipientAddress =req.getParameter("recipientAddress");
+			String phone =req.getParameter("phone");
+			commodityOrderService.update(status, orderNo,recipient,recipientAddress,phone);
+			List<CommodityOrderVO> list = commodityOrderService.getAll();	//??
 			session.setAttribute("commodityOrderVOList", list);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/ordermanage/ordermanage.jsp");
 			dispatcher.forward(req, res);

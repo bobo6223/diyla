@@ -25,7 +25,11 @@
 	href="${ctxPath}/css/bootstrap.css" />
 
 <link href="${ctxPath}/css/style.css" rel="stylesheet" />
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
 <link href="${ctxPath}/css/responsive.css" rel="stylesheet" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <style>
 body {
 	font-family: Arial, sans-serif;
@@ -62,15 +66,21 @@ th, td {
 }
 
 .swal-button-container {
-	display: flex;
 	justify-content: center;
+}
+
+.swal-footer {
+	text-align: center;
 }
 
 .heading {
 	width: 100%;
 	text-align: center;
 	margin-bottom: 20px;
-	font-size: 24px;
+	font-size: 30px;
+	padding:30px 10px;
+	background-color: #FFEEDD;
+	border-radius: 5px;
 }
 
 .status {
@@ -81,12 +91,12 @@ th, td {
 	background-color: #FFCC00; /* 未結帳的顏色 */
 }
 
-.status-paid {
-	background-color: #00CC00; /* 已付款的顏色 */
-}
-
 .status-processing {
 	background-color: #3399FF; /* 備貨中的顏色 */
+}
+
+.status-shipping {
+	background-color: #FF79BC;
 }
 
 .status-completed {
@@ -106,7 +116,9 @@ table {
 .tr_title {
 	background-color: #f2f2f2;
 }
-
+tr_title{
+background-color: olive;
+}
 .title th {
 	padding: 10px;
 	font-weight: bold;
@@ -177,6 +189,9 @@ div.goShopping {
 .noneOrder {
 	padding-bottom: 50px;
 }
+.orderTable{
+border: 1px solid black;
+}
 </style>
 </head>
 <body>
@@ -188,22 +203,22 @@ div.goShopping {
 		<c:choose>
 			<c:when test="${not empty commodityOrderVOList}">
 				<div id="orderTable">
-					<table>
+					<table id="memberOrder">
 						<thead>
 							<tr class="tr_title">
-								<th class="title"style="width:80px;">訂單編號</th>
-								<th class="title" style="width:100px;">訂單金額</th>
-								<th class="title"style="width:100px;">訂單狀態</th>
-								<th class="title" style="width:200px;">下單時間</th>
-								<th class="title">收件地址</th>
-								<th class="title" style="width:120px;">查看明細</th>
-								<th class="title" style="width:120px;">訂單處理</th>
+								<th class="title" style="width: 80px;">訂單編號</th>
+								<th class="title" style="width: 100px;">訂單金額</th>
+								<th class="title" style="width: 100px;">訂單狀態</th>
+								<th class="title" style="width: 150px;">下單時間</th>
+								<th class="title" style="width: 180px;">收件地址</th>
+								<th class="title" style="width: 120px;">查看明細</th>
+								<th class="title" style="width: 120px;">訂單處理</th>
 							</tr>
 						</thead>
-						<c:forEach var="orderVO" items="${commodityOrderVOList}"
-							varStatus="loop">
 
 							<tbody id="order-list">
+						<c:forEach var="orderVO" items="${commodityOrderVOList}"
+							varStatus="loop">
 								<tr class="order_content_title">
 									<td class="order_content">${orderVO.orderNO}</td>
 									<td class="order_content">${orderVO.actualPrice}</td>
@@ -211,7 +226,7 @@ div.goShopping {
 									<td class="order_content"><fmt:formatDate
 											value="${orderVO.orderTime}" pattern="yyyy-MM-dd HH:mm:ss" />
 									</td>
-									<td class="order_content">111</td>
+									<td class="order_content">${orderVO.recipientAddress}</td>
 									<td class="order_content" class="orderAction">
 										<form action="${ctxPath}/memberOrder/OrderController"
 											method="post">
@@ -236,8 +251,8 @@ div.goShopping {
 									</td>
 								</tr>
 
-							</tbody>
 						</c:forEach>
+							</tbody>
 
 					</table>
 				</div>
@@ -265,9 +280,9 @@ div.goShopping {
 		</c:choose>
 	</div>
 	<jsp:include page="../front_footer.jsp" />
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
 	<script>
 	$(document).ready(function() {
 		 $(".cancel_order").on("click", function(e) {
@@ -275,9 +290,18 @@ div.goShopping {
 					  let form = $(this).closest("form"); // 找到最近的父級 form
 					  var orderStatus = parseInt($(this).data('order-status'));
 					  console.log(orderStatus);
+					  if (orderStatus === 2) {
+						  swal({
+							    title: "商品已出貨，無法取消訂單",
+							    icon:"warning",
+							    buttonsStyling: false,
+							    confirmButtonClass: 'btn btn-primary btn-block'
+							});
+				            return;
+				        }
 					  if (orderStatus >= 3) {
 						  swal({
-							    title: "訂單狀態為已結案，無法取消訂單",
+							    title: "訂單已完成，無法取消訂單",
 							    icon:"warning",
 							    buttonsStyling: false,
 							    confirmButtonClass: 'btn btn-primary btn-block'
@@ -299,9 +323,9 @@ div.goShopping {
 
 		  
 		  const statusMapping = {
-			        "0": "未結帳",
-			        "1": "已付款",
-			        "2": "備貨中",
+			        "0": "訂單成立",
+			        "1": "備貨中",
+			        "2": "已出貨",
 			        "3": "已完成",
 			        "4": "已取消"
 			    };
@@ -313,19 +337,52 @@ div.goShopping {
 		        if (orderStatus === "0") {
 		            $(this).addClass("status-unpaid");
 		            
-		        } else if (orderStatus === "1") {
-		            $(this).addClass("status-paid");
-		        } else if (orderStatus === "2") {
+		        }  else if (orderStatus === "1") {
 		            $(this).addClass("status-processing");
+		        } else if (orderStatus === "2") {
+		            $(this).addClass("status-shipping");
 		        } else if (orderStatus === "3") {
 		            $(this).addClass("status-completed");
-		        } else if (orderStatus === "4") {
+		        }else if (orderStatus === "4") {
 		            $(this).addClass("status-canceled");
 		        }
 		    });
+
 		    });
 		 
-	</script>
+</script>
+	<script>
+		$(document).ready(function() {$("#memberOrder").DataTable(
+			{
+				"lengthMenu" : [  3,5, 10 ],
+				"searching" : true, //搜尋功能, 預設是開啟
+				"paging" : true, //分頁功能, 預設是開啟
+				"ordering" : true, //排序功能, 預設是開啟
+				"language" : {
+				"processing" : "處理中...",
+				"loadingRecords" : "載入中...",
+				"lengthMenu" : "顯示 _MENU_ 筆結果",
+				"zeroRecords" : "沒有符合的結果",
+				"info" : "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+				"infoEmpty" : "顯示第 0 至 0 筆結果，共 0 筆",
+				"infoFiltered" : "(從 _MAX_ 筆結果中過濾)",
+				"infoPostFix" : "",
+				"search" : "搜尋:",
+				"paginate" : {
+				"first" : "第一頁",
+				"previous" : "上一頁",
+				"next" : "下一頁",
+				"last" : "最後一頁"
+					},
+					"aria" : {
+						"sortAscending" : ": 升冪排列",
+						"sortDescending" : ": 降冪排列"
+													}
+												}
+
+											});
+						});
+</script>
 
 </body>
 </html>
