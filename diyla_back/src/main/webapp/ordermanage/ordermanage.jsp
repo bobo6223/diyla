@@ -86,10 +86,12 @@ box-sizing:border-box;
 	background-color: #3399FF; /* 備貨中的顏色 */
 }
 
-.status-shipping {
-	background-color: #FF79BC;
+.status-paid {
+	background-color: #A6FFA6; /*已付款的顏色*/
 }
-
+.status-shipping {
+	background-color: #FF79BC;	/*出貨*/
+}
 .status-completed {
 	background-color: #66FF66; /* 已完成的顏色 */
 }
@@ -289,10 +291,11 @@ table {
 		$(document).ready(function() {
 			const statusMapping = {
 				"0" : "訂單成立",
-				"1" : "備貨中",
-				"2" : "已出貨",
-				"3" : "已完成",
-				"4" : "已取消"
+				"1" : "已付款",
+				"2" : "備貨中",
+				"3" : "已出貨",
+				"4" : "已完成",
+				"5" : "已取消"
 			};
 			// 找到所有的訂單狀態欄位
 			$(".orderStatus").each(function() {
@@ -302,15 +305,17 @@ table {
 				if (orderStatus === "0") {
 					$(this).addClass("status-unpaid");
 
-				} else if (orderStatus === "1") {
-					$(this).addClass("status-processing");
-				} else if (orderStatus === "2") {
-					$(this).addClass("status-shipping");
-				} else if (orderStatus === "3") {
-					$(this).addClass("status-completed");
-				} else if (orderStatus === "4") {
-					$(this).addClass("status-canceled");
-				}
+				}else if (orderStatus === "1") {
+		            $(this).addClass("status-paid");
+		        }else if (orderStatus === "2") {
+		            $(this).addClass("status-processing");
+		        }else if (orderStatus === "3") {
+		            $(this).addClass("status-shipping");
+		        }else if (orderStatus === "4") {
+		            $(this).addClass("status-completed");
+		        }else if (orderStatus === "5") {
+		            $(this).addClass("status-canceled");
+		        }
 			});
 
 		});

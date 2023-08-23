@@ -34,6 +34,8 @@
 <link href="${ctxPath}/css/style.css" rel="stylesheet" />
 <!-- responsive style -->
 <link href="${ctxPath}/css/responsive.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
+
 <style>
 .mainContent {
 	width: 70%;
@@ -241,7 +243,7 @@ input[type="text"], input[type="tel"], select {
 			</div>
 			<input type="hidden" name="action" value="orderConfirm"
 				id="actionInput"> <input type="submit" class="confirmButton"
-				value="確認"> <a
+				value="確認" id="orderconfirm"> <a
 				href="${ctxPath}/shop/ShoppingCartServlet?action=getAll&memId=${memId}"
 				class="canceled">返回購物車</a>
 		</form>
@@ -261,6 +263,8 @@ input[type="text"], input[type="tel"], select {
 
 	<jsp:include page="../front_footer.jsp" />
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
+	
 	<script>
 		$(document).ready(function() {
 			const formContainer = document.querySelector('.form-container');
@@ -294,10 +298,20 @@ input[type="text"], input[type="tel"], select {
 				}
 			});
 
-			$("#paidByCard").click(function() {
-				
+			$("#paidByCard").click(function(event) {
+				if(!validateFormFields()){
+					event.preventDefault();
+				}
+				else{
 				document.getElementsByName("itemName")[0].value = "DIYLA商品一批";
 				document.getElementById("cardForm").submit();
+				}
+			});
+			
+			$("#orderconfirm").click(function(event) {
+				if(!validateFormFields()){
+					event.preventDefault();
+				}
 			});
 
 			 $("#recipientName, #recipientPhone, #recipientAddress").on("input", function() {
@@ -321,17 +335,29 @@ input[type="text"], input[type="tel"], select {
                 const phoneRegex = /^09\d{8}$/; // 電話號碼需以 "09" 開頭，總共 10 位數
                 
                 if (recipientName.trim() === "") {
-                    alert("請填寫收件人姓名");
+                	 Swal.fire({
+                         icon: 'error',
+                         title: '錯誤',
+                         text: '請填寫收件人姓名'
+                     });
                     return false;
                 }
                 
                 if (!phoneRegex.test(recipientPhone)) {
-                    alert("請填寫正確的電話號碼，需以 09 開頭且總共 10 位數");
+                	Swal.fire({
+                        icon: 'error',
+                        title: '錯誤',
+                        text: '請填寫正確的電話號碼，需以 09 開頭且總共 10 位數'
+                    });
                     return false;
                 }
                 
                 if (recipientAddress.trim() === "") {
-                    alert("請填寫收件人地址");
+                	Swal.fire({
+                        icon: 'error',
+                        title: '錯誤',
+                        text: '請填寫收件人地址'
+                    });
                     return false;
                 }
                 return true;
