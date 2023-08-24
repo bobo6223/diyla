@@ -198,6 +198,24 @@ div.goShopping {
 .orderTable {
 	border: 1px solid black;
 }
+.goTopButton {
+	z-index: 999;
+	position: fixed;
+	bottom: 20px;
+	 padding: 10px;
+	border: none;
+	outline: none;
+	background-color: #333;
+	color: white;
+	cursor: pointer;
+	border-radius: 4px;
+	 right: 20px;
+}
+
+.goTopButton:hover {
+	background-color: #555;
+
+}
 </style>
 </head>
 <body>
@@ -285,12 +303,28 @@ div.goShopping {
 			</c:otherwise>
 		</c:choose>
 	</div>
+	<button class="goTopButton">▲</button>
 	<jsp:include page="../front_footer.jsp" />
 	<script
 		src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script>
 	$(document).ready(function() {
+		
+		$(window).scroll(function() {
+			if ($(this).scrollTop() > 20) {
+				$(".goTopButton").fadeIn();
+			} else {
+				$(".goTopButton").fadeOut();
+			}
+		});
+
+		$(".goTopButton").click(function() {
+			$("html, body").animate({
+				scrollTop : 0
+			}, "slow");
+			return false;
+		});
 		 $(".cancel_order").on("click", function(e) {
 					e.preventDefault();
 					  let form = $(this).closest("form"); // 找到最近的父級 form
