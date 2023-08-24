@@ -1,9 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<jsp:include page="/index.jsp"/>
 <!DOCTYPE HTML PUBLIC>
 <HTML>
 <HEAD>
+<link rel="stylesheet" href="../css/style.css">
 <TITLE>form1.jsp</TITLE>
 <style>
   table#table-1 {

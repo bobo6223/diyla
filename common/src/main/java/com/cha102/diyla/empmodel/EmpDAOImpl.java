@@ -18,8 +18,11 @@ public class EmpDAOImpl implements EmpDAO {
     private static final String DELETE = "DELETE FROM employee WHERE EMP_ID=? ";
     private static final String CHECK_EMP_EMAIL_FOR_REGISTER = "SELECT count(1) FROM employee  WHERE EMP_EMAIL = ?";
     private static final String CHECK_FINAL_EMP_ACCOUNT_NUMBER = "SELECT EMP_ACCOUNT FROM employee ORDER BY EMP_ID DESC LIMIT 1;";
-    private static final String GET_ALL_STMT = "SELECT EMP_ID,EMP_NAME,EMP_ACCOUNT,EMP_PASSWORD,EMP_EMAIL,EMP_STATUS FROM employee order by EMP_ID";
+    private static final String GET_ALL_EMP = "SELECT EMP_ID,EMP_NAME,EMP_ACCOUNT,EMP_PASSWORD,EMP_EMAIL,EMP_STATUS FROM employee order by EMP_ID";
+    private static final String GET_ALL_EMP_COUNT = "SELECT COUNT(1) FROM employee WHERE EMP_ID !=1 order by EMP_ID";
     private static final String GET_ONE = "SELECT * FROM employee WHERE EMP_ID = ?";
+    // limit 1?,2? 代表從索引值1?開始查詢 查詢2?筆資料,此處設定用於分頁查詢筆數用
+    private static final String GET_ALL_EMP_LIST = "SELECT DISTINCT(e.EMP_ID),e.EMP_NAME,e.EMP_ACCOUNT,e.EMP_EMAIL,f.TYPE_FUN FROM diyla.employee e JOIN diyla.backstage_auth a ON e.emp_id = a.EMP_ID JOIN diyla.backstage_fun f ON a.AUTH_ID = f.AUTH_ID WHERE e.emp_id != 1 ORDER BY e.emp_ID LIMIT ?,?";
     public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     public static final String URL = "jdbc:mysql://localhost:3306/diyla?";
 
@@ -82,8 +85,6 @@ public class EmpDAOImpl implements EmpDAO {
                 se.printStackTrace();
             }
             throw new RuntimeException("A database error occured. " + rte.getMessage());
-        } finally {
-            closeResource(null, pstmt);
         }
         //此處調用了EmpDAOImpl的insertEmp方法,因此insertEmp最後返回的值getAutoEmpId等同於empId
         //此處getAutoEmpId返回值等同於empId,該返回值的insertEmp方法被EmpService調用
@@ -91,7 +92,7 @@ public class EmpDAOImpl implements EmpDAO {
     }
 
     @Override
-    public Integer insertBackStageAuthVO(List<BackStageAuthVO> backStageAuthVOList, Connection con) {
+    public void insertBackStageAuthVO(List<BackStageAuthVO> backStageAuthVOList, Connection con) {
 //      new出StringBuffer的物件 裡面放入SQL指令的字串
 
         PreparedStatement pstmt = null;
@@ -119,7 +120,6 @@ public class EmpDAOImpl implements EmpDAO {
             }
             throw new RuntimeException("A database error occured. " + rte.getMessage());
         }
-        return null;
     }
 
     @Override
@@ -250,7 +250,9 @@ public class EmpDAOImpl implements EmpDAO {
 //             ResultSet rs = pstmt.executeQuery()){
         try {
             con = ds.getConnection();
-            pstmt = con.prepareStatement(GET_ALL_STMT);
+//            pstmt = con.prepareStatement(GET_ALL_STMT);
+//          TODO 8/20 完成查詢員工列表功能
+            pstmt = con.prepareStatement(GET_ALL_EMP_LIST);
             rs = pstmt.executeQuery();
 //            con = DriverManager.getConnection(URL,USER,PASSWORD);
 //            pstmt = con.prepareStatement(GET_ALL_STMT);

@@ -75,7 +75,12 @@ public class EmpService {
             daoImpl.insertBackStageAuthVO(backStageAuthVOList, connection);
 
             connection.commit();
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             throw new RuntimeException(e);
         } finally {
             if (connection != null) {

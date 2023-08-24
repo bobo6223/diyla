@@ -63,7 +63,7 @@ public class EmpInsertController extends HttpServlet {
         } else {
             empService.empInsert(daoImpl, empVO, authfun);
             req.setAttribute("empVO", empVO);
-            String url = "/emp/insertShow.jsp";
+            String url = "/emp/emplistallshow.jsp";
             RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
             successView.forward(req, res);
         }
