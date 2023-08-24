@@ -2,34 +2,24 @@ package com.cha102.diyla.diyForum;
 
 import com.cha102.diyla.util.PageBean;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.Predicate;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class DiyForumService {
-
-
 	@Resource
 	private DiyForumRepository diyForumRepository;
-
-
 	public DiyForumVO addDF(DiyForumEntity diyForum) {
 
 		diyForum.setCreateTime(new Timestamp(System.currentTimeMillis()));
@@ -38,15 +28,12 @@ public class DiyForumService {
 
 		DiyForumVO diyForumVO = new DiyForumVO();
 		BeanUtils.copyProperties(diyForumEntity,diyForumVO);
-
-
 		return diyForumVO; // 添加評論並傳回VO
 
 	}
 
 	public DiyForumEntity updDF(DiyForumEntity diyForum) {
 		DiyForumEntity diyForumEntity = diyForumRepository.save(diyForum);
-
 		return diyForumEntity; //修改評論並傳回VO
 
 	}
@@ -115,6 +102,11 @@ public class DiyForumService {
 
 		return all;
 	}
+	public void deleteById(Integer id) {
+		diyForumRepository.deleteById(id);
+	}
 
 }
+
+
 

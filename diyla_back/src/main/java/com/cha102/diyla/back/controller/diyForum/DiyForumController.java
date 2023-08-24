@@ -1,27 +1,32 @@
-package com.cha102.diyla.back.controller.diyforum;
+package com.cha102.diyla.back.controller.diyForum;
 
 import com.cha102.diyla.diyForum.DiyForumEntity;
 import com.cha102.diyla.diyForum.DiyForumService;
 import com.cha102.diyla.diyForum.DiyForumVO;
+import com.cha102.diyla.diyForum.MemberEntity;
+import com.cha102.diyla.diyForum.MemberRepository;
 import com.cha102.diyla.util.PageBean;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 
 @RestController
 @RequestMapping("/diy/diy-forum")
 public class DiyForumController {
-
 	@Resource
 	DiyForumService service;
+//使用了@Resource註解，將MemberRepository這個數據存取物件注入到該類中，這個物件用於和會員資料庫進行交互。
+	@Resource
+	MemberRepository memberRepository;
 
 
 	@RequestMapping("/list")
@@ -32,23 +37,31 @@ public class DiyForumController {
 			@RequestParam(defaultValue = "1") Integer page,
 			@RequestParam(defaultValue = "10") Integer pageSize
 	) {
-		PageBean pageBean = new PageBean(page,pageSize);
+		PageBean pageBean = new PageBean(page, pageSize);
 		HashMap<String, String> errMsgs = new HashMap<>();
-
-
 // 設置分頁條件
 		Page<DiyForumEntity> all = service.getAll(diyNo, cSort, sSort, pageBean);
-
 // 將JSON格式回傳给前端
 		return all;
 	}
 
 	@RequestMapping("/add")
-	public DiyForumVO add(DiyForumEntity diyForum) {
+	public DiyForumVO add(DiyForumEntity diyForum, HttpSession httpSession) {
+		//TODO 請使用登錄後獲取的會員資訊，之後使用預設的
+		// MemberEntity memberEntity = (MemberEntity)httpSession.getAttribute("member");
+
+		// 這是預設的
+		MemberEntity memberEntity = memberRepository.findById(4).get();
+		diyForum.setCreateTime(new Timestamp(new Date().getTime()));
+		diyForum.setMemberEntity(memberEntity);
 		DiyForumVO diyForumVO = service.addDF(diyForum);
 		return diyForumVO;
 	}
 
+	@DeleteMapping("/delete/{id}")
+	public void delete(@PathVariable Integer id) {
+		service.deleteById(id);
+	}
 }
 
 

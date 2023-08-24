@@ -1,8 +1,22 @@
+<%@ page import="com.cha102.diyla.diyForum.MemberEntity" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!--JSP 標籤，用於設置網頁的語言和編碼方式-->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="zh-Hant">
+<%
+    //檢查使用者是否已經登入，如果尚未登入則會重新導向使用者到登入頁面。
+    //如果使用者已經登入，則會從 session 中獲取名為 "member" 的屬性並將其賦值給 memberEntity 變數。
+    MemberEntity memberEntity = null;
+    // 檢查 session 中是否存在登入資訊
+    // if (session.getAttribute("member") == null) {
+    //     // 未登入，重新導向到登入頁面
+    //     response.sendRedirect("login.jsp");
+    //     return;
+    // } else {
+    //     memberEntity = (MemberEntity) session.getAttribute("member");
+    // }
+%>
 
 <!-- 網頁的設定和樣式 css -->
 <head>
@@ -24,6 +38,8 @@
     <link rel="stylesheet" href="/diyla_front/diy/css/spacing.css">
     <link rel="stylesheet" href="/diyla_front/diy/css/style.css">
     <link rel="stylesheet" href="/diyla_front/diy/css/responsive.css">
+    <link href="//unpkg.com/layui@2.8.15/dist/css/layui.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -59,7 +75,7 @@ MENU DETAILS START
                         <div class="tab-pane fade" id="pills-home" role="tabpanel"
                              aria-labelledby="pills-home-tab" tabindex="0">
                             <div class="menu_det_description">
-                                <p>訂位前請詳讀資訊以確保您的權益.
+                                <p>訂位前請詳讀資訊以確保您的權益
                                 </p>
                                 <ul>
                                     <li>● 因安全考量，無論是否有大人陪同，都無法接待12歲以下小朋友。
@@ -75,20 +91,21 @@ MENU DETAILS START
                                     <li>● 費用依『甜點價格』收費。(無服務費)</li>
                                     <li>● 一份甜點價格限一人製作，其餘人數皆加收陪同費$100/人。</li>
                                 </ul>
-
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                    Earum itaque nesciunt dolor laudantium placeat sed velit
+                                    aspernatur, nobis quos quibusdam distinctio voluptatum officia
+                                    Beatae, dolorum ad ea deleniti ratione voluptatum similique
+                                    omnis voluptas tempora optio soluta</p>
 
                                 <ul>
-
+                                    <li>Reiciendis blanditiis architecto. Debitis nesciunt
+                                        inventore voluptate
                                     <li>Lorem ipsum dolor sit amet consectetur adipisicing
                                         elit Doloribus.
                                     </li>
-                                    <li>Dolor sit amet consectetur adipisicing elit. Earum
-                                        itaque nesciunt.
-                                    </li>
 
                                 </ul>
-                                <p>Lorem ipsum dolor, sit amet consectetur adipisicing
-                                    elit. Doloribus consectetur ullam in? Beatae, dolorum ad ea .</p>
+
                             </div>
                         </div>
 
@@ -145,7 +162,7 @@ MENU DETAILS START
                                                         type="hidden" name="diyGrade" value="0">
 
                                                     <div class="col-xl-12">
-                                                        <textarea rows="3" placeholder="請輸入評論內容"
+                                                        <textarea rows="5" placeholder="請輸入評論內容"
                                                                   name="artiCont"></textarea>
                                                     </div>
                                                     <div class="col-12">
@@ -168,6 +185,15 @@ MENU DETAILS START
 
 <!--=============================
 MENU DETAILS END
+==============================-->
+
+
+<!--=============================
+FOOTER START
+==============================-->
+
+<!--=============================
+FOOTER END
 ==============================-->
 
 
@@ -213,6 +239,7 @@ SCROLL BUTTON END
 
 
 <!-- 自訂的 JavaScript 腳本 -->
+
 <script>
 
     // 自訂的 JavaScript 腳本，處理評論和表單相關的操作
@@ -254,23 +281,50 @@ SCROLL BUTTON END
             for (var i = 0; i < data.content.length; i++) {
                 var item = data.content[i];
                 html += '<div class="tf__single_comment">';
-                html += '<img src="/diy/picture/client_1.png" alt="review" class="img-fluid">';
+//根據item.memberEntity.memGender的值來判斷評論作者的性別,1是男,2是女
+                if (item.memberEntity.memGender == 1) {
+                    html += '<img src="/diyla_front//images/Male.png" alt="review" class="img-fluid">';
+                } else if (item.memberEntity.memGender == 2) {
+                    html += '<img src="/diyla_front//images/Female.png" alt="review" class="img-fluid">';
+                } else {
+                    html += '<img src="/diy/picture/client_1.png" alt="review" class="img-fluid">';
+
+                }
                 html += '<div class="tf__single_comm_text">';
-                html += '<h3>' + item.memName + '</h3>';
+                //插入評論作者的名字
+                html += '<h3>' + item.memberEntity.memName + '</h3>';
+                //插入評論的創建時間，並設置文字顏色為橘色。
                 html += '<h6 style="color: #ff7c08">' + item.createTime + '</h6>';
+                //根據item.diyGrade的值，使用迴圈生成相應數量的星星圖示，表示評分。
                 html += '<span class="rating">';
                 for (var j = 0; j < item.diyGrade; j++) {
                     html += '<i class="fas fa-star"></i>';
                 }
                 html += '</span>';
+                //插入評論的內容。
                 html += '<p>' + item.artiCont + '</p>';
+
+
+                //先註釋掉，然後在登入後取消註釋，這樣就可以使用了
+                <%--var memId = '<%=memberEntity.getMemId() %>';--%>
+                <%--                if (memId == item.memberEntity.memId --%>
+                <%--                預設值4--%>
+                if (item.memberEntity.memId == 4) {
+                    // html += '<div>';
+                    html += '<button type="button" class="layui-btn layui-btn-sm layui-btn-normal" onclick=\"deleteById(' + item.artiNo + ')\"><i class="layui-icon layui-icon-delete"></i> 删除</button>'
+                    // html += '</div>';
+                }
+
                 html += '</div>';
+
+
                 html += '</div>';
+
             }
             document.getElementById("count").innerText = data.totalElements + " 評論";
             // commentContainer.innerHTML = html;
 
-            // 增加分頁
+            // 添加分頁
             // var paginationContainer = document.querySelector(".tf__pagination");
             var currentPage = data.number + 1;   // 當前頁數
             var totalPages = data.totalPages;    // 總頁數
@@ -320,67 +374,72 @@ SCROLL BUTTON END
 
     // 獲取所有星星
     var stars = document.querySelectorAll('.rating i');
-    //當使用者點擊某個星星時，該星星及其之前的星星都會被設定為選中樣式（改變顏色），而該星星之後的星星都會被設定為未選中樣式
+    // 遍歷每個星星元素，為其添加點擊事件監聽器
     stars.forEach(function (star, index) {
         star.addEventListener('click', function () {
-            stars.forEach(function (s, sIndex) {
-                if (sIndex <= index) {
-                    s.classList.add('selected');
-                } else {
-                    s.classList.remove('selected');
-                }
-            });
-        });
-    });
-
-    //獲取所有星星
-    var stars = document.querySelectorAll('.rating i');
-
-    // 遍歷每個星星元素，為其添加點擊事件監聽器,
-    // 為每個星星元素添加一個 "click" 點選事件監聽器。當使用者點選某個星星時，指定的事件處理函式將被執行。
-    stars.forEach(function (star, index) {
-        star.addEventListener('click', function () {
-            // 讓前面的星星都亮起來
+            // 將選中星星及其之前的星星都恆亮顯示
             for (var i = 0; i <= index; i++) {
                 stars[i].classList.add('selected');
             }
-            // 讓後面的星星恢復本來的樣式
+
+            // 其他未點擊的星星元素恢復原來的顏色
             for (var i = index + 1; i < stars.length; i++) {
                 stars[i].classList.remove('selected');
             }
-            // 將選取的索引位置加 1，因陣列的索引從 0 開始，星星評分中是 1 到 5 星。
-            var selectedIndex = Array.from(stars).indexOf(this);
-            console.log("Selected Index:", selectedIndex);
-            starIndex = selectedIndex + 1;
+
+            // 更新 starIndex
+            starIndex = index + 1;
         });
     });
-    //處理表單提交，將評論數據通過 AJAX 請求傳送到伺服器，然後根據伺服器的回應處理相應的操作。
-    //當使用者提交表單時，這個函式將被呼叫。
+    function deleteById(id) {
+        // 建立 XMLHttpRequest 物件
+        var xhr = new XMLHttpRequest();
+
+        // 設定請求方法和 URL
+        var url = "http://localhost:8081/diyla_back/diy/diy-forum/delete/" + id; // 替換為實際的刪除介面 URL
+        xhr.open("DELETE", url, true);
+
+        // 設定請求完成後的回調函式
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // 請求成功，在這裡處理成功的邏輯
+                console.log("刪除成功");
+                getList(null);
+            } else {
+                // 請求失敗，在這裡處理失敗的邏輯
+                console.log("刪除失敗");
+            }
+        };
+
+        // 設定請求失敗時的回調函式
+        xhr.onerror = function () {
+            // 在這裡處理請求異常的邏輯
+            console.log("請求異常");
+        };
+
+        // 發送請求
+        xhr.send();
+    }
+
+
     function submitForm(event) {
         // 阻止預設提交表單行為
         event.preventDefault();
 
         // 獲取表單數據
-        // FormData 物件來獲取表單中的數據。event.target 是觸發事件的表單元素。
         var formData = new FormData(event.target);
-        //從表單數據中獲取名為 "diyNo" 的值。
         var diyNo = formData.get("diyNo");
         var diyGrade = starIndex;
-        //獲取使用者輸入的評論內容
         var artiCont = formData.get("artiCont");
-        //預設一個的會員 ID:4
+        //TODO
         var memberId = 4;
 
-        //創建一個新的 XMLHttpRequest 物件，用於發送 AJAX 請求。
         var xhr = new XMLHttpRequest();
-        //指定要發送請求的 URL
         var url = 'http://localhost:8081/diyla_back/diy/diy-forum/add'; // Servlet URL
         var params = 'diyNo=' + diyNo + "&diyGrade=" + diyGrade + "&artiCont=" + artiCont + "&memId=" + memberId; // 請求參數，以鍵值對形式拼接
         xhr.open('GET', url + '?' + params, true);
         xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 
-        //函式內部，檢查狀態是否為 4（表示請求已完成）且狀態碼是否為 200（表示成功）。
-        // 如果滿足這些條件，則解析伺服器的回應文本，處理相應的邏輯並呼叫 getList(null); 來重新獲取評論列表。
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 // 請求成功後處理邏輯
@@ -393,31 +452,29 @@ SCROLL BUTTON END
     }
 
 
-    let sortBy = 'date'; //預設按留言新舊排序
-    let sortDirection = 'new'; //預設按照新評論排序
+    let sortBy = 'date'; // 預設按照留言新舊排序
+    let sortDirection = 'new';
 
     function toggleSort(sortType, direction) {
         sortBy = sortType;
         sortDirection = direction;
 
-        // 排序選項將以橘色顯示 留言: 新/舊 , 評分:高/低
+        // 修改文字顏色
         document.getElementById('sortByDateNew').style.color = direction === 'new' ? '#ff7c08' : 'initial';
         document.getElementById('sortByDateOld').style.color = direction === 'old' ? '#ff7c08' : 'initial';
         document.getElementById('sortByRatingHigh').style.color = direction === 'high' ? '#ff7c08' : 'initial';
         document.getElementById('sortByRatingLow').style.color = direction === 'low' ? '#ff7c08' : 'initial';
-        // 排序邏輯
-        // 檢查變數 sortBy 的值。如果 sortBy 等於 'date'，則調用 sortByDate() 函式來執行根據日期排序的相關邏輯。
-        // 如果 sortBy 等於 'rating'，則調用 sortByRating() 函式來執行根據評分排序的相關邏輯。
+
+        // 執行相應的排序邏輯
         if (sortBy === 'date') {
             sortByDate();
-            //根據星星數多寡排序
         } else if (sortBy === 'rating') {
             sortByRating();
         }
     }
 
     function sortByDate() {
-        // 留言新舊排序邏輯
+        // 執行按留言新舊排序的邏輯
         if (sortDirection === 'new') {
             sortParam = "&cSort=DESC"
             getList(sortParam);
@@ -429,7 +486,7 @@ SCROLL BUTTON END
     }
 
     function sortByRating() {
-        // 按評分星數排序邏輯
+        // 執行按評分星數排序的邏輯
         if (sortDirection === 'high') {
             sortParam = "&sSort=DESC"
             getList("&sSort=DESC");
@@ -440,9 +497,9 @@ SCROLL BUTTON END
         }
     }
 
+
 </script>
 <style>
-
     .rating i.selected {
         color: red !important;
     / / 選中時的顏色，可根據需要自行修改
