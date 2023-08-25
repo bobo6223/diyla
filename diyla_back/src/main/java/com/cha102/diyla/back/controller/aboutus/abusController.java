@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet("/aboutusContro")
+@WebServlet("/aboutus/aboutusContro")
 public class abusController extends HttpServlet {
 
     public void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -37,17 +37,13 @@ public class abusController extends HttpServlet {
         String content = datas.getString("content");
         String image = datas.getString("image");
 
-
-        System.out.println("Content: " + content);
-        System.out.println("Image: " + image);
-
         if (content != null) {
             jedis.set("content", content);
         }
         if (image != null) {
             jedis.set("image", image);
         }
-
+        jedis.close();
         res.getWriter().write("{\"status\": \"success\"}");
     }
 }

@@ -6,6 +6,7 @@
     Jedis jedis = new Jedis("localhost", 6379);
     String content = jedis.get("content");
     String image_src = jedis.get("image");
+    jedis.close();
 %>
 
 
