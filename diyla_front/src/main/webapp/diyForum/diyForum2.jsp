@@ -306,9 +306,9 @@ SCROLL BUTTON END
 
 
                 //先註釋掉，然後在登入後取消註釋，這樣就可以使用了
-                <%--var memId = '<%=memberEntity.getMemId() %>';--%>
-                <%--                if (memId == item.memberEntity.memId --%>
-                <%--                預設值4--%>
+                // <%--var memId = '<%=memberEntity.getMemId() %>';--%>
+                // <%--                if (memId == item.memberEntity.memId --%>
+                // <%--                預設值4--%>
                 if (item.memberEntity.memId == 4) {
                     // html += '<div>';
                     html += '<button type="button" class="layui-btn layui-btn-sm layui-btn-normal" onclick=\"deleteById(' + item.artiNo + ')\"><i class="layui-icon layui-icon-delete"></i> 删除</button>'
@@ -502,7 +502,7 @@ SCROLL BUTTON END
 <style>
     .rating i.selected {
         color: red !important;
-    / / 選中時的顏色，可根據需要自行修改
+    
     }
 
 

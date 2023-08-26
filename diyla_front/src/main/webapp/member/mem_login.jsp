@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.cha102.diyla.member.*"%>
+<% MemVO memVO = (MemVO) request.getAttribute("memVO");%>
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -144,35 +146,12 @@
             color: #B26021;
         }
     </style>
->>>>>>> member
+
 </head>
 <body>
 
 	<jsp:include page="../front_header.jsp"/>
-<<<<<<< HEAD
-	<h4>會員登入</h4>
-	<div>
-    <c:if test="${not empty exMsgs}">
-        <div style="color:red">
-        <c:forEach var="message" items="${exMsgs}">
-        ${message}
-        </c:forEach>
-        </div>
-    </c:if>
-	<form method="post" action="login">
-		<label>請輸入帳號：</label>
-		<input type="email" name="user" placeholder="請輸入信箱"><br>
-		<label>請輸入密碼：</label>
-		<input type="password" name="password" placeholder="請輸入6-12字(含英數字)"><br>
-		<button type="submit" value="login">登入</button>
-		<button type="button">前往註冊</button><br>
-		<a href="">忘記密碼
 
-	</form>
-    </div>
-
-	<jsp:include page="../front_footer.jsp"/>
-=======
     <div class="title">
         <h4>會員登入</h4>
         <c:if test="${not empty exMsgs}">
@@ -196,16 +175,17 @@
                 <button type="submit" value="login">登入</button><br>
                 <br>
                 <p>or</p>
-                <a href="" class="forget">忘記密碼</a>
+                <a href="${ctxPath}/member/forgetPw.jsp" class="forget">忘記密碼</a>
                 <span>|</span>
-                <a href="" class="reg">前往註冊</a><br>
+                <a href="${ctxPath}/member/mem_register.jsp" class="reg">前往註冊</a><br>
 
-            </form>
+
+
         </div>
     </div>
 
 
 
->>>>>>> member
+
 </body>
 </html>

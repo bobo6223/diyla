@@ -38,3 +38,8 @@ common/src/main/resources/application-jdbc.yml
 common/src/main/resources/application.yml
 diyla_front/src/main/webapp/diyForum/diyForumResult.jsp
 diyla_front/src/main/webapp/diyForum/diyForum.jsp
+/.metadata/
+common/src/main/resources/application-jdbc.yaml
+common/bin/src/main/resources/application.yaml
+
+diyla_front/src/main/resources/application-jdbc.yaml

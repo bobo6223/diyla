@@ -21,6 +21,7 @@ public class PageBean {
 	}
 
 	//getPage()、setPage(int page): 獲取和設置目前頁碼。
+
 	public int getPage() {
 		return page;
 	}
