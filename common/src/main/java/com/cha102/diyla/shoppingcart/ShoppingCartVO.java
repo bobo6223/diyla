@@ -1,11 +1,6 @@
 package com.cha102.diyla.shoppingcart;
 
-import java.io.Serializable;
-import java.util.List;
-
-import com.cha102.diyla.commodityModel.CommodityVO;
-
-public class ShoppingCartVO implements Serializable {
+public class ShoppingCartVO  {
 	private Integer memId;
 	private Integer comNo;
 	private Integer comAmount;
