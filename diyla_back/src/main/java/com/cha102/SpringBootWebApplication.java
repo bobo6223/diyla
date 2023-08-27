@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 })
 @EnableJpaRepositories(value = {
         "com.cha102.diyla.**"
+
 })
 @EntityScan("com.cha102.diyla.**")
 
