@@ -16,7 +16,7 @@
     <meta name="description" content=""/>
     <meta name="author" content=""/>
     <link rel="shortcut icon" href="images/DIYLA_cakeLOGO.png" type="image/x-icon">
-    <link rel="stylesheet" href="/diyla_front/diy/css/all.min.css">
+    <link rel="stylesheet" href="diy/css/all.min.css">
     <link rel="stylesheet" href="diy/css/bootstrap.min.css">
     <link rel="stylesheet" href="diy/css/slick.css">
     <link rel="stylesheet" href="diy/css/nice-select.css">

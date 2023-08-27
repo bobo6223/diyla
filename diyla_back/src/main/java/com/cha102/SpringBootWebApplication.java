@@ -10,9 +10,13 @@ import org.springframework.context.annotation.ComponentScans;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScans({
-        @ComponentScan("com.cha102.diyla.**")
+        @ComponentScan("com.cha102.diyla")
 })
-@EnableJpaRepositories(basePackages = {"com.cha102.diyla.**"})
+@EnableJpaRepositories(value = {
+        "com.cha102.diyla.diyforum",
+        "com.cha102.diyla.diyreserveresult",
+        "com.cha102.diyla.diycate",
+})
 @EntityScan("com.cha102.diyla.**")
 
 @SpringBootApplication
