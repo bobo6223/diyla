@@ -74,12 +74,7 @@
             <version>2.15.0</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>commons-validator</groupId>
-            <artifactId>commons-validator</artifactId>
-            <version>1.7</version>
-            <scope>compile</scope>
-        </dependency>
+      
         <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <dependency>
             <groupId>com.alibaba</groupId>
