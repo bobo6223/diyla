@@ -1,4 +1,4 @@
-package com.cha102.diyla.back.controller.diyCate;
+package com.cha102.diyla.back.controller.diycate;
 
 import com.cha102.diyla.diycate.DiyCateEntity;
 import com.cha102.diyla.diycate.DiyCateService;
@@ -36,7 +36,7 @@ public class DiyCateController {
     }
 
     @PostMapping
-    public void saveDiyCate(@RequestParam("diyCate") String diyCate,
+    public void saveDiyCate(@RequestParam("diycate") String diyCate,
     @RequestParam("image") MultipartFile imageFile) throws IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();

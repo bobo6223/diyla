@@ -1,4 +1,4 @@
-package com.cha102.diyla.diyForum;
+package com.cha102.diyla.diyforum;
 
 import java.util.List;
 import com.cha102.diyla.util.PageBean;
