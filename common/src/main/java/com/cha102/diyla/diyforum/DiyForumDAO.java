@@ -1,4 +1,4 @@
-package com.cha102.diyla.diyForum;
+package com.cha102.diyla.diyforum;
 import com.cha102.diyla.util.PageBean;
 import org.springframework.util.StringUtils; //?????
 import java.sql.Connection;
@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 public class DiyForumDAO implements DiyForumDAO_Interface {
@@ -17,13 +16,13 @@ public class DiyForumDAO implements DiyForumDAO_Interface {
 	private static final String INSERT_STMT = "INSERT INTO diy_forum (MEM_ID,DIY_NO,ARTI_CONT,DIY_GRA) VALUES ( ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT ARTI_NO,MEM_ID,DIY_NO,ARTI_CONT,DIY_GRA FROM diy_forum order by ARTI_NO";
 	private static final String GET_ALL_STMT_BY_DIY_NO = "SELECT ARTI_NO,df.MEM_ID as MEM_ID,DIY_NO,ARTI_CONT,DIY_GRA,mem.MEM_NAME as MEM_NAME FROM diy_forum df left join member mem on df.MEM_ID = mem.MEM_ID where df.DIY_NO = ?";
-//使用左連接（left join），將 "diy_forum" 表格與 "member" 表格聯結，以便取得關聯會員名稱（MEM_NAME）的評論資訊。
+	//使用左連接（left join），將 "diy_forum" 表格與 "member" 表格聯結，以便取得關聯會員名稱（MEM_NAME）的評論資訊。
 	private static final String GET_ALL_COUNT = "SELECT count(1) FROM diy_forum where DIY_NO = ?";
-//用於計算特定 DIY 編號（DIY_NO）的評論總數。
+	//用於計算特定 DIY 編號（DIY_NO）的評論總數。
 	private static final String GET_ONE_STMT = "SELECT ARTI_NO,MEM_ID,DIY_NO,ARTI_CONT,DIY_GRA FROM diy_forum where ARTI_NO = ?";
 	private static final String DELETE = "DELETE FROM diy_forum where ARTI_NO = ?";
 	private static final String UPDATE = "UPDATE diy_forum set MEM_ID = ?,DIY_NO =?,ARTI_CONT =?,DIY_GRA =? where ARTI_NO = ?";
-// 新增
+	// 新增
 	@Override
 	public void insert(DiyForumVO DiyForumVO) {
 		Connection con = null;
@@ -61,7 +60,7 @@ public class DiyForumDAO implements DiyForumDAO_Interface {
 			}
 		}
 	}
-// 修改
+	// 修改
 	@Override
 	public void update(DiyForumVO DiyForumVO) {
 		Connection con = null;
@@ -100,7 +99,7 @@ public class DiyForumDAO implements DiyForumDAO_Interface {
 			}
 		}
 	}
-// 刪除
+	// 刪除
 	@Override
 	public void delete(Integer artiNo) {
 		Connection con = null;
@@ -135,7 +134,7 @@ public class DiyForumDAO implements DiyForumDAO_Interface {
 			}
 		}
 	}
-// 查詢單筆
+	// 查詢單筆
 	@Override
 	public DiyForumVO findByPrimaryKey(Integer artiNo) {
 		DiyForumVO DiyForumVO = null;
@@ -149,7 +148,7 @@ public class DiyForumDAO implements DiyForumDAO_Interface {
 			pstmt.setInt(1, artiNo);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				
+
 				DiyForumVO = new DiyForumVO();
 				DiyForumVO.setArtiNo(rs.getInt("ARTI_NO"));
 				DiyForumVO.setMemId(rs.getInt("MEM_ID"));
@@ -189,7 +188,7 @@ public class DiyForumDAO implements DiyForumDAO_Interface {
 		}
 		return DiyForumVO;
 	}
-// 查詢多筆
+	// 查詢多筆
 	@Override
 	public List<DiyForumVO> getAll() {
 		List<DiyForumVO> list = new ArrayList<DiyForumVO>();
@@ -331,10 +330,10 @@ public class DiyForumDAO implements DiyForumDAO_Interface {
 			pstmt.setInt(1,diyNo);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
-					int count = rs.getInt(1);
-					System.out.println("Total records: " + count);
-					return count;
-				}
+				int count = rs.getInt(1);
+				System.out.println("Total records: " + count);
+				return count;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("資料庫錯誤。");
@@ -362,5 +361,5 @@ public class DiyForumDAO implements DiyForumDAO_Interface {
 			}
 		}
 		return 0;
-}
+	}
 }
