@@ -2,6 +2,7 @@ package com.cha102.diyla.empmodel;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cha102.diyla.enums.AuthFunEnum;
+import com.cha102.diyla.mapper.MainDataBaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ public class EmpSpringServiceImpl implements EmpSpringService {
 
     @Autowired
     private EmpJPADAO empJPADAO;
+
+//    @Autowired
+//    private MainDataBaseMapper mainDataBaseMapper;
 
     @Override
     public String getAllEmp(JSONObject jsonObject) {
@@ -41,6 +45,21 @@ public class EmpSpringServiceImpl implements EmpSpringService {
         returnJSONObject.put("empList", empDTOList);
         return JSONObject.toJSONString(returnJSONObject);
     }
+
+    @Override
+    public String changeEmpStatus(JSONObject jsonObject) {
+        int empId = jsonObject.getIntValue("empId");
+        Boolean empStatus = jsonObject.getBooleanValue("empStatus");
+        int changeEmpStatusNumber = empJPADAO.changeEmpStatus(empId, jsonObject.getIntValue("empStatus"));
+        JSONObject returnJSONObject = new JSONObject();
+        returnJSONObject.put("empStatus", empStatus);
+        if (changeEmpStatusNumber > 0) {
+            return JSONObject.toJSONString(returnJSONObject);
+        }else{
+            return "";
+        }
+    }
+
 
     public static void main(String[] args) {
         List<String> list = new ArrayList<>();

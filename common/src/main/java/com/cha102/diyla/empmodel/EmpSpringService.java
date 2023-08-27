@@ -7,4 +7,6 @@ import java.util.List;
 public interface EmpSpringService {
 
         String getAllEmp(JSONObject jsonObject);
+
+        String changeEmpStatus(JSONObject jsonObject);
 }

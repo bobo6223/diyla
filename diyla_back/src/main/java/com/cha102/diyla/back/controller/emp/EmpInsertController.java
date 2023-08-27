@@ -8,15 +8,21 @@ import org.springframework.util.ObjectUtils;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 @WebServlet("/emp/empInsert")
+//fileSizeThreshold = 0 * 1024 * 1024, // 檔案大小閾值，超過這個大小的檔案會被寫入磁碟，否則存儲在記憶體中
+// maxFileSize = 1 * 1024 * 1024,      // 單個檔案的最大大小，這裡設定為 1MB
+//maxRequestSize = 10 * 1024 * 1024   // 整個 HTTP 請求的最大大小，包括所有檔案和其他表單數據，這裡設定為 10MB
+@MultipartConfig(fileSizeThreshold = 0 * 1024 * 1024, maxFileSize = 1 * 1024 * 1024, maxRequestSize = 10 * 1024 * 1024)
 public class EmpInsertController extends HttpServlet {
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -32,6 +38,12 @@ public class EmpInsertController extends HttpServlet {
         String email = req.getParameter("email");
         String statusStr = req.getParameter("status");
         String authfun = req.getParameter("funcClass");
+        Part picPart = req.getPart("upFiles");
+        byte[] pic = null;
+        if(!ObjectUtils.isEmpty(picPart)){
+            pic = picPart.getInputStream().readAllBytes();
+        }
+
         /** status 一開始傳入值為字串
          * 因此設條件式statusSTr如果不為空值
          *則透過valueOf將true/false轉為整數1,0
@@ -50,7 +62,7 @@ public class EmpInsertController extends HttpServlet {
         // send the ErrorPage view.
         EmpService empService = new EmpService();
         EmpDAO daoImpl = new EmpDAOImpl();
-        EmpVO empVO = empService.insertValidEmpParam(daoImpl, errorMsgs, name, account, password, email, status);
+        EmpVO empVO = empService.insertValidEmpParam(pic, daoImpl, errorMsgs, name, account, password, email, status);
 
 
         if (!ObjectUtils.isEmpty(errorMsgs)) {
@@ -63,7 +75,7 @@ public class EmpInsertController extends HttpServlet {
         } else {
             empService.empInsert(daoImpl, empVO, authfun);
             req.setAttribute("empVO", empVO);
-            String url = "/emp/emplistallshow.jsp";
+            String url = "/emp/empShowAll.jsp";
             RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
             successView.forward(req, res);
         }

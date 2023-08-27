@@ -117,7 +117,7 @@ public class EmpService {
     }
 
 
-    public EmpVO insertValidEmpParam(EmpDAO daoImpl, List<String> errorMsgs, String empName, String empAccount, String empPassword,
+    public EmpVO insertValidEmpParam(byte[] empPic, EmpDAO daoImpl, List<String> errorMsgs, String empName, String empAccount, String empPassword,
                                      String empEmail, Boolean empStatus) {
         // 驗證
         if (ObjectUtils.isEmpty(empName)) {
@@ -158,7 +158,7 @@ public class EmpService {
 
             errorMsgs.add("請輸入管理員狀態");
         }
-        return new EmpVO(empName, empAccount, empPassword, empEmail, empStatus);
+        return new EmpVO(empName, empPic, empAccount, empPassword, empEmail, empStatus);
 //       此處為call by reference ,不需return errorMsgs但有透過記憶體位置有操作到heap的物件
     }
 
