@@ -23,6 +23,7 @@ public class CommodityUpdateFilter implements Filter {
             //將類別編號當key，類別名稱當Value放進HashMap中
             classNameMap.put(commodityClassVO.getComClassNo(), commodityClassVO.getComClassName());
         }
+        // 測試
         request.setAttribute("classNameMap", classNameMap);
         request.setAttribute("classNameMapSize", classNameMap.size());
         filterChain.doFilter(servletRequest,servletResponse);
