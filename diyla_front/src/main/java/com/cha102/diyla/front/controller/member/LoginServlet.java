@@ -33,29 +33,6 @@ public class LoginServlet extends HttpServlet {
         MemberService memSer = new MemberService();
         HttpSession session = req.getSession();
         //登入
-<<<<<<< HEAD
-        String user = req.getParameter("user");
-        String password = req.getParameter("password");
-        MemVO memVO = memSer.login(exMsgs,user,password);
-        if (!exMsgs.isEmpty()){
-            req.setAttribute("memVO",memVO);
-            RequestDispatcher failure = req.getRequestDispatcher("/member/mem_login.jsp");
-            failure.forward(req,res);
-        } else {
-            String url = "/";
-            HttpSession session = req.getSession();
-            Integer memId =memVO.getMemId();
-            session.setAttribute("memVO", memVO);
-            session.setAttribute("memId", memId);
-
-            try {
-                String location = (String) session.getAttribute("location");
-                if (location != null) {
-                    session.removeAttribute("location"); // 看看有無來源網頁
-                    // (-->如有來源網頁:則重導至來源網頁)
-                    res.sendRedirect(location);
-                    return;
-=======
         if("login".equals(action)){
             String user = req.getParameter("user");
             String password = req.getParameter("password");
@@ -79,7 +56,7 @@ public class LoginServlet extends HttpServlet {
                         return;
                     }
                 } catch (Exception ignored) {
->>>>>>> main
+//>>>>>>> main
                 }
                 res.sendRedirect(req.getContextPath()+"/index.jsp");
 
