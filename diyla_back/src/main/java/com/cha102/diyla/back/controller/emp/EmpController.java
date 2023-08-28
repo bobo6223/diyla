@@ -6,9 +6,17 @@ import com.cha102.diyla.empmodel.EmpSpringService;
 import com.cha102.diyla.empmodel.EmpVO;
 import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController //可以直接返回JSON格式 也是component的一種
 public class EmpController {
@@ -17,8 +25,8 @@ public class EmpController {
 //  介面被入Autowired時,有實作該介面的類別其方法都可以被呼叫
     @Autowired
     private EmpSpringService empSpringService;
-//    @Autowired
-//    private EmpJPADAO empJPADAO;
+    @Autowired
+    private EmpJPADAO empJPADAO;
 
 //  限定用post方法映射到指定URL做請求 ,以處理網頁請求和回應
     @PostMapping("/emp/getAllEmpList") // 等同於@webServlet = doPost
@@ -34,6 +42,11 @@ public class EmpController {
         return  empSpringService.changeEmpStatus(jsonObject);
 
     }
+    @PostMapping("/emp/login")
+    public void getEmpLoginValue(@RequestParam("empAccount") String empAccount, @RequestParam("empPassword") String empPassword, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        empSpringService.validEmpLogin(empAccount,empPassword, req, resp);
+    }
+
 //  示範用SpringDataJPA 取得資料
 //  findAll方法即為
 //    @GetMapping("/emp/test")

@@ -1,5 +1,6 @@
 package com.cha102.diyla.empmodel;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,11 @@ public interface EmpJPADAO extends JpaRepository<EmpVO, Long> {
            value = "UPDATE diyla.employee SET EMP_STATUS = :empStatus WHERE EMP_ID = :empId")
 //    int為返回修改筆數共幾筆
     int changeEmpStatus(@Param("empId") Integer empId, @Param("empStatus")Integer empStatus);
+
+
+
+    @Query(nativeQuery = true,
+            value = "SELECT DISTINCT f.TYPE_FUN, a.EMP_ID FROM diyla.backstage_auth a join diyla.backstage_fun f on a.AUTH_ID = f.AUTH_ID WHERE a.EMP_ID = (SELECT EMP_ID FROM diyla.employee WHERE EMP_ACCOUNT = ?1 AND EMP_PASSWORD = ?2)")
+    JSONObject validEmpLogin(String empAccount, String empPassword);
+
 }

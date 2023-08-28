@@ -2,13 +2,22 @@ package com.cha102.diyla.empmodel;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cha102.diyla.enums.AuthFunEnum;
-import com.cha102.diyla.mapper.MainDataBaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.InternalResourceView;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Filter;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,11 +64,36 @@ public class EmpSpringServiceImpl implements EmpSpringService {
         returnJSONObject.put("empStatus", empStatus);
         if (changeEmpStatusNumber > 0) {
             return JSONObject.toJSONString(returnJSONObject);
-        }else{
+        } else {
             return "";
         }
     }
 
+    @Override
+    public void validEmpLogin(String empAccount, String empPassword, HttpServletRequest req, HttpServletResponse resp) {
+        JSONObject empJSONObject = empJPADAO.validEmpLogin(empAccount, empPassword);
+        ConcurrentHashMap<String, String> errorMsgMap = new ConcurrentHashMap<>();
+        String typeFun = "";
+        String empId = "";
+
+        if(ObjectUtils.isEmpty(empJSONObject)){
+            errorMsgMap.put("errorMsg", "請輸入員工帳號及密碼");
+        } else {
+            typeFun =empJSONObject.getString("TYPE_FUN");
+            empId =empJSONObject.getString("EMP_ID");
+        }
+        req.getSession().setAttribute("typeFun", typeFun);
+        req.getSession().setAttribute("empId", empId);
+        req.setAttribute("loginErrorMsgMap", errorMsgMap);
+
+        String url = ObjectUtils.isEmpty(typeFun) ? "empLogin.jsp" : "/index.jsp";
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher(url);
+        try {
+            requestDispatcher.forward(req, resp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
         List<String> list = new ArrayList<>();

@@ -48,20 +48,18 @@
                                    border-radius: 5px;
                                    background-color: #FFEEDD;
                               }
+
+                             .error {
+                                   color:red ;
+                                   font-family: "微軟正黑體", Arial, sans-serif;
+                                   font-weight: bold;
+                             }
                          </style>
                     </HEAD>
 
                     <BODY>
 
-                         <%-- 錯誤表列 --%>
-                              <c:if test="${not empty errorMsgs}">
-                                   <font style="color:red">請修正以下錯誤:</font>
-                                   <ul>
-                                        <c:forEach var="message" items="${errorMsgs}">
-                                             <li style="color:red">${message}</li>
-                                        </c:forEach>
-                                   </ul>
-                              </c:if>
+
 
                               <div class="emp_insert_title">
 
@@ -74,7 +72,10 @@
                                                   <td>管理員名稱:</td>
                                                   <td><input type="TEXT" name="name"
                                                             value="<%= (empVO==null)? "" : empVO.getEmpName()%>"
-                                                            placeholder="請輸入管理員名稱" size="30" /></td>
+                                                            placeholder="請輸入管理員名稱" size="30" />
+                                             <span  id ="upFiles.errors" class="error">${errorMsgMap.empName}</span>
+
+                                                            </td>
 
                                              </tr>
 
@@ -85,14 +86,18 @@
                                                   <td>管理員密碼:</td>
                                                   <td><input type="TEXT" name="password"
                                                             value="<%= (empVO==null)? "" : empVO.getEmpPassword()%>"
-                                                            placeholder="請輸入管理員密碼" size="30" /></td>
+                                                            placeholder="請輸入管理員密碼" size="30" />
+                                                            <span  id ="upFiles.errors" class="error">${errorMsgMap.empPassword}</span>
+                                                            </td>
                                              </tr>
                                              <tr>
 
                                                   <td>管理員信箱:</td>
                                                   <td><input type="TEXT" name="email"
                                                             value="<%= (empVO==null)? "" : empVO.getEmpEmail()%>"
-                                                            placeholder="請輸入管理員信箱" size="30" /></td>
+                                                            placeholder="請輸入管理員信箱" size="30" />
+                                                            <span  id ="errors" class="error">${errorMsgMap.empEmail}</span>
+                                                            </td>
                                              </tr>
                                              <tr>
 
@@ -114,14 +119,12 @@
                                                             <option value="MEMADMIN">會員權限管理人員</option>
                                                             <option value="STORADMIN">倉儲管理人員</option>
                                                             <option value="CUSTORSERVICE">客服人員</option>
-                                                            <option value="BACKADMIN">後台管理員</option>
                                                        </select></td>
 
 
                                              </tr>
                                              <label for="upFiles">照片:</label>
                                              <input id ="upFiles" name="upFiles" type="file" onclick="previewImage()"  onchange="hideContent('upFiles.errors');" />
-                                             <span  id ="upFiles.errors" class="error">${errorMsgs.upFiles}</span>
                                              <div id="blob_holder"></div>
                                              </div>
 
@@ -188,9 +191,8 @@
                          		document.getElementById('submit').disabled = true;
                          	}
                          }
-
                          </script>
-                                        <jsp:include page="/index.jsp" />
+                         <jsp:include page="/index.jsp" />
                     </BODY>
 
                     </HTML>

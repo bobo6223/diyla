@@ -8,10 +8,6 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Document</title>
             <style>
-                .imgHW_ {
-                    width: 20px;
-                    height: 50px;
-                }
 
                 .bgc_empshowlist {
                     background-color: rgb(197, 218, 236);
@@ -86,7 +82,6 @@
                     <button type="button" class="btn btn-primary" onclick="getAllEmpList()">送出</button>
                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                     <p>當前頁碼：<span id="currentPage"></span> / 總頁數：<span id="totalPages"></span></p>
-
                 </div>
 
             </div>
@@ -244,7 +239,12 @@
                             html += `<td>` + (i + 1) + `</td>`;
                             html += `<td>` + emp.empId + `</td>`;
                             html += `<td>` + emp.empName + `</td>`;
-                            html += `<td><img class="imgWH_" src="data: image/jpeg;base64,` + emp.empPic + `"></td>`;
+                            if(emp.empPic == ""){
+                                html += `<td><img style="height: 150px; width: 150px;" class="imgWH_" src="../img/NoImage.jpg"></td>`;
+                            } else {
+                                html += `<td><img style="height: 150px; width: 150px;" class="imgWH_" src="data: image/jpeg;base64,` + emp.empPic + `"></td>`;
+                            }
+                            
                             html += `<td>` + emp.empEmail + `</td>`;
                             html += `<td>` + emp.typeFun + `</td>`;
                             html += `<td><button type="button" id="` + emp.empId + `" class="empStatus">` + (emp.empStatus ? "開啟" : "停用") + `</button></td>`;
@@ -322,12 +322,7 @@
                 //  一進入網頁即呼叫該函式,抓取資料
                 window.onload(getAllEmpList());
             </script>
-            <style>
-                img.imgHW_ {
-                    width: 2px;
-                    height: 50px;
-                }
-            </style>
+
         </body>
 
         </html>
