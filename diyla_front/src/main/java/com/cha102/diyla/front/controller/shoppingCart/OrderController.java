@@ -45,7 +45,7 @@ public class OrderController extends HttpServlet {
 		// 結帳
 		if ("checkout".equals(action)) {
 			Integer memId = (Integer) session.getAttribute("memId");
-			List<ShoppingCartVO> shoppingCartList = shoppingCartService.getAll(memId);
+			List<ShoppingCartVO> shoppingCartList = shoppingCartService.getCartList(memId);
 			Integer totalPrice = shoppingCartService.getTotalPrice(shoppingCartList);
 			session.setAttribute("totalPrice", totalPrice);
 			session.setAttribute("shoppingCartList", shoppingCartList);
@@ -54,7 +54,6 @@ public class OrderController extends HttpServlet {
 		}
 		// 前台顯示訂單
 		if ("listOrder".equals(action)) {
-//			Integer memId = Integer.valueOf(req.getParameter("memId"));
 //			===============
 //			沒有登入就導向導向登入頁面
 			MemVO memVO =(MemVO) session.getAttribute("memVO");
@@ -90,7 +89,7 @@ public class OrderController extends HttpServlet {
 		if ("cancelOrder".equals(action)) {
 			Integer memId = (Integer) session.getAttribute("memId");
 			Integer orderNo = Integer.valueOf(req.getParameter("orderNO"));
-			commodityOrderService.updateStatus(4, orderNo);
+			commodityOrderService.updateStatus(5, orderNo);
 			List<CommodityOrderVO> list = commodityOrderService.getAllByMemId(memId);
 			session.setAttribute("memId", memId);
 			session.setAttribute("commodityOrderVOList", list);
@@ -127,7 +126,7 @@ public class OrderController extends HttpServlet {
 				return;
 			}
 			Integer memId = (Integer) session.getAttribute("memId");
-			List<ShoppingCartVO> shoppingCartList = shoppingCartService.getAll(memId);
+			List<ShoppingCartVO> shoppingCartList = shoppingCartService.getCartList(memId);
 			Integer totalPrice = (Integer) session.getAttribute("totalPrice");
 			CommodityOrderVO commodityOrderVO = new CommodityOrderVO(memId, 0, totalPrice, 0, totalPrice-0, recipient,
 					recipientAddress, phone);

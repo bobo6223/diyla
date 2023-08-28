@@ -90,7 +90,7 @@ public class EcpayController {
 			String recipientAddress = info[1];
 			String phone = info[2];
 			System.out.println(recipient + " " + recipientAddress + " " + phone);
-			List<ShoppingCartVO> shoppingCartList = shoppingCartService.getAll(memId);
+			List<ShoppingCartVO> shoppingCartList = shoppingCartService.getCartList(memId);
 			Integer totalPrice = Integer.valueOf(totalAmount);
 			CommodityOrderVO commodityOrderVO = new CommodityOrderVO(memId, 1, totalPrice, 0, totalPrice - 0, recipient,
 					recipientAddress, phone);
