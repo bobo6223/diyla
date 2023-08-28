@@ -84,17 +84,18 @@
     <table id="art" class="display" style="width: 100%">
         <thead id="header">
             <tr>
+                <th>會員帳號</th>
                 <th>文章標題</th>
                 <th>文章圖片</th>
                 <th id="th_context">文章內容</th>
                 <th id="th_time">發表時間</th>
-                <th>會員編號</th>
             </tr>
         </thead>
         <tbody id="content">
             <c:forEach var="artVO" items="${list}">
 
                 <tr>
+                    <td>${artVO.memVO}</td>
                     <td>${artVO.artTitle}</td>
                     <c:choose>
                         <c:when test="${not empty artVO.artPic}">
@@ -125,7 +126,6 @@
                         </div>
                     </td>
                     <td>${artVO.artTime}</td>
-                    <td>${artVO.memId}</td>
                 </tr>
             </c:forEach>
         <tbody>

@@ -1,9 +1,12 @@
 package com.cha102.diyla.articleModel;
 
+import com.cha102.diyla.member.MemVO;
+import com.cha102.diyla.member.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -29,9 +32,19 @@ public class ArtVO {
     @Column(name = "ART_CONTEXT")
     private String artContext;
     @Column(name = "ART_TIME", insertable = false, updatable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Timestamp artTime;
     @Column(name = "ART_STATUS", insertable = false)
     private byte artStatus;
     @Column(name = "MEM_ID", updatable = false)
     private Integer memId;
+    @Transient
+    private MemVO memVO;
+
+    public String getMemVO() {
+        MemberService memSvc = new MemberService();
+        MemVO memVO = memSvc.selectMem(memId);
+        String email = memVO.getMemEmail();
+        return email;
+    }
 }
