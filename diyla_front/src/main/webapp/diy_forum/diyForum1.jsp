@@ -282,10 +282,12 @@ SCROLL BUTTON END
             for (var i = 0; i < data.content.length; i++) {
                 var item = data.content[i];
                 html += '<div class="tf__single_comment">';
+
 //根據item.memberEntity.memGender的值來判斷評論作者的性別,0是男,1是女
                 if (item.memberEntity.memGender == 0) {
                     html += '<img src="/diyla_front//images/Male.png" alt="review" class="img-fluid">';
                 } else if (item.memberEntity.memGender == 1) {
+
                     html += '<img src="/diyla_front//images/Female.png" alt="review" class="img-fluid">';
                 } else {
                     html += '<img src="/diy/picture/client_1.png" alt="review" class="img-fluid">';
@@ -313,7 +315,9 @@ SCROLL BUTTON END
                 // <%--                預設值4--%>
                 if (item.memberEntity.memId == 4) {
                     // html += '<div>';
+
                     html += '<button type="button" class="layui-btn layui-btn-sm layui-btn-normal" style="float: right;" onclick=\"deleteById(' + item.artiNo + ')\"><i class="layui-icon layui-icon-delete"></i> 删除</button>'
+
                     // html += '</div>';
                 }
 

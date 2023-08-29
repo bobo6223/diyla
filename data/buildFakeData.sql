@@ -1,12 +1,12 @@
 INSERT INTO MEMBER(MEM_NAME, MEM_EMAIL, MEM_PASSWORD, MEM_PHONE,
                    MEM_BIRTHDAY, MEM_GENDER, MEM_ADDRESS, MEM_DATE)
-VALUES ('apache', 'app@diyla.com', 'api123456', '0900111222', '2004-12-31', '2', '台北市信義區信義路五段7號89樓',
+VALUES ('apache', 'app@diyla.com', 'api123456', '0900111222', '2004-12-31', '0', '台北市信義區信義路五段7號89樓',
         '2021-4-1'),
        ('blob', 'border@diyla.com', 'b654321', '0900222333', '1997-12-9', '1', '桃園市中壢區復興路46號9樓之805',
         '2020-5-5'),
        ('const', 'chatgpt@diyla.com', '123c456', '0912333444', '1980-3-10', '1', '臺中市清水區美堤街8號', '2020-02-29'),
-       ('david', 'doget@diyla.com', '098765d', '0955888999', '1950-6-30', '2', '花蓮縣壽豐鄉福德189號', '2022-12-31'),
-       ('exception', 'error@diyla.com', '3456e78', '0977888666', '1977-9-3', '2', '屏東縣鹽埔鄉仕絨村東平街25號',
+       ('david', 'doget@diyla.com', '098765d', '0955888999', '1950-6-30', '0', '花蓮縣壽豐鄉福德189號', '2022-12-31'),
+       ('exception', 'error@diyla.com', '3456e78', '0977888666', '1977-9-3', '0', '屏東縣鹽埔鄉仕絨村東平街25號',
         '2023-4-4');
 
 
@@ -54,12 +54,13 @@ VALUES (1, '擀麵棍', null, '取材等級最高的A級櫸木,竹木紋理完�
 
 
 INSERT INTO diyla.commodity_order (MEM_ID, ORDER_TIME, ORDER_STATUS, ORDER_PRICE, DISCOUNT_PRICE, ACTUAL_PRICE,
-                                   UPDATE_TIME)
-VALUES (1, DEFAULT, 3, 85, 0, 85, DEFAULT),
+ UPDATE_TIME,RECIPIENT,RECIPIENT_ADDRESS,PHONE)
 
-       (2, DEFAULT, 2, 400, 0, 400, DEFAULT),
+VALUES (1, DEFAULT, 3, 85, 0, 85, DEFAULT,'老爹',0987654321,'南方公園'),
 
-       (3, DEFAULT, 2, 295, 0, 295, DEFAULT);
+       (2, DEFAULT, 2, 400, 0, 400, DEFAULT,'大頭',0987654321,'南方公園'),
+
+       (3, DEFAULT, 2, 295, 0, 295, DEFAULT,'凱子',0987654321,'南方公園');
 
 INSERT INTO diyla.commodity_order_detail (ORDER_NO, COM_NO, COM_QUANTITY, COM_PRICE)
 VALUES (1, 11, 2, 25),
@@ -195,42 +196,52 @@ INSERT INTO DIY_ING(DIY_NO, ING_ID, ING_COUNT)
     ('7', '3', '500'),
     ('7', '4', '300');
 
-INSERT INTO EMPLOYEE (EMP_NAME, EMP_ACCOUNT, EMP_PASSWORD, EMP_STATUS)
-VALUES ('女王', 'root', '123456', '0');
+INSERT INTO EMPLOYEE (EMP_NAME,EMP_ACCOUNT,EMP_PASSWORD,EMP_EMAIL,EMP_STATUS)
+VALUES ('女王','Root','tibame515','while8@gmail.com','1'),
+('襪襪是廚師', 'D100002', 'seefood', 'seefood@yahoo.tw', '1'),
+('襪襪是隻貓', 'D100003', 'meowmeow', 'meowmeow@gmail.com', '1'),
+('襪襪吃肉泥', 'D100004', 'eatmeat', 'eatmeat@gmail.com', '1'),
+('襪襪睡覺覺', 'D100005', 'sleep666', 'sleep666@gmail.com', '1'),
+('襪襪出去玩', 'D100006', 'outdoor', 'outdoor@msn.com', '1'),
+('襪襪裝起來', 'D100007', 'bagmeow', 'bagmeow@yahoo.com', '1');
 
-INSERT INTO AUTH_FUN (AUTH_ID, AUTH_FUN)
-VALUES ('1', '商品訂單管理'),
-       ('2', '商品管理'),
-       ('3', 'DIY類別設定'),
-       ('4', 'DIY訂單管理'),
-       ('5', '甜點課程訂單管理'),
-       ('6', '師傅資料管理'),
-       ('7', '回覆聊天室訊息'),
-       ('8', '甜點課程管理'),
-       ('9', '會員帳號管理'),
-       ('10', '黑名單管理'),
-       ('11', '食材管理'),
-       ('12', '進貨管理'),
-       ('13', '常見問題管理'),
-       ('14', '帖子討論區管理'),
-       ('15', '後台帳號管理');
 
-INSERT INTO AUTHORITY(EMP_ID, AUTH_ID)
-VALUES ('1', '1'),
-       ('1', '2'),
-       ('1', '3'),
-       ('1', '4'),
-       ('1', '5'),
-       ('1', '6'),
-       ('1', '7'),
-       ('1', '8'),
-       ('1', '9'),
-       ('1', '10'),
-       ('1', '11'),
-       ('1', '12'),
-       ('1', '13'),
-       ('1', '14'),
-       ('1', '15');
+INSERT INTO BACKSTAGE_FUN (AUTH_ID,AUTH_FUN,TYPE_FUN)
+VALUES ('1','商品訂單管理','SHOP'),
+('2','商品管理','SHOP'),
+('3','DIY類別設定','CLASS'),
+('4','DIY訂單管理','CLASS'),
+('5','甜點課程訂單管理','MASTER'),
+('6','師傅資料管理','MASTER'),
+('7','回覆聊天室訊息','MASTER'),
+('8','甜點課程管理','MASTER'),
+('9','會員帳號管理','MEMADMIN'),
+('10','黑名單管理','MEMADMIN'),
+('11','食材管理','STORADMIN'),
+('12','進貨管理','STORADMIN'),
+('13','常見問題管理','CUSTORSERVICE'),
+('14','帖子討論區管理','CUSTORSERVICE'),
+('15','後台帳號管理','BACKADMIN');
+
+INSERT INTO BACKSTAGE_AUTH(EMP_ID,AUTH_ID)
+VALUES
+('1','1'),
+('1','2'),
+('1','3'),
+('1','4'),
+('1','5'),
+('1','6'),
+('1','7'),
+('1','8'),
+('1','9'),
+('1','10'),
+('1','11'),
+('1','12'),
+('1','13'),
+('1','14'),
+('1','15');
+
+
 
 INSERT INTO NOTICE(MEM_ID, NOTICE_TITLE, NOTICE_CONTEXT, NOTICE_TIME)
 VALUES (1, '預約DIY甜點體驗成功！', '親愛的用戶，您已成功預約本店的DIY甜點體驗活動。請記得準時到店參加，我們期待您的到來！',
