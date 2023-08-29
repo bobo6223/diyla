@@ -1,12 +1,12 @@
 INSERT INTO MEMBER(MEM_NAME, MEM_EMAIL, MEM_PASSWORD, MEM_PHONE,
                    MEM_BIRTHDAY, MEM_GENDER, MEM_ADDRESS, MEM_DATE)
-VALUES ('apache', 'app@diyla.com', 'api123456', '0900111222', '2004-12-31', '2', '台北市信義區信義路五段7號89樓',
+VALUES ('apache', 'app@diyla.com', 'api123456', '0900111222', '2004-12-31', '0', '台北市信義區信義路五段7號89樓',
         '2021-4-1'),
        ('blob', 'border@diyla.com', 'b654321', '0900222333', '1997-12-9', '1', '桃園市中壢區復興路46號9樓之805',
         '2020-5-5'),
        ('const', 'chatgpt@diyla.com', '123c456', '0912333444', '1980-3-10', '1', '臺中市清水區美堤街8號', '2020-02-29'),
-       ('david', 'doget@diyla.com', '098765d', '0955888999', '1950-6-30', '2', '花蓮縣壽豐鄉福德189號', '2022-12-31'),
-       ('exception', 'error@diyla.com', '3456e78', '0977888666', '1977-9-3', '2', '屏東縣鹽埔鄉仕絨村東平街25號',
+       ('david', 'doget@diyla.com', '098765d', '0955888999', '1950-6-30', '0', '花蓮縣壽豐鄉福德189號', '2022-12-31'),
+       ('exception', 'error@diyla.com', '3456e78', '0977888666', '1977-9-3', '0', '屏東縣鹽埔鄉仕絨村東平街25號',
         '2023-4-4');
 
 
@@ -55,11 +55,12 @@ VALUES (1, '擀麵棍', null, '取材等級最高的A級櫸木,竹木紋理完�
 
 INSERT INTO diyla.commodity_order (MEM_ID, ORDER_TIME, ORDER_STATUS, ORDER_PRICE, DISCOUNT_PRICE, ACTUAL_PRICE,
  UPDATE_TIME,RECIPIENT,RECIPIENT_ADDRESS,PHONE)
-VALUES (1, DEFAULT, 3, 85, 0, 85, DEFAULT,老爹,0987654321,南方公園),
 
-       (2, DEFAULT, 2, 400, 0, 400, DEFAULT,大頭,0987654321,南方公園),
+VALUES (1, DEFAULT, 3, 85, 0, 85, DEFAULT,'老爹',0987654321,'南方公園'),
 
-       (3, DEFAULT, 2, 295, 0, 295, DEFAULT,凱子,0987654321,南方公園);
+       (2, DEFAULT, 2, 400, 0, 400, DEFAULT,'大頭',0987654321,'南方公園'),
+
+       (3, DEFAULT, 2, 295, 0, 295, DEFAULT,'凱子',0987654321,'南方公園');
 
 INSERT INTO diyla.commodity_order_detail (ORDER_NO, COM_NO, COM_QUANTITY, COM_PRICE)
 VALUES (1, 11, 2, 25),
