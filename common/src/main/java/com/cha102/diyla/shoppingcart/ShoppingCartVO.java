@@ -10,6 +10,8 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.cha102.diyla.commodityModel.CommodityVO;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,6 +45,9 @@ public class ShoppingCartVO implements Serializable {
 	private String showPic;
 	@Transient
 	private Integer comPri;
+	@Transient
+	private CommodityVO commodityVO;
+	
 
 	public ShoppingCartVO(Integer memId, Integer comNo, Integer comAmount) {
 		super();

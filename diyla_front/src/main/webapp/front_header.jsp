@@ -81,7 +81,7 @@
                     </li>
                     <li class="nav-item">
                         <%--可自行更改href連結--%>
-                        <a class="nav-link" href="${ctxPath}//memberOrder/OrderController?action=listOrder&memId=${memId}" id="myOrder">
+                        <a class="nav-link" href="${ctxPath}/memberOrder/OrderController?action=listOrder&memId=${memId}" id="myOrder">
                             我的訂單
                         </a>
                     </li>
