@@ -204,11 +204,21 @@ input[type="text"], input[type="tel"], select {
 
 
 				<label for="useTokens" style="width: 80px">使用代幣：</label>
+				<span style="font-size: 18px;">共可折抵</span>
 				<span id="amount_value" style="font-size: 18px">0</span>
-
+				<span style="font-size: 18px;">元</span>
+				
 				<div>
+				<c:choose>
+				<c:when test="${totalPrice>=maxToken}">
 					<input name="tokenUse" type="range" min="0"
 						max="<%=session.getAttribute("maxToken")%>" id="tokenAmount">
+				</c:when>
+				<c:otherwise>
+					<input name="tokenUse" type="range" min="0"
+						max="<%=session.getAttribute("totalPrice")%>" id="tokenAmount">
+				</c:otherwise>
+				</c:choose>
 				</div>
 				<!-- 				<span style="margin:30px 0px;">本次預計獲得回饋:</span><input type="hidden" value="1" name="tokenback"> -->
 			</div>
