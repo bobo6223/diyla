@@ -75,7 +75,7 @@ public class ShoppingCartSpring {
 			shoppingCartService.deleteByMemId(memId);
 			JSONObject jsonResponse = new JSONObject();
 			jsonResponse.put("success", true);
-			return ResponseEntity.ok(gson.toJson(jsonResponse));
+			return ResponseEntity.ok(jsonResponse.toString());
 
 		} catch (Exception e) {
 			JSONObject jsonResponse = new JSONObject();
