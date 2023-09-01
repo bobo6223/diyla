@@ -69,10 +69,5 @@ public class DiyCateController {
         return diyCateService.getAllDiyCates();
     }
 
-    // 瀏覽DIY列表
-    @GetMapping("/list")
-    public List<DiyCateEntity> getAllDiyCates() {
-        return diyCateService.getAllDiyCates();
-    }
 
 }
