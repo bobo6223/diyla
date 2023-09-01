@@ -80,7 +80,7 @@ public class OrderController extends HttpServlet {
 			Integer orderNo = Integer.valueOf(req.getParameter("orderNO"));
 			List<CommodityOrderDetailVO> commodityOrderDetailList = commodityOrderDetailService.getAll(orderNo);
 			CommodityOrderVO commodityOrderVO =commodityOrderService.findByOrderNo(orderNo);
-			session.setAttribute("commodityOrderVO", commodityOrderVO.getOrderTime());
+			session.setAttribute("orderTime", commodityOrderVO.getOrderTime());
 			session.setAttribute("orderNo", orderNo);
 			session.setAttribute("commodityOrderDetailList", commodityOrderDetailList);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/memberOrder/showOrderDetail.jsp");
