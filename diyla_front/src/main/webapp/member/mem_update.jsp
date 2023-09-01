@@ -2,15 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="javax.servlet.*"%>
 <%@ page import="com.cha102.diyla.member.*"%>
 
-
-<%
-    MemVO memVO = (MemVO)session.getAttribute("memVO");
-    Integer memId = (Integer)session.getAttribute("memId");
-    String addressAll = memVO.getMemAddress();
-%>
 
 
 <!DOCTYPE html>
@@ -41,8 +34,9 @@
 <body>
 
     <jsp:include page="../front_header.jsp"/>
-    <a href="${ctxPath}/member/mem_update.jsp">會員資訊管理</a>
+    <a href="${ctxPath}/member/update?action=select&memId=${memId}">會員資訊管理</a>
     <a href="${ctxPath}/member/updatePw.jsp">修改密碼</a>
+    <a href="${ctxPath}/allOrder/allOrder?memId=${memId}">我的訂單</a>
     <a href="${ctxPath}/track/track?memId=${memId}">我的商品追蹤</a>
     <a href="${ctxPath}/token/MyToken.jsp">我的代幣</a>
     <a href="${ctxPath}/member/login?action=logout">登出</a>
@@ -54,7 +48,7 @@
                 <label>帳號<br>
                 <input type="email" name="user" value="${memVO.memEmail}" disabled></label><br>
                 <label>修改密碼<br>
-                <input type="password" name="password" placeholder="請輸入6-12字(含英數字)"  minlength="6" maxlength="12" ></label><br>
+                <input type="password" name="password" placeholder="請輸入6-12字(含英數字)"  minlength="6" maxlength="12" value="${memVO.memPassword}"></label><br>
                 <span  id ="memPassword.errors" class="error">${exMsgs.memPassword}<br/></span>
                 <label>確認密碼<br>
                 <input type="password" name="pwcheck" placeholder="再次輸入密碼" ></label><br>
@@ -69,13 +63,18 @@
                 <span  id ="memPhone.errors" class="error">${exMsgs.memPhone}<br/></span>
                 <div>聯絡地址</label><br>
                 <label for="city">縣市</label><br>
-                <select id="city" name="city"></select><br>
+                <select id="city" name="city">
+                <option value=${addMap.city} selected>${addMap.city}</option>
+                </select><br>
                 <label for="district">地區</label><br>
-                <select id="district" name="district"></select><br>
+                <select id="district" name="district">
+                <option value=${addMap.district} selected">${addMap.district}</option>
+                </select><br>
                 <label for="address">詳細地址</label><br>
-                <input type="text" id="address" name="address" value="${memVO.memAddress}"><br>
+                <input type="text" id="address" name="address" value="${addMap.address}"><br>
                 <span  id ="memAddress.errors" class="error">${exMsgs.memAddress}<br/></span>
-                <input type="hidden" name="memId" value="${memVO.memId}"><br>
+                <input type="hidden" name="memId" value="${memId}"><br>
+                <input type="hidden" name="action" value="update">
                 <button type="submit" value="update">送出修改</button>
 
     <script>
