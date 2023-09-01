@@ -153,7 +153,7 @@ form {
 	display: inline;
 }
 
-.cancel_order {
+.edit-order {
 	/* 	color: white; */
 	border: none;
 	border-radius: 5px;
@@ -262,7 +262,7 @@ table {
 									<input name="actualPrice" value="${orderVO.actualPrice}"
 										type="hidden"> <input name="orderStatus"
 										value="${orderVO.orderStatus}" type="hidden">
-									<button type="submit" class="cancel_order"
+									<button type="submit" class="edit-order"
 										data-order-status="${orderVO.orderStatus}
 											form="form${loop.index}">
 										<svg width="24px" height="24px" viewBox="0 -0.5 25 25"
@@ -320,7 +320,23 @@ table {
 					$(this).addClass("status-canceled");
 				}
 			});
+			
+			$(".edit-order").on("click", function(e) {
+				  let form = $(this).closest("form"); // 找到最近的父級 form
+				  var orderStatus = parseInt($(this).data('order-status'));
+				  console.log(orderStatus);
+				  if (orderStatus >= 4) {
+						e.preventDefault();
+					  swal({
+						    title: "訂單已結案",
+						    icon:"warning",
+						    buttonsStyling: false,
+						    confirmButtonClass: 'btn btn-primary btn-block'
+						});
+			            return;
+			        }
 
+				});
 		});
 	</script>
 	<script>

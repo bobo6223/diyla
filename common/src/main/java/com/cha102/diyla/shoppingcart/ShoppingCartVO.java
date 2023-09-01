@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -46,8 +47,8 @@ public class ShoppingCartVO implements Serializable {
 	@Transient
 	private Integer comPri;
 	@Transient
+	@OneToOne(mappedBy = "CommodityVO")
 	private CommodityVO commodityVO;
-	
 
 	public ShoppingCartVO(Integer memId, Integer comNo, Integer comAmount) {
 		super();
