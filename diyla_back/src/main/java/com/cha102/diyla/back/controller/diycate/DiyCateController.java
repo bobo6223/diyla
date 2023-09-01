@@ -1,5 +1,4 @@
 package com.cha102.diyla.back.controller.diycate;
-
 import com.cha102.diyla.diycatemodel.DiyCateEntity;
 import com.cha102.diyla.diycatemodel.DiyCateService;
 import com.cha102.diyla.util.PageBean;
@@ -63,6 +62,12 @@ public class DiyCateController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
+    // 瀏覽DIY列表
+    @GetMapping("/list")
+    public List<DiyCateEntity> getAllDiyCates() {
+        return diyCateService.getAllDiyCates();
+    }
 
     // 瀏覽DIY列表
     @GetMapping("/list")
