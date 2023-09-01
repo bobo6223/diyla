@@ -309,7 +309,7 @@ SCROLL BUTTON END
                 html += '<p>' + item.artiCont + '</p>';
 
 
-                //先註釋掉，然後在登入後取消註釋，這樣就可以使用了
+                //在登入後取消註釋就可以使用了
                 // <%--var memId = '<%=memberEntity.getMemId() %>';--%>
                 // <%--                if (memId == item.memberEntity.memId --%>
                 // <%--                預設值4--%>
@@ -330,7 +330,7 @@ SCROLL BUTTON END
             document.getElementById("count").innerText = data.totalElements + " 評論";
             // commentContainer.innerHTML = html;
 
-            // 添加分頁
+
             // var paginationContainer = document.querySelector(".tf__pagination");
             var currentPage = data.number + 1;   // 當前頁數
             var totalPages = data.totalPages;    // 總頁數
@@ -393,10 +393,10 @@ SCROLL BUTTON END
                 stars[i].classList.remove('selected');
             }
 
-            // 更新 starIndex
             starIndex = index + 1;
         });
     });
+
     function deleteById(id) {
         // 建立 XMLHttpRequest 物件
         var xhr = new XMLHttpRequest();
@@ -455,8 +455,13 @@ SCROLL BUTTON END
             }
         };
         xhr.send();
-    }
 
+        // 清空填寫留言的輸入框內容
+        var textarea = event.target.querySelector('textarea[name="artiCont"]');
+        if (textarea) {
+            textarea.value = '';
+        }
+    }
 
     let sortBy = 'date'; // 預設按照留言新舊排序
     let sortDirection = 'new';
@@ -508,7 +513,7 @@ SCROLL BUTTON END
 <style>
     .rating i.selected {
         color: red !important;
-    
+
     }
 
 
