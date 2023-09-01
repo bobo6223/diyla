@@ -42,6 +42,7 @@ body {
 	border-radius: 10px;
 	box-sizing: border-box;
 	min-height:575px;
+
 }
 
 /* 頁面標題 */
@@ -203,6 +204,7 @@ padding: 15px;
 
 			<a href="${ctxPath}/shop/CommodityController?action=listAll"
 				class="goshop">繼續購物</a>
+			<button type="button" class="commentButton">新增評論</button>
 		</p>
 	</div>
 	<jsp:include page="../front_footer.jsp" />
