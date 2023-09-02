@@ -67,8 +67,7 @@ public class UpdateServlet extends HttpServlet {
             Integer memId = Integer.valueOf(req.getParameter("memId"));
 
 
-            String password = req.getParameter("password");
-            String pwcheck = req.getParameter("pwcheck");
+            String name = req.getParameter("memName");
             String phone = req.getParameter("phone");
             String city = req.getParameter("city");
             String district = req.getParameter("district");
@@ -79,7 +78,7 @@ public class UpdateServlet extends HttpServlet {
 //            if (!password.equals(pwcheck)){
 //                exMsgs.put("pwcheck","該密碼與您設定的密碼不一致");
 //            }
-            MemVO memVO = memSer.updateMem(exMsgs,password,phone,addressAll,memId);
+            MemVO memVO = memSer.updateMem(exMsgs,name,phone,addressAll,memId);
             HttpSession session = req.getSession();
             session.setAttribute("memVO", memVO);
             RequestDispatcher select = req.getRequestDispatcher("/member/mem_update.jsp");
