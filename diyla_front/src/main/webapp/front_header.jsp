@@ -126,7 +126,7 @@
                         </c:when>
                         <c:otherwise>
 
-                                <a href="${ctxPath}/member/mem_update.jsp">
+                                <a href="${ctxPath}/member/update?action=select&memId=${memId}">
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                     <span>${memVO.memName}你好</span>
                                 </a>
