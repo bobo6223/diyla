@@ -15,7 +15,7 @@ public class NoticeService {
 
     public List<NoticeVO> findAllByMemId(Integer memId) {
 
-        return  noticeRepository.findAllByMemId(memId);
+        return  noticeRepository.findAllByMemIdOrderByNoticeTimeDesc(memId);
     }
 
     public void saveNotice(List<NoticeVO> noticeVOS) {
