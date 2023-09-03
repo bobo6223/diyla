@@ -14,7 +14,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import com.cha102.diyla.shoppingcart.ShoppingCartService;
 import com.cha102.diyla.shoppingcart.ShoppingCartVO;
 
 public class CommodityOrderDaoJNDI implements CommodityOrderDao {

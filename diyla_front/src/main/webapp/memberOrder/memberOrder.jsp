@@ -118,11 +118,8 @@ table {
 }
 
 .tr_title {
-	background-color: #f2f2f2;
-}
-
-tr_title {
-	background-color: olive;
+	background-color: #b45f06;
+	color: white;
 }
 
 .title th {
@@ -192,12 +189,25 @@ div.goShopping {
 	padding-top: 50px;
 }
 
+#memberOrder {
+	border-radius: 3px;
+	box-shadow: 8px;
+}
+
 .noneOrder {
 	padding-bottom: 50px;
 }
 
 .orderTable {
 	border: 1px solid black;
+}
+
+#showDetail {
+	border-radius: 5px;
+	background-color: #84C1FF;
+	color: white;
+	border: none;
+	padding: 8px 3px;
 }
 
 .goTopButton {
@@ -217,15 +227,24 @@ div.goShopping {
 .goTopButton:hover {
 	background-color: #555;
 }
+
 p.discounted {
-    text-decoration: line-through !important;
+	text-decoration: line-through !important;
 }
+
 p.hidden-actual-price {
-    display: none !important;
+	display: none !important;
 }
-.orderPrice, .actualPrice{
-margin: 0px;
-padding: 0px;
+
+.orderPrice, .actualPrice {
+	margin: 0px;
+	padding: 0px;
+}
+#memberOrder_wrapper{
+	border: 1px solid rgba(128, 128, 128, 0.5);
+	box-shadow: 5px;
+	padding: 30px 15px;
+	border-radius: 5px;
 }
 </style>
 </head>
@@ -259,7 +278,7 @@ padding: 0px;
 								<tr class="order_content_title">
 									<td class="order_content">${orderVO.orderNO}</td>
 									<td class="order_content">
-<!-- 										<span>$</span> -->
+										<!-- 										<span>$</span> -->
 										<p class="orderPrice">$${orderVO.orderPrice}</p>
 										<p class="actualPrice">$${orderVO.actualPrice}</p>
 									</td>
