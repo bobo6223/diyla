@@ -9,4 +9,6 @@ import java.util.List;
 public interface NoticeRepository extends JpaRepository<NoticeVO,Integer> {
 
     List<NoticeVO> findAllByMemId(Integer menId);
+
+
 }

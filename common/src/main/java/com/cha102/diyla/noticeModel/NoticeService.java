@@ -18,4 +18,9 @@ public class NoticeService {
         return  noticeRepository.findAllByMemId(memId);
     }
 
+    public void saveNotice(List<NoticeVO> noticeVOS) {
+        noticeRepository.saveAll(noticeVOS);
+    }
+
+
 }
