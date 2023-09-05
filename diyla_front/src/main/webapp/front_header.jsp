@@ -273,22 +273,36 @@ let memId = cartQuantitySpan.data("memid");
 <script>
     let host = window.location.host;
     let path = window.location.pathname;
-    let webCtx = path.substring(0, path.indexOf('/', 1));
-    let endPointURL = "ws://" + window.location.host + webCtx + "/NoticeWS/{memId}";
+    let webCtx = path.substring(0,path.indexOf('/',1));
+    let endPointURL = "ws://"+host+webCtx+"/NoticeWS/${memId}";
     let webSocket;
 
-    function connect() {
-        webSocket = new webSocket(endPointURL);
+    function connect(){
+        webSocket = new WebSocket(endPointURL);
 
         webSocket.onopen = function(event){
             console.log("Connect Success");
         }
+
+        webSocket.onmessage=function(event){
+            let jsonObj = JSON.parse(event.data);
+            console.log(jsonObj);
+            getNotices();
+
+            addNotification();
+
+        }
+    };
+
+    function disconnect(){
+        console.log("disconnect");
+        webSocket.close();
     }
 
 
     let notificationCount = 0;
     let notices = null;
-    getNotices()
+    //getNotices()
 
     // 添加通知
     function addNotification() {
@@ -304,10 +318,10 @@ let memId = cartQuantitySpan.data("memid");
     }
 
     // 切换通知下拉框的顯示和隱藏
-    function toggleNotifications() {
-        const dropdown = document.getElementById('notification-dropdown');
-        dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
-    }
+   // function toggleNotifications() {
+   //   const dropdown = document.getElementById('notification-dropdown');
+   // dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+   //}
 
     function toggleNotifications() {
         const dropdown = document.getElementById('notification-dropdown');
