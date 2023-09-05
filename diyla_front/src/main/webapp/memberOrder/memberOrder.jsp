@@ -245,8 +245,7 @@ p.hidden-actual-price {
 	box-shadow: 5px;
 	padding: 30px 15px;
 	border-radius: 5px;
-
-}
+	}
 </style>
 </head>
 <body>
