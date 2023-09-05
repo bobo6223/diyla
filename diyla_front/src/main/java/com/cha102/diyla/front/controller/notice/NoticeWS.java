@@ -28,23 +28,23 @@ public class NoticeWS {
 //            if(memIdSession.isOpen()){
 //                memIdSession.getAsyncRemote().sendText(idJson);
 //            }
-        System.out.println(memId);
+//        System.out.println(memId);
         timer = new Timer();
         timer.schedule(new Task(),5000);
     }
 
 
     @OnMessage //當有新的個人通知觸發  or 當有狀態改變(黑名單狀態/檢舉新增/留言新增/代幣新增)時觸發
-    public void onMessage(Session memIdSession,Integer memId){
+    public void onMessage(Session memIdSession,String message){
+        Set<Integer> memIds = sessionMap.keySet();
+        List<String> data = null;
+        for (Integer memId : memIds){
+            System.out.println(memId);
+            JedisNotice.delJedisNotice(memId);
+        }
+        System.out.println(message);
+        System.out.println("delete");
 
-        JedisNotice.delJedisNotice(memId);
-        //用排程器定時確認
-//        List<String> data = JedisNotice.getJedisNotice(memId);
-//        String dataJson = gson.toJson(data);
-//        if(memIdSession !=null && memIdSession.isOpen()){
-//            memIdSession.getAsyncRemote().sendText(dataJson);
-//            return;
-//        }
 
     }
     @OnError

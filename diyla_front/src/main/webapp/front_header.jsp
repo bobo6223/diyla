@@ -54,7 +54,7 @@
     </style>
 </head>
 
-<body>
+<body onload="connect()" onload="disconnect()">
 <div class="hero_area">
     <!-- header section strats -->
     <header class="header_section">
@@ -127,7 +127,7 @@
                             </a>
                         </c:when>
                         <c:otherwise>
-                            <div onload="connect();">
+                            <div>
                                 <a href="${ctxPath}/member/update?action=select&memId=${memId}">
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                     <span>${memVO.memName}你好</span>
@@ -277,6 +277,7 @@ let memId = cartQuantitySpan.data("memid");
     let endPointURL = "ws://"+host+webCtx+"/NoticeWS/${memId}";
     let webSocket;
 
+
     function connect(){
         webSocket = new WebSocket(endPointURL);
 
@@ -288,10 +289,17 @@ let memId = cartQuantitySpan.data("memid");
             let jsonObj = JSON.parse(event.data);
             console.log(jsonObj);
             getNotices();
-
             addNotification();
+            addListener();
 
         }
+        function addListener(){
+            let jsonObj = {
+                        "message" : "get"
+            }
+            webSocket.send(JSON.stringify(jsonObj));
+        }
+
     };
 
     function disconnect(){
