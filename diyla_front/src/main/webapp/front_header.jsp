@@ -45,7 +45,7 @@
     </style>
 </head>
 
-<body>
+<body onload="connect()" onload="disconnect()">
 <div class="hero_area">
     <!-- header section strats -->
     <header class="header_section">
@@ -104,10 +104,6 @@
                             我的訂單
                         </a>
                     </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="${ctxPath}/contactus/contactus.jsp">聯絡我們
-                            <span class="sr-only">(current)</span></a>
-                    </li>
                 </ul>
                 <div class="user_option">
                     <c:choose>
@@ -118,7 +114,7 @@
                             </a>
                         </c:when>
                         <c:otherwise>
-                            <div onload="connect();">
+                            <div>
                                 <a href="${ctxPath}/member/update?action=select&memId=${memId}">
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                     <span>${memVO.memName}你好</span>
@@ -127,11 +123,11 @@
                             <div onclick="toggleNotifications()">
                                 <i class="fa fa-bell" aria-hidden="true" style="color:#FCE5CD;"></i>
                                 <span class="badge" id="notification-count">0</span>
-                                <div class="dropdown-content" id="notification-dropdown">
-
-                                </div>
                             </div>
-                            <a href="http://localhost:8081/diyla_front/shopR/getlist/${memId}" id="shoppingcart" style="margin-left: 10px"
+                            <div class="dropdown-content" id="notification-dropdown">
+
+                            </div>
+                            <a href="http://localhost:8081/diyla_front/shopR/getlist/${memId}" id="shoppingcart"
                                class="position-relative">
 
                                 <svg fill="#fce5cd" height="28px" width="28px" version="1.1" id="Layer_1"
@@ -238,7 +234,7 @@
 
 // if (memId !== undefined && memId !== null) {
         $.ajax({
-            url: "http://localhost:8081/diyla_front/shopR/getCartQuantity",
+            url: "/diyla_front/shopR/getCartQuantity",
             type: "POST",
             data: JSON.stringify({memId: memId}),
             contentType: "application/json",
@@ -247,6 +243,7 @@
                 console.log("Total Quantity:", data.totalQuantity);
                 if (data.totalQuantity == 0 || data.totalQuantity == null) {
 //                 cartQuantitySpan.text(""); //為0或null就隱藏
+
                     cartQuantitySpan.hide();
                 } else {
                     cartQuantitySpan.text(data.totalQuantity); // 有則設定數量
@@ -254,6 +251,7 @@
                 }
             },
             error: function (error) {
+                console.error("Error fetching cart quantity:", error);
             }
         });
 // }
@@ -265,21 +263,44 @@
     let host = window.location.host;
     let path = window.location.pathname;
     let webCtx = path.substring(0, path.indexOf('/', 1));
-    let endPointURL = "ws://" + window.location.host + webCtx + "/NoticeWS/{memId}";
+    let endPointURL = "ws://" + host + webCtx + "/NoticeWS/${memId}";
     let webSocket;
 
+
     function connect() {
-        webSocket = new webSocket(endPointURL);
+        webSocket = new WebSocket(endPointURL);
 
         webSocket.onopen = function (event) {
             console.log("Connect Success");
         }
+
+        webSocket.onmessage = function (event) {
+            let jsonObj = JSON.parse(event.data);
+            console.log(jsonObj);
+            getNotices();
+            addNotification();
+            addListener();
+
+        }
+
+        function addListener() {
+            let jsonObj = {
+                "message": "get"
+            }
+            webSocket.send(JSON.stringify(jsonObj));
+        }
+
+    };
+
+    function disconnect() {
+        console.log("disconnect");
+        webSocket.close();
     }
 
 
     let notificationCount = 0;
     let notices = null;
-    getNotices()
+    //getNotices()
 
     // 添加通知
     function addNotification() {
@@ -295,10 +316,10 @@
     }
 
     // 切换通知下拉框的顯示和隱藏
-    function toggleNotifications() {
-        const dropdown = document.getElementById('notification-dropdown');
-        dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
-    }
+    // function toggleNotifications() {
+    //   const dropdown = document.getElementById('notification-dropdown');
+    // dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+    //}
 
     function toggleNotifications() {
         const dropdown = document.getElementById('notification-dropdown');
