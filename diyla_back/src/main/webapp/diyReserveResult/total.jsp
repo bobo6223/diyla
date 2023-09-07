@@ -1,8 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!-- jQuery v1.9.1 -->
@@ -24,6 +26,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.1/fullcalendar.min.js"></script>
 
     <style>
+    	body{
+    	margin-left: 280px;
+    	}
 
         .nav-link.active {
             color: orangered !important;
@@ -37,7 +42,7 @@
 </head>
 
 <body>
-
+ <jsp:include page="../index.jsp" />
 <div id="example"></div>
 
 <!-- 在你的 HTML 中添加一个隐藏的模态视图 -->

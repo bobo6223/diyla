@@ -17,7 +17,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/diy-reserve")
+@RequestMapping("/api/diy-reserve1")
 public class DiyReserveController {
 
     //@Resource是依賴注入的方式，使得控制器可以使用diyReserveService來執行預訂相關的業務邏輯。
