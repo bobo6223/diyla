@@ -45,9 +45,6 @@ public class UpdateServlet extends HttpServlet {
                 addMap.put("city",m.group(1));
                 addMap.put("district",m.group(2));
                 addMap.put(("address"),m.group(3));
-                System.out.println(m.group(1));
-                System.out.println(m.group(2));
-                System.out.println(m.group(3));
             }
 
             req.setAttribute("memVO",memVO);

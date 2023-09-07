@@ -88,6 +88,7 @@
             color: #B26021;
             height: 35px;
             letter-spacing: 1px;
+            padding: 0 0 0 8px;
         }
         input.inputform:focus {
               outline: 1.5px solid #B26021;
@@ -145,6 +146,7 @@
             font-size: 1rem;
             color: #B26021;
         }
+
     </style>
 
 </head>

@@ -64,7 +64,10 @@
                                 NT$${CommodityTrackDTO.comPri}元
                                 </span>
                             </h6>
-
+			                <form method="post" action="<spring:url value='/track/del'/>">
+			                <input type="hidden" name="memId" value="${CommodityTrackDTO.memId}">
+			                <input type="hidden" name="trackId" value="${CommodityTrackDTO.trackId}">
+			                <input type="submit" value="刪除"></form>
                         </div>
                     </a>
                   </div>

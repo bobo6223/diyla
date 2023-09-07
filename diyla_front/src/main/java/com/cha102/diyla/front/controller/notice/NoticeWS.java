@@ -29,13 +29,15 @@ public class NoticeWS {
 //                memIdSession.getAsyncRemote().sendText(idJson);
 //            }
 //        System.out.println(memId);
+        //排程器 定時取出redis 送到前端
         timer = new Timer();
         timer.schedule(new Task(),5000);
     }
 
 
-    @OnMessage //當有新的個人通知觸發  or 當有狀態改變(黑名單狀態/檢舉新增/留言新增/代幣新增)時觸發
+    @OnMessage //當收到前端訊息時移除redis
     public void onMessage(Session memIdSession,String message){
+
         Set<Integer> memIds = sessionMap.keySet();
         List<String> data = null;
         for (Integer memId : memIds){
