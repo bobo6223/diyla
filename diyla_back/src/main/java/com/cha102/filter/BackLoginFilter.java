@@ -1,7 +1,6 @@
 package com.cha102.filter;
 
 import com.cha102.diyla.empmodel.EmpVO;
-import com.cha102.diyla.member.MemVO;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +30,6 @@ public class BackLoginFilter implements Filter{
             session.setAttribute("location",req.getRequestURI());
             res.sendRedirect(req.getContextPath()+"/emp/empLogin.jsp");
             return;
-
         }else {
             chain.doFilter(request, response);
         }
