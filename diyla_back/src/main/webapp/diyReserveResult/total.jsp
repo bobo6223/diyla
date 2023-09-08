@@ -155,7 +155,7 @@ function updateDate(item){
                                         title += '晚上 - ';
                                         break;
                                 }
-                                title += '可預約人數 ' + period.peoLimit + '\n';
+                                title += '剩餘可預約人數 ' + period.peoLimit + '\n';
                             });
 							console.log(title);
                             events.push({
@@ -192,7 +192,7 @@ console.log(events);
                             	console.log(item);
                                 $('#morning').append('<p>DIY預約日期：' + updateDate(item) + '</p>');
                                 $('#morning').append('<p>時段：早上</p>');
-                                $('#morning').append('<p>預約總人數：' + item.peoCount + '</p>');
+                                $('#morning').append('<p>已預約總人數：' + item.peoCount + '</p>');
                                 if(item.reserveStatus === 0){
                                 	$('#morning').append('<p>狀態：可正常預約</p>');
                                 }else{
@@ -224,7 +224,7 @@ console.log(events);
                             	console.log(item);
                                 $('#afternoon').append('<p>DIY預約日期：' + updateDate(item) + '</p>');
                                 $('#afternoon').append('<p>時段：下午</p>');
-                                $('#afternoon').append('<p>預約人數：' + item.peoCount + '</p>');
+                                $('#afternoon').append('<p>已預約人數：' + item.peoCount + '</p>');
                                 if(item.reserveStatus === 0){
                                 	$('#afternoon').append('<p>狀態：可正常預約</p>');
                                 }else{
@@ -255,7 +255,7 @@ console.log(events);
                             	console.log(item);
                                 $('#evening').append('<p>DIY預約日期：' + updateDate(item) + '</p>');
                                 $('#evening').append('<p>時段：晚上</p>');
-                                $('#evening').append('<p>預約人數：' + item.peoCount + '</p>');
+                                $('#evening').append('<p>已預約人數：' + item.peoCount + '</p>');
                                 if(item.reserveStatus === 0){
                                 	$('#evening').append('<p>狀態：可正常預約</p>');
                                 }else{

@@ -84,7 +84,7 @@ public class DiyReserveController {
 
 	};
 
-	@GetMapping("/getOneSummaryMorning") // 拿單筆彙總資料
+	@GetMapping("/getOneSummaryMorning") // 拿單筆彙總資料 -- 早
 	public List<DiyReserveResultEntity> getOneSummaryMorning(
 			@RequestParam("selectedDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date diyReserveDate) {
 		System.out.println(diyReserveDate);
@@ -95,7 +95,7 @@ public class DiyReserveController {
 		return diyReserveResultEntityList;
 	};
 
-	@GetMapping("/getOneSummaryAfternoon") // 拿單筆彙總資料
+	@GetMapping("/getOneSummaryAfternoon") // 拿單筆彙總資料  -- 下午
 	public List<DiyReserveResultEntity> getOneSummaryAfternoon(
 			@RequestParam("selectedDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date diyReserveDate) {
 		DiyReserveResultEntity diyReserveResultEntity = diyReserveService.getOneSummary(diyReserveDate, 1);
@@ -105,7 +105,7 @@ public class DiyReserveController {
 		return diyReserveResultEntityList;
 	};
 
-	@GetMapping("/getOneSummaryNight") // 拿單筆彙總資料
+	@GetMapping("/getOneSummaryNight") // 拿單筆彙總資料  -- 晚
 	public List<DiyReserveResultEntity> getOneSummaryNight(
 			@RequestParam("selectedDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date diyReserveDate) {
 		DiyReserveResultEntity diyReserveResultEntity = diyReserveService.getOneSummary(diyReserveDate, 2);
@@ -130,10 +130,11 @@ public class DiyReserveController {
 						.equals(sdf.format(diyReserveResultEntity_DTO.getDiyReserveDate()))
 						&& diyReserveResultEntity.getDiyPeriod() == diyReserveResultEntity_DTO.getDiyPeriod()
 						&& diyReserveResultEntity.getPeoCount() != diyReserveResultEntity_DTO.getPeoCount()) {
+
 					
 					diyReserveResultEntity.setPeoCount(diyReserveResultEntity_DTO.getPeoCount());
-					diyReserveResultEntity.setPeoLimit(
-							diyReserveResultEntity.getPeoLimit() - diyReserveResultEntity_DTO.getPeoCount());
+					diyReserveResultEntity.setPeoLimit(    ///////////////
+							/*diyReserveResultEntity.getPeoLimit() -*/ diyReserveResultEntity_DTO.getPeoLimit());
 
 					if (diyReserveResultEntity_DTO.getPeoCount() < 20) {
 						diyReserveResultEntity.setReserveStatus(0);

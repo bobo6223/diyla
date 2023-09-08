@@ -98,23 +98,31 @@ public class DiyReserveResultService {
     
     
     
-    public List<DiyReserveResultEntity> setSummaryFromOrderPeriod() {  // 恆旭更動 -- //增\\將diyOrder 所有訂單以日期、時段groupBy---去計算人數，再放到資料庫
+    public List<DiyReserveResultEntity> setSummaryFromOrderPeriod() {  //增\\將diyOrder 所有訂單以日期、時段groupBy---去計算人數，再放到資料庫
     	
     	DiyOrderService DOser = new DiyOrderService();
     	List<DiyOrderDTO> diyOrderDTOList = DOser.getPeoCount();
     	List<DiyReserveResultEntity> diyReserveResultEntityList = new LinkedList<>();
     	for (DiyOrderDTO diyOrderDTO : diyOrderDTOList) {
+    		
+    		
+    		
     		DiyReserveResultEntity diyReserveResultEntity = new DiyReserveResultEntity();
     		diyReserveResultEntity.setDiyReserveDate(diyOrderDTO.getDiyReserveDate());
     		diyReserveResultEntity.setDiyPeriod(diyOrderDTO.getDiyPeriod());
     		diyReserveResultEntity.setPeoCount(diyOrderDTO.getPeopleCount());
+    		
+    		
     		if(diyOrderDTO.getPeopleCount()<20) {
     			diyReserveResultEntity.setReserveStatus(0);
     		}else {
     			diyReserveResultEntity.setReserveStatus(1);
     		}
     		
-    		diyReserveResultEntity.setPeoLimit(20);
+    		diyReserveResultEntity.setPeoLimit(20 - diyOrderDTO.getPeopleCount());
+    		
+    		System.out.println(diyOrderDTO.getPeopleCount());
+    		////////
     		diyReserveResultEntity.setItemQuantity(20 - diyOrderDTO.getPeopleCount());
     	
     		

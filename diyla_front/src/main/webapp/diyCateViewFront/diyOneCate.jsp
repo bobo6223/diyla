@@ -79,16 +79,10 @@
         <input type="hidden" name="action" value="addItem">
         <!--         </form> -->
         <br>
-<<<<<<< HEAD
-        <form>
-        <input type="hidden" name="memId" value="${DiyCateEntity.diyNo}">
-        <button type="button" class="button" id="addItem"  onclick="window.location.href='${ctxPath}/diyCate/bookDiyOrder?DiyNo=${DiyCateEntity.diyNo}'">開始訂位</button>
-        </form>
-        
-        
-=======
+
+
         <button type="button" class="button" id="addItem" onclick="reserve()">開始訂位</button>
->>>>>>> main
+
         <br>
         <div id="gap">
             <button type="submit" class="button" onclick="window.location.href='${ctxPath}/diyCate/diyCateList'">回到商品瀏覽</button>
