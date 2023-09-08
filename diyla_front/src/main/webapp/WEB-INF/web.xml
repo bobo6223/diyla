@@ -29,6 +29,7 @@
   <url-pattern>/art/editart.jsp</url-pattern>
   <url-pattern>/art/personalart.jsp</url-pattern>
   <url-pattern>/art/selectcoin.jsp</url-pattern>
+  <url-pattern>/front_chat_page.jsp</url-pattern>
   <dispatcher>REQUEST</dispatcher>
   <dispatcher>FORWARD</dispatcher>
   <dispatcher>INCLUDE</dispatcher>

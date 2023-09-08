@@ -28,6 +28,7 @@
     <url-pattern>/emp/insert.jsp</url-pattern>
     <url-pattern>/emp/empShowAll.jsp</url-pattern>
     <url-pattern>/mem/memShowAll.jsp</url-pattern>
+    <url-pattern>/chatPage.jsp</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
