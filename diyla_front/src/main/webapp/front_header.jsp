@@ -42,10 +42,28 @@
             right: -9px;
             top: -8px;
         }
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #FCE5CD;
+          min-width: 400px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+          top:195px;
+          right:50px;
+        }
+
+        .dropdown-content p {
+          color:#B26021;
+          padding: 10px;
+          margin: 0;
+          border-bottom: 1px solid #B26021;
+          width:500px;
+        }
     </style>
 </head>
 
-<body onload="connect()" onload="disconnect()">
+<body onload="connect()" onunload="disconnect()">
 <div class="hero_area">
     <!-- header section strats -->
     <header class="header_section">
@@ -117,7 +135,7 @@
                                     <span>${memVO.memName}你好</span>
                                 </a>
                             </div>
-                            <div onclick="toggleNotifications()">
+                            <div onclick="toggleNotifications();">
                                 <i class="fa fa-bell" aria-hidden="true" style="color:#FCE5CD;"></i>
                                 <span class="badge" id="notification-count">0</span>
                             </div>
@@ -274,10 +292,9 @@
         webSocket.onmessage = function (event) {
             let jsonObj = JSON.parse(event.data);
             console.log(jsonObj);
-            getNotices();
             addNotification();
             addListener();
-
+            getNotices();
         }
 
         function addListener() {
@@ -297,7 +314,7 @@
 
     let notificationCount = 0;
     let notices = null;
-    //getNotices()
+
 
     // 添加通知
     function addNotification() {
@@ -312,11 +329,7 @@
         document.getElementById('notification-dropdown').appendChild(notificationItem);
     }
 
-    // 切换通知下拉框的顯示和隱藏
-    // function toggleNotifications() {
-    //   const dropdown = document.getElementById('notification-dropdown');
-    // dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
-    //}
+
 
     function toggleNotifications() {
         const dropdown = document.getElementById('notification-dropdown');
@@ -344,8 +357,10 @@
             notices = res.data;
             console.log(notices)
             let noticeLength = 0;
+            let maxNotice = 5;
             $('#notification-count').html(notices.length);
-            for (let i = 0; i < notices.length; i++) {
+            $('#notification-dropdown').empty();
+            for (let i = 0; i < notices.length && i<maxNotice; i++) {
                 let htmlParagraphElement = document.createElement('p');
                 htmlParagraphElement.textContent = notices[i].noticeTitle;
                 $('#notification-dropdown').append(htmlParagraphElement);
@@ -353,15 +368,17 @@
                     noticeLength += 1;
                 }
             }
+
+            $('#notification-count').html(noticeLength);
             if (noticeLength === 0) {
                 $('#notification-count').hide();
             } else {
-                $('#notification-count').html(noticeLength);
                 $('#notification-count').show();
             }
 
         })
     }
+
 </script>
 </body>
 

@@ -64,11 +64,6 @@
             email: email.value,
             phonenumber: phonenumber.value
             }
-            let formDataUrlEncoded = new URLSearchParams();
-            for (let key in obj){
-            formDataUrlEncoded.append(key,obj[key])
-            }
-
             fetch("updatePw",{
             method:"post",
             headers:{
