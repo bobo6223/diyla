@@ -175,29 +175,30 @@
 	    });
 	
 	//刪除
-	 function deleteCartItem(comNo,memId){
-		 $.ajax({
-	            url: "/diyla_front/shopR/delete",
-	            type: "POST",
-	            data: {
-	                comNo: comNo,
-	                memId: memId
-	            },
-	            dataType: "json",
-	            success: function(data) {
-	                if (data.success) {
-	                	 swal("成功刪除", "", "success");
-	                     // 延遲 1 秒後刷新
-	                     setTimeout(function() {
-	                         window.location.reload("#mainContent");
-	                     }, 1500);
-	                } else {
-	                }
-	            },
-	            error: function() {
-	            }
-	        });
-	    }
+		 function deleteCartItem(comNo,memId){
+			 $.ajax({
+		            url: "/diyla_front/shopR/delete",
+		            type: "POST",
+		            data: {
+		                comNo: comNo,
+		                memId: memId
+		            },
+		            dataType: "json",
+		            success: function(data) {
+		                if (data.success) {
+		                	 swal("成功刪除", "", "success");
+		                     // 延遲 1 秒後刷新
+		                     setTimeout(function() {
+		                         window.location.reload("#mainContent");
+		                     }, 1500);
+		                } else {
+		                }
+		            },
+		            error: function() {
+		            }
+		        });
+		    }
+		 
 	 
 	 //修改
 	 $('.updateButton').click(function(){
@@ -229,30 +230,30 @@
 	        }
 	    });
 	 function updateCartItem(comNo,memId,amount) {
-		fetch("/diyla_front/shopR/update",{
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-               memId:memId,
-               comNo:comNo,
-               comAmount:amount
-            })
-        }).then(response => response.json())
-          .then(data => {
-            if (data.success) {
-                swal("成功修改", "", "success");
-                // 延遲 1 秒後刷新
-                setTimeout(function () {
-                	window.location.reload("#mainContent");
-                }, 1500);
-            } else {
-            }
-        })
-        .catch(error => {
-        });
-	}
+			fetch("/diyla_front/shopR/update",{
+	            method: "POST",
+	            headers: {
+	                "Content-Type": "application/json"
+	            },
+	            body: JSON.stringify({
+	               memId:memId,
+	               comNo:comNo,
+	               comAmount:amount
+	            })
+	        }).then(response => response.json())
+	          .then(data => {
+	            if (data.success) {
+	                swal("成功修改", "", "success");
+	                // 延遲 1 秒後刷新
+	                setTimeout(function () {
+	                	window.location.reload("#mainContent");
+	                }, 1500);
+	            } else {
+	            }
+	        })
+	        .catch(error => {
+	        });
+		}
 	 
 
 	    
@@ -289,10 +290,12 @@
 		                         window.location.reload("#mainContent");
 		                     }, 1500);
 		                } else {
+
 		                    
 		                }
 		            },
 		            error: function() {
+
 		            }
 		        });
 		    }

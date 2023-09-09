@@ -20,12 +20,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import java.text.ParseException;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -53,7 +55,8 @@ public class diyEcpayController {
     public String ecpay(Model model, @RequestParam String tradeDesc, @RequestParam String totalPrice,
                         @RequestParam String itemName, @RequestParam String cardrecipient,
                         @RequestParam String cardrecipientAddress, @RequestParam String cardphone, @RequestParam String tokenUse,
-                        @RequestParam int period,@RequestParam int count,@RequestParam int diyNo
+                        @RequestParam int period,@RequestParam int count,@RequestParam int diyNo,@RequestParam String selectedDate
+
     ) {
         // todo 未來串接從session取得會員資料
         HttpSession session = req.getSession();
@@ -62,7 +65,9 @@ public class diyEcpayController {
         int memNO = memVO.getMemId();
         // 會員編號先另存
         memberHolder.put("memId" + memNO, memNO);
-        String receiveInfo = cardrecipient + "," + cardrecipientAddress + "," + cardphone + "," + diyNo + "," + count + "," + period;
+
+
+        String receiveInfo = cardrecipient + "," + cardrecipientAddress + "," + cardphone + "," + diyNo + "," + count + "," + period + "," + selectedDate;
         // 使用取號機
         if ("".equals(token)) {
             token = 0 + "";
@@ -70,11 +75,8 @@ public class diyEcpayController {
         Date date = new Date();
         java.sql.Timestamp sqlTimestamp = new java.sql.Timestamp(date.getTime());
 
-        DiyReserveResultEntity resultEntity = diyReserveResultService.insert(new DiyReserveResultEntity(null, new Date(), period, count, 1, sqlTimestamp, 1,10));
 
-        String toEcpay = EcpayCheckout.goToEcpayForDiy(memNO, tradeDesc, totalPrice, token, itemName, receiveInfo,resultEntity.getDiyReserveNo());
-
-
+        String toEcpay = EcpayCheckout.goToEcpayForDiy(memNO, tradeDesc, totalPrice, token, itemName, receiveInfo, 0);
         // 自訂取號
         model.addAttribute("toEcpay", toEcpay);
         return "/checkout/checkoutPage.jsp";
@@ -108,22 +110,28 @@ public class diyEcpayController {
             String diyNo = info[3];
             String count = info[4];
             String period = info[5];
-
-            // 轉化格式準備存入訂單
+            String selectedDate = info[6];
+            java.util.Date utilDate = new java.util.Date();
+            java.sql.Date sqlDate1 = new java.sql.Date(utilDate.getTime());
 
             Integer totalPri = Integer.valueOf(totalPrice);
             int diyReserveId = Integer.parseInt(token);
 
-            DiyReserveResultEntity diyReserveResult = diyReserveResultService.findById(diyReserveId);
 
-            java.util.Date utilDate = diyReserveResult.getDiyReserveDate();
-            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            java.sql.Date sqlDate2 = null;
+            try {
+                sqlDate2 = new java.sql.Date(dateFormat.parse(selectedDate).getTime());
+            } catch (ParseException e) {
+                e.printStackTrace(); 
+            }
 
-            DiyOrderVO diyOrderVO = new DiyOrderVO(null, memId, Integer.parseInt(diyNo), recipient, phone, Integer.parseInt(count), Integer.parseInt(period), sqlDate
-                    , Timestamp.valueOf(LocalDateTime.now()), diyReserveResult.getReserveStatus(), 1, totalPri);
+            DiyOrderVO diyOrderVO = new DiyOrderVO(null, memId, Integer.parseInt(diyNo), recipient, phone, Integer.parseInt(count), Integer.parseInt(period), sqlDate2
+                    , Timestamp.valueOf(LocalDateTime.now()), 0, 0, totalPri);
 
             DiyOrderService DOser = new DiyOrderService();
             DiyOrderVO diyOrderVO1 = DOser.addOD(diyOrderVO);
+
 
             MemVO memVO = memberService.selectMem(memId);
             session.setAttribute("memId", memId);
