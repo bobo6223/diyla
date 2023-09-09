@@ -96,8 +96,10 @@
 
 <script src="${ctxPath}/js/bootstrap.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </script>
 <script src="${ctxPath}/js/custom.js"></script>
+<jsp:include page="front_chat_page.jsp"/>
 
 </body>
 

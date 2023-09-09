@@ -1,5 +1,6 @@
 package com.cha102.diyla.noticeModel;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -24,7 +25,7 @@ public class NoticeVO {
 
 //    @Column(name = "NOTICE_CONTEXT")
 //    private String noticeContext;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Taipei")
     @Column(name = "NOTICE_TIME",insertable = false)
     private Timestamp noticeTime = Timestamp.valueOf(LocalDateTime.now());
 

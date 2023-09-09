@@ -45,20 +45,24 @@
         .dropdown-content {
           display: none;
           position: absolute;
-          background-color: #FCE5CD;
+          background-color: snow;
           min-width: 400px;
           box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
           z-index: 1;
           top:195px;
           right:50px;
+          border-radius: 0.5rem;
         }
 
         .dropdown-content p {
           color:#B26021;
           padding: 10px;
           margin: 0;
-          border-bottom: 1px solid #B26021;
           width:500px;
+          border-radius: 0.5rem;
+        }
+        .dropdown-content p:hover {
+            background-color:#F1F1F1;
         }
     </style>
 </head>
@@ -139,7 +143,7 @@
                                 <i class="fa fa-bell" aria-hidden="true" style="color:#FCE5CD;"></i>
                                 <span class="badge" id="notification-count">0</span>
                             </div>
-                            <div class="dropdown-content" id="notification-dropdown">
+                            <div class="dropdown-content" id="notification-dropdown" onclick="toggleNotifications();">
 
                             </div>
                             <a href="http://localhost:8081/diyla_front/shopR/getlist/${memId}" id="shoppingcart"
@@ -280,8 +284,12 @@
     let webCtx = path.substring(0, path.indexOf('/', 1));
     let endPointURL = "ws://" + host + webCtx + "/NoticeWS/${memId}";
     let webSocket;
-
-
+    let notificationCount = 0; //重整時又會從0開始
+    let notices = null;
+    console.log($('#notification-count').val());
+            if($('#notification-count').val()===0){
+                $('span.badge').hide();
+            }
     function connect() {
         webSocket = new WebSocket(endPointURL);
 
@@ -292,9 +300,14 @@
         webSocket.onmessage = function (event) {
             let jsonObj = JSON.parse(event.data);
             console.log(jsonObj);
-            addNotification();
-            addListener();
-            getNotices();
+            if($('#notification-count').val()===0){
+                $('#notification-count').hide();
+            }
+            if (jsonObj != null){
+                addListener();
+                getNotices();
+            }
+
         }
 
         function addListener() {
@@ -312,34 +325,18 @@
     }
 
 
-    let notificationCount = 0;
-    let notices = null;
-
-
-    // 添加通知
-    function addNotification() {
-        notificationCount++;
-        document.getElementById('notification-count').textContent = notificationCount;
-
-        // 創建通知
-        let notificationItem = document.createElement('p');
-        notificationItem.textContent = ` ${notificationCount}`;
-
-        // 將通知添加到下拉框中
-        document.getElementById('notification-dropdown').appendChild(notificationItem);
-    }
-
 
 
     function toggleNotifications() {
         const dropdown = document.getElementById('notification-dropdown');
         if (dropdown.style.display === 'block') {
             dropdown.style.display = 'none';
+            for (let i = 0; i < notices.length; i++) {
+                notices[i].noticeStatus = 1;
+            }
             notificationCount = 0; // 重置通知
             document.getElementById('notification-count').textContent = notificationCount;
-            for (let i = 0; i < notices.length; i++) {
-                notices[i].noticeStatus = 1
-            }
+//狀態已經變成1的也會重複改變
             let noticeJson = JSON.stringify(notices);
             axios.post("${ctxPath}/notice/saveRead", noticeJson, {
                 headers: {
@@ -348,6 +345,7 @@
             })
         } else {
             dropdown.style.display = 'block';
+            $('#notification-count').show();
         }
     }
 
@@ -358,11 +356,10 @@
             console.log(notices)
             let noticeLength = 0;
             let maxNotice = 5;
-            $('#notification-count').html(notices.length);
             $('#notification-dropdown').empty();
             for (let i = 0; i < notices.length && i<maxNotice; i++) {
                 let htmlParagraphElement = document.createElement('p');
-                htmlParagraphElement.textContent = notices[i].noticeTitle;
+                htmlParagraphElement.textContent = notices[i].noticeTitle+"\n"+notices[i].noticeTime;
                 $('#notification-dropdown').append(htmlParagraphElement);
                 if (notices[i].noticeStatus === 0) {
                     noticeLength += 1;
@@ -370,17 +367,12 @@
             }
 
             $('#notification-count').html(noticeLength);
-            if (noticeLength === 0) {
-                $('#notification-count').hide();
-            } else {
-                $('#notification-count').show();
-            }
+
 
         })
     }
 
 </script>
-<jsp:include page="front_chat_page.jsp"/>
 </body>
 
 </html>

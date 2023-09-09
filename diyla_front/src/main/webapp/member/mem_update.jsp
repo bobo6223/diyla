@@ -56,6 +56,7 @@
             border: 1px solid #B26021;
             margin-right:1.5rem;
             border-radius: 6px;
+            background-color:snow;
         }
         h4.member{
             margin-top:30px;
@@ -69,13 +70,13 @@
         div.member {
             border: 1px solid #B26021;
             flex:1;
-            padding: 10px;
+            padding: 10px 10px 10px 1.5rem;
             font-size: 1rem;
             width: 400px;
             height: 700px;
             position: relative;
-            padding-left:1rem;
             border-radius: 6px;
+            background-color:snow;
         }
         input.inputform {
             border: 1px solid #B26021;
@@ -119,7 +120,7 @@
             margin-top: 40px;
             font-size: 1rem;
             position:relative;
-            left:60%
+            left:58%;
         }
         button.member:hover {
             background-color: #FCE5CD;

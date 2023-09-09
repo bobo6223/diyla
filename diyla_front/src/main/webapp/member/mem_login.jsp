@@ -48,10 +48,12 @@
             border-radius: 5px;
             letter-spacing: 3px;
             margin:50px 0;
+            background-color:snow;
         }
         h4.member{
             margin-top:30px;
-            margin-bottom:20px
+            margin-bottom:20px;
+            font-weight:bold;
         }
 
         div.error {
