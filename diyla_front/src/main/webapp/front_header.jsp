@@ -67,7 +67,7 @@
     </style>
 </head>
 
-<body onload="connect()" onunload="disconnect()">
+<body onload="connect();" onunload="disconnect();">
 <div class="hero_area">
     <!-- header section strats -->
     <header class="header_section">
@@ -141,7 +141,7 @@
                             </div>
                             <div onclick="toggleNotifications();">
                                 <i class="fa fa-bell" aria-hidden="true" style="color:#FCE5CD;"></i>
-                                <span class="badge" id="notification-count">0</span>
+                                <span class="badge" id="notification-count"></span>
                             </div>
                             <div class="dropdown-content" id="notification-dropdown" onclick="toggleNotifications();">
 
@@ -284,12 +284,8 @@
     let webCtx = path.substring(0, path.indexOf('/', 1));
     let endPointURL = "ws://" + host + webCtx + "/NoticeWS/${memId}";
     let webSocket;
-    let notificationCount = 0; //重整時又會從0開始
-    let notices = null;
-    console.log($('#notification-count').val());
-            if($('#notification-count').val()===0){
-                $('span.badge').hide();
-            }
+
+
     function connect() {
         webSocket = new WebSocket(endPointURL);
 
@@ -300,14 +296,10 @@
         webSocket.onmessage = function (event) {
             let jsonObj = JSON.parse(event.data);
             console.log(jsonObj);
-            if($('#notification-count').val()===0){
-                $('#notification-count').hide();
-            }
             if (jsonObj != null){
                 addListener();
                 getNotices();
             }
-
         }
 
         function addListener() {
@@ -324,7 +316,8 @@
         webSocket.close();
     }
 
-
+    //let notificationCount = 0; //重整時又會從0開始
+    let notices = null;
 
 
     function toggleNotifications() {
@@ -332,20 +325,34 @@
         if (dropdown.style.display === 'block') {
             dropdown.style.display = 'none';
             for (let i = 0; i < notices.length; i++) {
-                notices[i].noticeStatus = 1;
-            }
-            notificationCount = 0; // 重置通知
-            document.getElementById('notification-count').textContent = notificationCount;
-//狀態已經變成1的也會重複改變
-            let noticeJson = JSON.stringify(notices);
-            axios.post("${ctxPath}/notice/saveRead", noticeJson, {
-                headers: {
-                    'Content-Type': 'application/json'
+                if(notices[i].noticeStatus === 0){
+                    console.log(notices[i].noticeNo);
+                    let data = {
+                        noticeNo:notices[i].noticeNo
+                    };
+                    fetch("${ctxPath}/notice/updateStatus", {
+                        method: "post",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }).then(function (response) {
+                        if(response.ok){
+                            console.log(response);
+                            console.log("success");
+                            let notificationCount = 0; // 重置通知
+                            document.getElementById('notification-count').textContent = notificationCount;
+                        }else{
+                            console.log("ng");
+                        }
+                    }).catch(error => {
+                            console.log("error");
+                    });
+                    }
                 }
-            })
+
         } else {
             dropdown.style.display = 'block';
-            $('#notification-count').show();
         }
     }
 
@@ -367,7 +374,6 @@
             }
 
             $('#notification-count').html(noticeLength);
-
 
         })
     }

@@ -26,6 +26,15 @@ public class NoticeWS {
 //                memIdSession.getAsyncRemote().sendText(idJson);
 //            }
 //        System.out.println(memId);
+        //一連線先執行一次
+        List<String> data = JedisNotice.getJedisNotice(memId);
+        Collection<Session> memIdSessions = sessionMap.values();
+        for (Session session : memIdSessions){
+            if(session.isOpen()){
+                session.getAsyncRemote().sendText(gson.toJson(data));
+            }
+        }
+
         //排程器 定時取出redis 送到前端
         timer = new Timer();
         timer.schedule(new Task(),5000);
@@ -56,7 +65,6 @@ public class NoticeWS {
             List<String> data = null;
             for (Integer memId : memIds){
                 data = JedisNotice.getJedisNotice(memId);
-
             }
 
             Collection<Session> memIdSessions = sessionMap.values();
@@ -64,7 +72,6 @@ public class NoticeWS {
                 if(session.isOpen()){
                    session.getAsyncRemote().sendText(gson.toJson(data));
                 }
-
             }
 
 //            onMessage(memIdSession,memId);

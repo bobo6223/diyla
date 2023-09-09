@@ -16,7 +16,7 @@ public interface ArtMsgRepository extends JpaRepository<ArtMsgVO, Integer> {
     @Transactional
     @Modifying
     @Query(value="update article_message set MSG_STATUS = 0 where MSG_NO=?1", nativeQuery = true)
-    void updateStatus(Integer msgNO);
+    void updateStatus(Integer noticeNo);
 
     @Transactional
     @Modifying
