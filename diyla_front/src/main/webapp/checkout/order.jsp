@@ -375,32 +375,32 @@ a.canceled::hover {
 							});
 
 							$(
-									"#recipientName, #recipientPhone, #recipientAddress")
-									.on(
-											"input",
-											function() {
-												// 獲取收件人相關欄位的值
-												const recipient = $(
-														"#recipientName").val();
-												const recipientPhone = $(
-														"#recipientPhone")
-														.val();
-												const recipientAddress = $(
-														"#recipientAddress")
-														.val();
-												const token = $("#tokenAmount")
-														.val();
+							"#recipientName, #recipientPhone, #recipientAddress, #tokenAmount")
+							.on(
+									"input",
+									function() {
+										// 獲取收件人相關欄位的值
+										const recipient = $(
+												"#recipientName").val();
+										const recipientPhone = $(
+												"#recipientPhone")
+												.val();
+										const recipientAddress = $(
+												"#recipientAddress")
+												.val();
+										const token = $("#tokenAmount").val();
+										
 
-												// 將收件人值填入下面表單的對應欄位
-												$("#cardrecipient").val(
-														recipient);
-												$("#cardrecipientAddress").val(
-														recipientAddress);
-												$("#cardphone").val(
-														recipientPhone);
-												$("#tokenAmountCard")
-														.val(token);
-											});
+										// 將收件人值填入下面表單的對應欄位
+										$("#cardrecipient").val(
+												recipient);
+										$("#cardrecipientAddress").val(
+												recipientAddress);
+										$("#cardphone").val(
+												recipientPhone);
+										$("#tokenAmountCard")
+												.val(token);
+									});
 
 							function validateFormFields() {
 								const recipientName = $("#recipientName").val();
