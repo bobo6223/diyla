@@ -122,7 +122,7 @@
                                             <div class="mb-3">
                                                 <label for="itemDetails">DIY品項詳情</label>
                                                 <textarea class="form-control" id="itemDetails"
-                                                          name="itemDetails" rows="10"></textarea>
+                                                          name="itemDetails" rows="5"></textarea>
                                             </div>
 
                                         </div>
@@ -149,9 +149,8 @@
                                 </button>
                                 <div style="width: 132px;">
                                     <div class="layui-upload-list">
-                                        <img class="layui-upload-img" id="ID-upload-demo-img"
-                                             style="width: 100%; height: 92px;">
-                                        <div id="ID-upload-demo-text"></div>
+                                        <img class="layui-upload-img" id="ID-upload-demo-img" style="width: 200px; height: 150px;">
+                                        </div>
                                     </div>
                                     <!--<div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="filter-demo">-->
                                     <!--    <div class="layui-progress-bar" lay-percent=""></div>-->

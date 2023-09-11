@@ -40,9 +40,9 @@
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
-<div class="main-content">
+<div>
 
-    <div class="page-content">
+    <div class="page-content" style="padding:20px">
         <div class="container-fluid">
 
             <!-- start page title -->
@@ -136,8 +136,8 @@
                             </button>
                             <div style="width: 132px;">
                                 <div class="layui-upload-list">
-                                    <img class="layui-upload-img" id="ID-upload-demo-img" style="width: 100%; height: 92px;">
-                                    <div id="ID-upload-demo-text"></div>
+                                    <img class="layui-upload-img" id="ID-upload-demo-img" style="width: 200px; height: 150px;">
+                                </div>
                                 </div>
                                 <!--<div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="filter-demo">-->
                                 <!--    <div class="layui-progress-bar" lay-percent=""></div>-->
