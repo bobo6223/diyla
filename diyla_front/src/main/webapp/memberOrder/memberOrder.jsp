@@ -110,6 +110,9 @@ th, td {
 .status-canceled {
 	background-color: #FF3333; /* 已取消的顏色 */
 }
+.status-canceling{
+	background-color: #FF9797;
+}
 
 table {
 	width: 100%;
@@ -270,6 +273,9 @@ font-size: 18px;
 a.subbarlink:hover {
 	color:blue;
 }
+tr:nth-child(even) {
+    background-color: #f2f2f2 !important; 
+}
 </style>
 </head>
 <body>
@@ -278,9 +284,9 @@ a.subbarlink:hover {
 	</div>
 	<div id="main_content">
 		<div class="barblcok">
-			<span id="memberInfo" class="subbar"><a href="#" class="subbarlink">會員資訊管理</a></span>> <span
-				id="orderitem" class="subbar"><a  href="#" class="subbarlink">我的訂單</a></span>> <span
-				id="shoporder" class="subbar"><a  href="" class="subbarlink">商店訂單</a></span>
+			<span id="memberInfo" class="subbar"><a href="${ctxPath}/member/update?action=select&memId=${memId}" class="subbarlink">會員資訊管理</a></span>> <span
+				id="orderitem" class="subbar"><a  href="${ctxPath}/allOrder/allOrder?memId=${memId}" class="subbarlink">我的訂單</a></span>> <span
+				id="shoporder" class="subbar"><a  href="${ctxPath}/memberOrder/OrderController?action=listOrder&memId=${memId}" class="subbarlink">商店訂單</a></span>
 		</div>
 		<p class="heading">
 		<svg fill="#000000" xmlns="http://www.w3.org/2000/svg" width="36px" height="36px" viewBox="0 0 52 52" enable-background="new 0 0 52 52" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M39.3,26.9c0,1-0.9,1.9-1.9,1.9H14.6c-1,0-1.9-0.9-1.9-1.9V25c0-1,0.9-1.9,1.9-1.9h22.9c1,0,1.9,0.9,1.9,1.9 v1.9H39.3z M35.5,38.3c0,1-0.9,1.9-1.9,1.9h-19c-1,0-1.9-0.9-1.9-1.9v-1.9c0-1,0.9-1.9,1.9-1.9h19.1c1,0,1.9,0.9,1.9,1.9v1.9H35.5z M12.7,13.5c0-1,0.9-1.9,1.9-1.9h19.1c1,0,1.9,0.9,1.9,1.9v1.9c0,1-0.9,1.9-1.9,1.9H14.6c-1,0-1.9-0.9-1.9-1.9 C12.7,15.4,12.7,13.5,12.7,13.5z M41.2,4H10.8C7.6,4,5,6.6,5,9.7v32.4c0,3.1,2.6,5.7,5.7,5.7h30.5c3.1,0,5.7-2.6,5.7-5.7V9.7 C47,6.6,44.4,4,41.2,4z"></path> </g></svg>
@@ -402,15 +408,24 @@ a.subbarlink:hover {
 					  if (orderStatus === 3) {
 						  swal({
 							    title: "商品已出貨，無法取消訂單",
-							    icon:"warning",
+							    icon:"error",
 							    buttonsStyling: false,
 							    confirmButtonClass: 'btn btn-primary btn-block'
 							});
 				            return;
 				        }
-					  if (orderStatus >= 4) {
+					  if (orderStatus == 4||orderStatus==5) {
 						  swal({
 							    title: "訂單已完成，無法取消訂單",
+							    icon:"error",
+							    buttonsStyling: false,
+							    confirmButtonClass: 'btn btn-primary btn-block'
+							});
+				            return;
+				        }
+					  if (orderStatus == 6) {
+						  swal({
+							    title: "申請已送出，請耐心等候",
 							    icon:"warning",
 							    buttonsStyling: false,
 							    confirmButtonClass: 'btn btn-primary btn-block'
@@ -419,15 +434,25 @@ a.subbarlink:hover {
 				        }
 					swal({
 						title : "確定取消訂單?",
+						 text: "取消代幣將無法退回。",		
 						icon : "warning",
 						buttons : true,
 						 buttonsStyling: false,
 						 confirmButtonClass: 'btn btn-primary btn-block'
 					}).then((cancel)=>{
 						if(cancel){
-							 form.submit();
-						}
-					});
+							 Swal.fire({
+						            title: '取消申請已送出',
+						            icon: 'success',
+						            timer: 1000, // 顯示成功提示 1 秒
+						            showConfirmButton: false
+						        }).then(() => {
+						            setTimeout(() => {
+						                form.submit();
+						            }, 1000);
+						        });
+						    }
+				});
 				});
 
 		  
@@ -437,7 +462,8 @@ a.subbarlink:hover {
 					"2" : "備貨中",
 					"3" : "已出貨",
 					"4" : "已完成",
-					"5" : "已取消"
+					"5" : "已取消",
+					"6" : "審核中"
 			    };
 			    // 找到所有的訂單狀態欄位
 		  $(".orderStatus").each(function() {
@@ -457,7 +483,9 @@ a.subbarlink:hover {
 		            $(this).addClass("status-completed");
 		        }else if (orderStatus === "5") {
 		            $(this).addClass("status-canceled");
-		        }
+		        }else if (orderStatus === "6") {
+					$(this).addClass("status-canceling");
+				}
 		    });
 			    
 

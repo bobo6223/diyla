@@ -251,9 +251,6 @@ a.canceled::hover {
 				</c:choose>
 				<span class="actualPrice">元</span> <span class="actualPrice"
 					id="actualPriceSpan">${totalPrice}</span> <span class="actualPrice">實付金額:</span>
-				<!-- 				</div> -->
-
-				<!-- 				<span style="margin:30px 0px;">本次預計獲得回饋:</span><input type="hidden" value="1" name="tokenback"> -->
 			</div>
 			<div class="container">
 				<div class="title">+填寫付款資訊</div>
@@ -375,32 +372,32 @@ a.canceled::hover {
 							});
 
 							$(
-							"#recipientName, #recipientPhone, #recipientAddress, #tokenAmount")
-							.on(
-									"input",
-									function() {
-										// 獲取收件人相關欄位的值
-										const recipient = $(
-												"#recipientName").val();
-										const recipientPhone = $(
-												"#recipientPhone")
-												.val();
-										const recipientAddress = $(
-												"#recipientAddress")
-												.val();
-										const token = $("#tokenAmount").val();
-										
+									"#recipientName, #recipientPhone, #recipientAddress, #tokenAmount")
+									.on(
+											"input",
+											function() {
+												// 獲取收件人相關欄位的值
+												const recipient = $(
+														"#recipientName").val();
+												const recipientPhone = $(
+														"#recipientPhone")
+														.val();
+												const recipientAddress = $(
+														"#recipientAddress")
+														.val();
+												const token = $("#tokenAmount").val();
+												
 
-										// 將收件人值填入下面表單的對應欄位
-										$("#cardrecipient").val(
-												recipient);
-										$("#cardrecipientAddress").val(
-												recipientAddress);
-										$("#cardphone").val(
-												recipientPhone);
-										$("#tokenAmountCard")
-												.val(token);
-									});
+												// 將收件人值填入下面表單的對應欄位
+												$("#cardrecipient").val(
+														recipient);
+												$("#cardrecipientAddress").val(
+														recipientAddress);
+												$("#cardphone").val(
+														recipientPhone);
+												$("#tokenAmountCard")
+														.val(token);
+											});
 
 							function validateFormFields() {
 								const recipientName = $("#recipientName").val();
