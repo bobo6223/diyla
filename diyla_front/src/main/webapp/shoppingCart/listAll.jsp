@@ -100,8 +100,9 @@
 					<input type="hidden" name="action" value="clear"> <a
 						href="${ctxPath}/shop/CommodityController?action=listAll"
 						class="shopPage">繼續購物</a> <span class="total-price">總金額:${totalPrice}元</span>
-					<a href="http://localhost:8081/diyla_front/shopR/checkout/${memId}"
-						class="checkout-btn" type="button" id="checkout">結帳</a>
+
+						<a href="${ctxPath}/shopR/checkout/${memId}" class="checkout-btn" type="button" id="checkout">結帳</a>
+
 				</div>
 			</c:when>
 
@@ -157,7 +158,6 @@
 		$(".deleteButton").click(function() {
 			const button =$(this);
 			const comNo = button.closest('tr').find(".dcomNo").val();
-// 			const memId =button.closest('tr').find(".dmemId").val();
 			const memId = <%=session.getAttribute("memId")%>;
 
 			console.log(comNo);
@@ -175,30 +175,32 @@
 	    });
 	
 	//刪除
-		 function deleteCartItem(comNo,memId){
-			 $.ajax({
-		            url: "/diyla_front/shopR/delete",
-		            type: "POST",
-		            data: {
-		                comNo: comNo,
-		                memId: memId
-		            },
-		            dataType: "json",
-		            success: function(data) {
-		                if (data.success) {
-		                	 swal("成功刪除", "", "success");
-		                     // 延遲 1 秒後刷新
-		                     setTimeout(function() {
-		                         window.location.reload("#mainContent");
-		                     }, 1500);
-		                } else {
-		                }
-		            },
-		            error: function() {
-		            }
-		        });
-		    }
-		 
+	 function deleteCartItem(comNo,memId){
+		 $.ajax({
+	            url: "/diyla_front/shopR/delete",
+	            type: "POST",
+	            data: {
+	                comNo: comNo,
+	                memId: memId
+	            },
+	            dataType: "json",
+	            success: function(data) {
+	                if (data.success) {
+	                	 swal("成功刪除", "", "success");
+	                     // 延遲 1 秒後刷新
+	                     setTimeout(function() {
+	                         window.location.reload("#mainContent");
+	                     }, 1500);
+	                } else {
+	                	window.location.href="${ctxPath}/error.jsp"
+	                }
+	            },
+	            error: function() {
+	            	window.location.href="${ctxPath}/error.jsp"
+	            }
+	        });
+	    }
+
 	 
 	 //修改
 	 $('.updateButton').click(function(){
@@ -207,7 +209,6 @@
 	        const originalAmount = parseInt(inputField.data('original-amount'));
 	        const amount =  inputField.val(); 
 	        const comNo = button.closest('tr').find(".ucomNo").val();
-// 			const memId =button.closest('tr').find(".umemId").val();
 			const memId = <%=session.getAttribute("memId")%>;
 			console.log(amount);
 			console.log(inputField);
@@ -230,30 +231,34 @@
 	        }
 	    });
 	 function updateCartItem(comNo,memId,amount) {
-			fetch("/diyla_front/shopR/update",{
-	            method: "POST",
-	            headers: {
-	                "Content-Type": "application/json"
-	            },
-	            body: JSON.stringify({
-	               memId:memId,
-	               comNo:comNo,
-	               comAmount:amount
-	            })
-	        }).then(response => response.json())
-	          .then(data => {
-	            if (data.success) {
-	                swal("成功修改", "", "success");
-	                // 延遲 1 秒後刷新
-	                setTimeout(function () {
-	                	window.location.reload("#mainContent");
-	                }, 1500);
-	            } else {
-	            }
-	        })
-	        .catch(error => {
-	        });
-		}
+
+		fetch("/diyla_front/shopR/update",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+               memId:memId,
+               comNo:comNo,
+               comAmount:amount
+            })
+        }).then(response => response.json())
+          .then(data => {
+            if (data.success) {
+                swal("成功修改", "", "success");
+                // 延遲 1 秒後刷新
+                setTimeout(function () {
+                	window.location.reload("#mainContent");
+                }, 1500);
+            } else {
+            	window.location.href="${ctxPath}/error.jsp"
+            }
+        })
+        .catch(error => {
+        	window.location.href="${ctxPath}/error.jsp"
+        });
+	}
+
 	 
 
 	    
@@ -291,10 +296,14 @@
 		                     }, 1500);
 		                } else {
 
+		                	window.location.href="${ctxPath}/error.jsp"
+
 		                    
 		                }
 		            },
 		            error: function() {
+
+		            	window.location.href="${ctxPath}/error.jsp"
 
 		            }
 		        });
