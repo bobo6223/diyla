@@ -13,7 +13,9 @@ public class EcpayCheckout {
 	 * memNo：會員編號 tradeDesc: 交易敘述 totalPrice: 總價 itemName: 條列式商品敘述
 	 */
 	public static String goToEcpay(Integer memNO, String tradeDesc, String totalPrice,String token, String itemName,
+
 								   String receiveInfo,String jsessionid,HttpServletRequest req) {
+
 		// 取得交易時間
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		String tradeDate = sdf.format(new Date(System.currentTimeMillis()));
