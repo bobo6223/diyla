@@ -45,9 +45,9 @@
                         營業時間
                     </h6>
                     <p>
-                        08：00 ～ 12：00
+                        09：00 ～ 12：00
                         <br>
-                        13：00 ～ 20：00
+                        13：00 ～ 21：00
                     </p>
                 </div>
 
@@ -66,7 +66,7 @@
                         </div>
                         <div>
                             <i class="fa fa-envelope" aria-hidden="true"></i>
-                            <span> service@tibame.com</span>
+                            <span> tibame515@google.com</span>
                         </div>
                     </div>
                 </div>
@@ -98,10 +98,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
 </script>
 <script src="${ctxPath}/js/custom.js"></script>
+<jsp:include page="front_chat_page.jsp"/>
 
 </body>
 
 </html>
+
 
 </body>
 </html>

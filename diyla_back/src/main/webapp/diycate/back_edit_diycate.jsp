@@ -29,7 +29,11 @@
     <!-- App Css-->
     <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
     <link href="//unpkg.com/layui@2.8.15/dist/css/layui.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="${ctxPath}/css/style.css">
+    <!-- 引入 SweetAlert2 的 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+
+
 
 </head>
 
@@ -122,7 +126,7 @@
                                             <div class="mb-3">
                                                 <label for="itemDetails">DIY品項詳情</label>
                                                 <textarea class="form-control" id="itemDetails"
-                                                          name="itemDetails" rows="10"></textarea>
+                                                          name="itemDetails" rows="5"></textarea>
                                             </div>
 
                                         </div>
@@ -149,9 +153,8 @@
                                 </button>
                                 <div style="width: 132px;">
                                     <div class="layui-upload-list">
-                                        <img class="layui-upload-img" id="ID-upload-demo-img"
-                                             style="width: 100%; height: 92px;">
-                                        <div id="ID-upload-demo-text"></div>
+                                        <img class="layui-upload-img" id="ID-upload-demo-img" style="width: 200px; height: 150px;">
+                                        </div>
                                     </div>
                                     <!--<div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="filter-demo">-->
                                     <!--    <div class="layui-progress-bar" lay-percent=""></div>-->
@@ -204,7 +207,8 @@
 
 <script src="/diyla_back/vendors/jquery/jquery-3.7.0.min.js"></script>
 <script src="//unpkg.com/layui@2.8.15/dist/layui.js"></script>
-
+<!-- 引入 SweetAlert2 的 JavaScript 文件 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
 <script>
 
     let imageData;
@@ -246,10 +250,9 @@
         // 獲取指定參數的值
         console.log(params);
 
-
         $.ajax({
             type: "GET",
-            url: "http://localhost:8081/diyla_back/api/diy-cates/" + params,
+            url: "/diyla_back/api/diy-cates/" + params,
             success: function (data) {
                 console.log("請求成功:", data);
                 $('#diyNo').val(data.diyNo)
@@ -260,26 +263,64 @@
                 $('#itemDetails').val(data.itemDetails);
                 $('#diyCategoryName').val(data.diyCategoryName)
 
-
                 $('#ID-upload-demo-img').attr('src', "data:image/jpeg;base64," + data.diyPicture); // 圖片連結（base64）
-
-
             },
             error: function (error) {
                 console.log("請求失敗:", error);
             }
         });
 
-
-
-
-
         $("#submitBtn").click(function (event) {
             event.preventDefault(); // 阻止表單提交
 
+            // 手動驗證帶有 required 屬性的字段
+            var nameInput = document.querySelector('#diyName');
+            var amountInput = document.querySelector('#amount');
+
+            if (nameInput.value === '' && amountInput.value === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: '錯誤',
+                    text: '請輸入DIY品項名稱及DIY金額'
+                });
+                return; // 不繼續提交表單
+            } else if (nameInput.value === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: '錯誤',
+                    text: '請輸入DIY品項名稱'
+                });
+                return; // 不繼續提交表單
+            } else if (amountInput.value === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: '錯誤',
+                    text: '請輸入DIY金額'
+                });
+                return; // 不繼續提交表單
+            }
+
+            // 驗證價格輸入是否為數字
+            var amountValue = parseFloat(amountInput.value);
+            if (isNaN(amountValue)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '錯誤',
+                    text: '請輸入有效的數字作為DIY金額'
+                });
+                return; // 不繼續提交表單
+            }
+            // 添加额外的防呆机制：检查金额是否小于100
+            if (amountValue < 100) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '錯誤',
+                    text: 'DIY金額必須大於或等於100'
+                });
+                return; // 不继续提交表单
+            }
 
             // 發送 POST 請求
-
             var formData = new FormData();
 
             // 添加 JSON 數據
@@ -291,18 +332,16 @@
                 itemDetails: $('#itemDetails').val(),
                 diyNo: $('#diyNo').val(),
                 diyCategoryName: $('#diyCategoryName').val()
-
-                // JSON 數據的屬性
             };
             formData.append("diyCate", JSON.stringify(jsonData));
-            // 添加圖片文件
 
             if (imageData !== undefined) {
-                formData.append("image", imageData)
+                formData.append("image", imageData);
             }
+
             $.ajax({
                 type: "POST",
-                url: "http://localhost:8081/diyla_back/api/diy-cates",
+                url: "/diyla_back/api/diy-cates",
                 data: formData,
                 processData: false,  // 不處理數據
                 contentType: false,  // 不設置內容類型
@@ -310,7 +349,7 @@
                     console.log("請求成功:", data);
                     // 跳轉回上一頁
                     // 跳转到带参数的 URL
-                    location.href = 'http://localhost:8081/diyla_back/diycate/back_diycate.jsp';
+                    location.href = '/diyla_back/diycate/back_diycate.jsp';
                 },
                 error: function (error) {
                     console.log("請求失敗:", error);
@@ -322,9 +361,10 @@
             event.preventDefault(); // 阻止默認事件
             // 跳轉回上一頁
             // 跳转到带参数的 URL
-            location.href = 'http://localhost:8081/diyla_back/diycate/back_diycate.jsp';
+            location.href = '/diyla_back/diycate/back_diycate.jsp';
         });
     });
+
 </script>
 
 </body>

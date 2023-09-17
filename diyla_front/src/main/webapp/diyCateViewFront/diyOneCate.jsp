@@ -79,14 +79,11 @@
         <input type="hidden" name="action" value="addItem">
         <!--         </form> -->
         <br>
-
-
         <button type="button" class="button" id="addItem" onclick="reserve()">開始訂位</button>
-
         <br>
         <div id="gap">
             <button type="submit" class="button" onclick="window.location.href='${ctxPath}/diyCate/diyCateList'">回到商品瀏覽</button>
-            <button type="submit" class="button" onclick="window.location.href='${ctxPath}/diyOrder/diyOrder_front.jsp'">回到訂單管理首頁</button>
+            <button type="submit" class="button" onclick="window.location.href='${ctxPath}/diyOrder/Front.jsp'">回到DIY體驗首頁</button>
         </div>
     </div>
 

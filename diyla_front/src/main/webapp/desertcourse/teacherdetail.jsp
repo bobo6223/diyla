@@ -10,29 +10,34 @@
     <title>師傅詳情</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
+        crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+        crossorigin="anonymous"></script>
 <style>
-    body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        font-family: 'Lato', sans-serif;
-    }
 
     #page-content {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: center;
         align-items: center;
         gap: 20px;
-        max-width: 1200px;
         width: 100%;
+
     }
 
     #teacherBlock {
         display: flex;
         flex-direction: row; /* 將內容水平排列 */
-        gap: 10px;
-        width: 100%;
+        width: 95%;
+        padding-left: 15%;
         font-family: 'Lato', sans-serif;
+        align-items: space-around;
+        column-gap: 8vw;
+        margin-top: 5vh;
+
     }
 
     #header{
@@ -42,41 +47,61 @@
         width: 100%;
     }
 #teacherNameSpecialityBlock {
-    order: 1;
+    
     display: flex;
     margin-top: 10px;
-    width: 220px;
+    width: 20%;
     flex-direction: column;
     align-items: flex-start;
 
 }
-
+#introHead{
+    border-bottom: 1px solid #ccc; 
+    width: 10vw;
+    color:brown; 
+}
+#teacherIntro{
+    margin-bottom: 30vh;
+}
 #teacherPic {
-    order: 2;
-    max-width: 100%;
+    max-width: 80%;
     align-self: center; /* 垂直置中 */
+    margin-bottom: 10vh;
+    
 }
 
 #teacherIntroMessageBlock {
-    order: 3;
+    
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
 }
 #specialityBlock{
-    margin-top: 50px;
+    display:flex;
+    flex-direction:column;
+    align-items: left;
+    margin-top: 5vh;
 }
 #messageButton{
-    margin-top: 50px;
+    margin-top: 8vh;
+    margin-bottom: 5vh;
 
 }
 #specialityTitle {
-    width: 200px;
-    border-bottom: 1px solid #ccc; /* 添加淡灰色底边线 */
-    padding-bottom: 5px; /* 可选：增加一些底边距以隔开 */
+    width: 10vw;
+    border-bottom: 1px solid #ccc; 
+    padding-bottom: 5px; 
+    color:brown; 
 }
-
+#contactLabel{
+    border-bottom: 1px solid #ccc; 
+    padding-bottom: 5px;
+    color:brown; 
+}
+#listItem{
+    padding-left: 1vw;
+}
 </style>
 
 </head>
@@ -93,31 +118,38 @@
     TeacherVO teacher = teacherService.getOneTeacher(teacherId);
     List<String> specialityList = teacherService.getOneTeaSpecialityStringList(teacherId);
     byte[] imgBytes = teacher.getTeaPic();
-    String base64Img = Base64.getEncoder().encodeToString(imgBytes);
-
+    String base64Img = "";
+    if(imgBytes != null){
+        base64Img = Base64.getEncoder().encodeToString(imgBytes);
+    }
 %>
 <div id="page-content">
     <div id="teacherBlock">
-
-        <img id="teacherPic" src="data:image/jpeg;base64, <%= base64Img %>" alt="Teacher Image">
-
         <div id="teacherNameSpecialityBlock">
-        <div id="teacherName"><h3><%= teacher.getTeaName() %></h3></div>
-        <div id="specialityBlock">
-            <h3 id="specialityTitle">專長 </h3>
-            <ul>
-                <% for (String speciality : specialityList) { %>
-                    <li><%= speciality %></li>
-                <% } %>
-            </ul>
+            <div id="teacherName" class=""><h2><%= teacher.getTeaName() %></h2></div>
+            <div id="specialityBlock">
+                <h3 id="specialityTitle">專長 </h3>
+                <ul id="listItem">
+                    <% for (String speciality : specialityList) { %>
+                        <li><%= speciality %></li>
+                    <% } %>
+                </ul>
+            </div>
+            <div id="contactBlock">
+                <h3 id="contactLabel">聯絡方式</h3>
+                電子信箱: <%= teacher.getTeaEmail() %> <br>
+                電話: <%= teacher.getTeaPhone() %>
+            </div>
         </div>
+        <div id="picBlock">
+            <img id="teacherPic" src="data:image/jpeg;base64, <%= base64Img %>" alt="Teacher Image" >
         </div>
         <div id="teacherIntroMessageBlock">
         <div id="teacherIntro">
             <h3 id="introHead">簡介 </h3>
             <%= teacher.getTeaIntro() %>
         </div>
-          <button type="button" class="btn btn-outline-secondary" id="messageButton">發送訊息</button>
+        
         </div>
     </div>
 </div>

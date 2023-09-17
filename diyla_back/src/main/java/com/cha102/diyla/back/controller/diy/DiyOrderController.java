@@ -33,6 +33,7 @@ public class DiyOrderController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private DiyCateService diyCateService;
 	private Timer timer;
+	String regex = "^(0|[1-9]\\d*)$";
 
 	public void destroy() {
 		super.destroy();
@@ -63,22 +64,26 @@ public class DiyOrderController extends HttpServlet {
 		}
 
 		long delay = now.getTimeInMillis() - Calendar.getInstance().getTimeInMillis();
-		Calendar cal = new GregorianCalendar(2023, Calendar.SEPTEMBER, 4, 18, 11, 0);
+		Calendar cal = new GregorianCalendar(2023, Calendar.SEPTEMBER, 10, 14, 15, 0);
 
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-
+				int count = 0;
 				DiyOrderService DOser = new DiyOrderService();
 				List<DiyOrderVO> diyOrderList = DOser.getAll();
 
 				for (DiyOrderVO diyOrderVO : diyOrderList) {
-					if (diyOrderVO.getReservationStatus() == 1 && diyOrderVO.getPaymentStatus() == 0) {
+					if (diyOrderVO.getReservationStatus() == 1 /*&& diyOrderVO.getPaymentStatus() == 0*/) {
 						Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 						long timediff = currentTime.getTime() - diyOrderVO.getCreateTime().getTime();
-						long daysDifference = timediff / (1000 * 60 * 60 * 24);
-						if (daysDifference >= 1) {
+						long daysDifference = timediff / (1000 * 60 );
+						if (daysDifference >= 5) {
+							count++;
+							diyOrderVO.setReservationStatus(2);
 							diyOrderVO.setPaymentStatus(3);
+							
+							DOser.upOD(diyOrderVO);
 
 						}
 
@@ -86,9 +91,8 @@ public class DiyOrderController extends HttpServlet {
 
 				}
 
-				System.out.println("11111111111111111111111111111111111111。");
 			}
-		}, cal.getTime(), 10800000); // 任务每3小时执行一次
+		}, cal.getTime(), 180000); //現在時間 只要大於 最後更新時間於五分鐘，就自動將訂單轉成"已退款訂單" 排程每3分鐘執行一次
 
 	}
 
@@ -110,7 +114,7 @@ public class DiyOrderController extends HttpServlet {
 		// 後台前端顯示所有訂單 (差DATATABLE) done
 		if ("getAllOrder".equals(action)) {
 
-			List<DiyCateEntity> diyCateList = diyCateService.getAllDiyCates();
+			List<DiyCateEntity> diyCateList = diyCateService.getAllNotPutOn();
 			req.setAttribute("diyCateList", diyCateList);
 
 			DiyOrderService DOser = new DiyOrderService();
@@ -126,7 +130,7 @@ public class DiyOrderController extends HttpServlet {
 		// 後台前端顯示某訂單編號之訂單 done
 		if ("getOne_For_Display".equals(action)) {
 			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
-			List<DiyCateEntity> diyCateList = diyCateService.getAllDiyCates();
+			List<DiyCateEntity> diyCateList = diyCateService.getAllNotPutOn();
 			req.setAttribute("errorMsgs", errorMsgs);
 			req.setAttribute("diyCateList", diyCateList);
 
@@ -139,7 +143,14 @@ public class DiyOrderController extends HttpServlet {
 				String url = "/diy_order/diyorderfront.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
-			} else {
+			}else if(!req.getParameter("diyOrderNo").trim().matches(regex)){  //////////////
+				System.out.println("輸入的不是數字");
+				errorMsgs.put("diyOrderNo", "請輸入數字");
+				String url = "/diy_order/diyorderfront.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);				
+			}else {
+			
 				Integer diyOrderNo = Integer.valueOf(req.getParameter("diyOrderNo"));
 				DiyOrderVO diyOrderVO = DOser.getOneDO(diyOrderNo);
 				if (diyOrderVO == null) {
@@ -160,44 +171,44 @@ public class DiyOrderController extends HttpServlet {
 			}
 		}
 
-		if ("insert".equals(action)) {
-
-			int memId = Integer.valueOf(req.getParameter("memId"));
-			int diyNo = Integer.valueOf(req.getParameter("diyNo"));
-			String contactPerson = req.getParameter("contactPerson");
-			String contactPhone = req.getParameter("contactPhone");
-			int reservationNum = Integer.valueOf(req.getParameter("reservationNum"));
-			int diyPeriod = Integer.valueOf(req.getParameter("diyPeriod"));
-			Date diyReserveDate = Date.valueOf(req.getParameter("diyReserveDate"));
-			int reservationStatus = Integer.valueOf(req.getParameter("reservationStatus"));
-			int paymentStatus = Integer.valueOf(req.getParameter("paymentStatus"));
-			int diyPrice = Integer.valueOf(req.getParameter("diyPrice"));
-
-			DiyOrderVO DOVO = new DiyOrderVO();
-			DOVO.setMemId(memId);
-			DOVO.setDiyNo(diyNo);
-			DOVO.setContactPerson(contactPerson);
-			DOVO.setContactPhone(contactPhone);
-			DOVO.setReservationNum(reservationNum);
-			DOVO.setDiyPeriod(diyPeriod);
-			DOVO.setDiyReserveDate(diyReserveDate);
-			DOVO.setReservationStatus(reservationStatus);
-			DOVO.setPaymentStatus(paymentStatus);
-			DOVO.setDiyPrice(diyPrice);
-
-			DiyOrderService DOser = new DiyOrderService();
-			DOser.addOD(DOVO);
-
-			String url = "/diy_order/getallorderlist_EL.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
-			successView.forward(req, res);
-		}
+//		if ("insert".equals(action)) {
+//
+//			int memId = Integer.valueOf(req.getParameter("memId"));
+//			int diyNo = Integer.valueOf(req.getParameter("diyNo"));
+//			String contactPerson = req.getParameter("contactPerson");
+//			String contactPhone = req.getParameter("contactPhone");
+//			int reservationNum = Integer.valueOf(req.getParameter("reservationNum"));
+//			int diyPeriod = Integer.valueOf(req.getParameter("diyPeriod"));
+//			Date diyReserveDate = Date.valueOf(req.getParameter("diyReserveDate"));
+//			int reservationStatus = Integer.valueOf(req.getParameter("reservationStatus"));
+//			int paymentStatus = Integer.valueOf(req.getParameter("paymentStatus"));
+//			int diyPrice = Integer.valueOf(req.getParameter("diyPrice"));
+//
+//			DiyOrderVO DOVO = new DiyOrderVO();
+//			DOVO.setMemId(memId);
+//			DOVO.setDiyNo(diyNo);
+//			DOVO.setContactPerson(contactPerson);
+//			DOVO.setContactPhone(contactPhone);
+//			DOVO.setReservationNum(reservationNum);
+//			DOVO.setDiyPeriod(diyPeriod);
+//			DOVO.setDiyReserveDate(diyReserveDate);
+//			DOVO.setReservationStatus(reservationStatus);
+//			DOVO.setPaymentStatus(paymentStatus);
+//			DOVO.setDiyPrice(diyPrice);
+//
+//			DiyOrderService DOser = new DiyOrderService();
+//			DOser.addOD(DOVO);
+//
+//			String url = "${ctxPath}/diy_order/getallorderlist_EL.jsp";
+//			RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
+//			successView.forward(req, res);
+//		}
 
 		// 後台找該時段全部有效訂單(傳diyReserveDate、diyPeriod 要串接點名系統 ) done
 		if ("getEffectOrderByPeriod".equals(action)) {
 			// 錯誤處理及 匯入 DiyCateEntity
 			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
-			List<DiyCateEntity> diyCateList = diyCateService.getAllDiyCates();
+			List<DiyCateEntity> diyCateList = diyCateService.getAllNotPutOn();
 			req.setAttribute("errorMsgs", errorMsgs);
 			req.setAttribute("diyCateList", diyCateList);
 
@@ -229,8 +240,6 @@ public class DiyOrderController extends HttpServlet {
 						System.out.println("您選擇了無效選項");
 					}
 
-//					String diyPeriod1 = req.getParameter("diyPeriod1");
-//					req.setAttribute("diyPeriod", diyPeriod);
 					DiyOrderService DOser = new DiyOrderService();
 					List<DiyOrderVO> diyOrderList = DOser.getAllByDatePeriodAfter(diyReserveDate, diyPeriod);
 					System.out.println(diyOrderList);
@@ -266,7 +275,7 @@ public class DiyOrderController extends HttpServlet {
 		if ("comeORnot".equals(action) && "0".equals(result)) {
 			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
 			req.setAttribute("errorMsgs", errorMsgs);
-			List<DiyCateEntity> diyCateList = diyCateService.getAllDiyCates();
+			List<DiyCateEntity> diyCateList = diyCateService.getAllNotPutOn();
 			req.setAttribute("diyCateList", diyCateList);
 
 			int diyOrderNo = Integer.valueOf(req.getParameter("diyOrderNo"));
@@ -297,7 +306,7 @@ public class DiyOrderController extends HttpServlet {
 		} else if ("comeORnot".equals(action) && "1".equals(result)) {
 			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
 			req.setAttribute("errorMsgs", errorMsgs);
-			List<DiyCateEntity> diyCateList = diyCateService.getAllDiyCates();
+			List<DiyCateEntity> diyCateList = diyCateService.getAllNotPutOn();
 			req.setAttribute("diyCateList", diyCateList);
 
 			int diyOrderNo = Integer.valueOf(req.getParameter("diyOrderNo"));
@@ -331,7 +340,7 @@ public class DiyOrderController extends HttpServlet {
 		if ("getAllOrderByPeriod".equals(action)) {
 			// 錯誤處理及 匯入 DiyCateEntity
 			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
-			List<DiyCateEntity> diyCateList = diyCateService.getAllDiyCates();
+			List<DiyCateEntity> diyCateList = diyCateService.getAllNotPutOn();
 			req.setAttribute("errorMsgs", errorMsgs);
 			req.setAttribute("diyCateList", diyCateList);
 
@@ -392,70 +401,70 @@ public class DiyOrderController extends HttpServlet {
 			}
 		}
 
-		if ("delete".equals(action)) {
+//		if ("delete".equals(action)) {
+//
+//			Integer diyOrderNo = Integer.valueOf(req.getParameter("diyOrderNo"));
+//			DiyOrderService DOser = new DiyOrderService();
+//			DOser.deleteDO(diyOrderNo);
+//
+//			String url = "${ctxPath}/diy_order/getallorderlist_EL.jsp";
+//			RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
+//			successView.forward(req, res);
+//		}
 
-			Integer diyOrderNo = Integer.valueOf(req.getParameter("diyOrderNo"));
-			DiyOrderService DOser = new DiyOrderService();
-			DOser.deleteDO(diyOrderNo);
+//		if ("getOne_For_Update".equals(action)) {
+//
+//			Integer diyOrderNo = Integer.valueOf(req.getParameter("diyOrderNo"));
+//			DiyOrderService DOser = new DiyOrderService();
+//			DiyOrderVO diyOrderVO = DOser.getOneDO(diyOrderNo);
+//			req.setAttribute("diyOrderVO", diyOrderVO);
+//
+//			String url = "${ctxPath}/diy_order/updateodinput.jsp";
+//			RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
+//			successView.forward(req, res);
+//		}
 
-			String url = "/diy_order/getallorderlist_EL.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
-			successView.forward(req, res);
-		}
-
-		if ("getOne_For_Update".equals(action)) {
-
-			Integer diyOrderNo = Integer.valueOf(req.getParameter("diyOrderNo"));
-			DiyOrderService DOser = new DiyOrderService();
-			DiyOrderVO diyOrderVO = DOser.getOneDO(diyOrderNo);
-			req.setAttribute("diyOrderVO", diyOrderVO);
-
-			String url = "/diy_order/updateodinput.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
-			successView.forward(req, res);
-		}
-
-		if ("update".equals(action)) {
-
-			int diyOrderNo = Integer.valueOf(req.getParameter("diyOrderNo"));
-			int memId = Integer.valueOf(req.getParameter("memId"));
-			int diyNo = Integer.valueOf(req.getParameter("diyNo"));
-			String contactPerson = req.getParameter("contactPerson");
-			String contactPhone = req.getParameter("contactPhone");
-			int reservationNum = Integer.valueOf(req.getParameter("reservationNum"));
-			int diyPeriod = Integer.valueOf(req.getParameter("diyPeriod"));
-			Date diyReserveDate = Date.valueOf(req.getParameter("diyReserveDate"));
-			int reservationStatus = Integer.valueOf(req.getParameter("reservationStatus"));
-			int paymentStatus = Integer.valueOf(req.getParameter("paymentStatus"));
-			int diyPrice = Integer.valueOf(req.getParameter("diyPrice"));
-
-			DiyOrderVO diyOrderVO = new DiyOrderVO();
-			diyOrderVO.setMemId(memId);
-			diyOrderVO.setDiyNo(diyNo);
-			diyOrderVO.setContactPerson(contactPerson);
-			diyOrderVO.setContactPhone(contactPhone);
-			diyOrderVO.setReservationNum(reservationNum);
-			diyOrderVO.setDiyPeriod(diyPeriod);
-			diyOrderVO.setDiyReserveDate(diyReserveDate);
-			diyOrderVO.setReservationStatus(reservationStatus);
-			diyOrderVO.setPaymentStatus(paymentStatus);
-			diyOrderVO.setDiyPrice(diyPrice);
-			diyOrderVO.setDiyOrderNo(diyOrderNo);
-			req.setAttribute("diyOrderVO", diyOrderVO);
-
-			DiyOrderService DOser = new DiyOrderService();
-			DOser.upOD(diyOrderVO);
-
-			String url = "/diy_order/getallorderlist_EL.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
-			successView.forward(req, res);
-		}
+//		if ("update".equals(action)) {
+//
+//			int diyOrderNo = Integer.valueOf(req.getParameter("diyOrderNo"));
+//			int memId = Integer.valueOf(req.getParameter("memId"));
+//			int diyNo = Integer.valueOf(req.getParameter("diyNo"));
+//			String contactPerson = req.getParameter("contactPerson");
+//			String contactPhone = req.getParameter("contactPhone");
+//			int reservationNum = Integer.valueOf(req.getParameter("reservationNum"));
+//			int diyPeriod = Integer.valueOf(req.getParameter("diyPeriod"));
+//			Date diyReserveDate = Date.valueOf(req.getParameter("diyReserveDate"));
+//			int reservationStatus = Integer.valueOf(req.getParameter("reservationStatus"));
+//			int paymentStatus = Integer.valueOf(req.getParameter("paymentStatus"));
+//			int diyPrice = Integer.valueOf(req.getParameter("diyPrice"));
+//
+//			DiyOrderVO diyOrderVO = new DiyOrderVO();
+//			diyOrderVO.setMemId(memId);
+//			diyOrderVO.setDiyNo(diyNo);
+//			diyOrderVO.setContactPerson(contactPerson);
+//			diyOrderVO.setContactPhone(contactPhone);
+//			diyOrderVO.setReservationNum(reservationNum);
+//			diyOrderVO.setDiyPeriod(diyPeriod);
+//			diyOrderVO.setDiyReserveDate(diyReserveDate);
+//			diyOrderVO.setReservationStatus(reservationStatus);
+//			diyOrderVO.setPaymentStatus(paymentStatus);
+//			diyOrderVO.setDiyPrice(diyPrice);
+//			diyOrderVO.setDiyOrderNo(diyOrderNo);
+//			req.setAttribute("diyOrderVO", diyOrderVO);
+//
+//			DiyOrderService DOser = new DiyOrderService();
+//			DOser.upOD(diyOrderVO);
+//
+//			String url = "/diy_order/getallorderlist_EL.jsp";
+//			RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
+//			successView.forward(req, res);
+//		}
 
 		// 找個別會員所有訂單--後端
 		if ("getOneMemId_For_Display".equals(action)) {
 
 			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
-			List<DiyCateEntity> diyCateList = diyCateService.getAllDiyCates();
+			List<DiyCateEntity> diyCateList = diyCateService.getAllNotPutOn();
 			req.setAttribute("errorMsgs", errorMsgs);
 			req.setAttribute("diyCateList", diyCateList);
 
@@ -468,7 +477,15 @@ public class DiyOrderController extends HttpServlet {
 				String url = "/diy_order/diyorderfront.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
-			} else {
+			} else if(!req.getParameter("memId").trim().matches(regex)){
+				System.out.println("輸入的不是數字");
+				errorMsgs.put("memId", "請輸入數字");
+				req.setAttribute("uuu", 405);
+				String url = "/diy_order/diyorderfront.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);	
+			}else {
+			
 				int memId = Integer.valueOf(req.getParameter("memId"));
 				List<DiyOrderVO> diyOrderList = DOser.findMemIdAllOrder(memId);
 
@@ -504,7 +521,7 @@ public class DiyOrderController extends HttpServlet {
 //			int diyPeriod = Integer.valueOf(req.getParameter("diyPeriod"));
 
 			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
-			List<DiyCateEntity> diyCateList = diyCateService.getAllDiyCates();
+			List<DiyCateEntity> diyCateList = diyCateService.getAllNotPutOn();
 			req.setAttribute("errorMsgs", errorMsgs);
 			req.setAttribute("diyCateList", diyCateList);
 			DiyOrderService DOser = new DiyOrderService();

@@ -40,12 +40,55 @@
                           eventClick: function (info) {
                             var courseId = info.event.id;
                             window.location.href = '${ctxPath}' + '/desertcourse/coursedetail.jsp?courseid=' + courseId;
+                          },
+                          eventContent: function (arg) {
+                              var startTime = arg.event.start;
+                              var timeCategory = getTimeCategory(startTime);
+                              
+                              // 只顯示早上/下午/晚上之一，根據時間分類
+                              var timeHtml = '<div class="event-item"><div class="event-time">' + timeCategory + '</div>';
+                              var titleHtml = '<div class="event-title">' + arg.event.title + '</div></div>';
+                              
+                              return { html: timeHtml + titleHtml };
                           }
                         });
                         calendar.render();
                       });
-
+                      function getTimeCategory(startTime) {
+                        var hour = startTime.getHours();
+                        if (hour >= 6 && hour < 12) {
+                            return '早上 ';
+                        } else if (hour >= 12 && hour < 18) {
+                            return '下午 ';
+                        } else {
+                            return '晚上 ';
+                        }
+                    }
                     </script>
+                    <style>
+                    .event-time{
+                      margin-right: 10px;
+                      font-size: 1rem;
+                      font-weight:bold;
+                      color:brown;
+                      white-space: nowrap;
+                    }
+                    .event-title{
+                      font-size: 1rem;
+                      color:black;
+                      
+                    }
+                    .event-item{
+                      display:flex;
+                      flex-direction: row;
+                      width: 100%;
+                      margin-right: 10px;
+                      white-space: wrap;
+                      border-radius: 5px;
+                      background: #a3a3c2;
+                    }
+                    </style>
+                    <link rel="stylesheet" type="text/css" href='${ctxPath}/desertcourse/css/calendar_style.css'>
                   </head>
 
                   <body>

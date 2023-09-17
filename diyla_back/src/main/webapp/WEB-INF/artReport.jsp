@@ -12,7 +12,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>論壇</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="${ctxPath}/css/style.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
     <!-- ●●css for jquery datatables 用 -->
     <style>
@@ -137,7 +137,7 @@
     <script>
         $(document).ready(function () {
             $('#dto').DataTable({
-                "lengthMenu": [10, 20],
+                "lengthMenu": [3, 5, 10, 20],
                 "searching": true,  //搜尋功能, 預設是開啟
                 "paging": true,     //分頁功能, 預設是開啟
                 "ordering": true,   //排序功能, 預設是開啟

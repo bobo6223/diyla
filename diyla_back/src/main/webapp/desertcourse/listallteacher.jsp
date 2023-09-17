@@ -17,6 +17,7 @@
 <html lang="en">
 
 <head>
+    <jsp:include page="/index.jsp" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>教師列表</title>
@@ -39,19 +40,19 @@
         EmpDAO empDAO = new EmpDAOImpl();
         TeacherService teacherService = new TeacherService();
         //若session並非為null才往下
-        if(session != null){
-            Integer empId = (Integer) (session.getAttribute("empId"));
+        Integer empId = (Integer) (session.getAttribute("empId"));
+        List<String> typeFun = (List<String>) session.getAttribute("typeFun");
+        if(session != null && empId != null && typeFun != null){
             EmpVO empVO = empDAO.getOne(empId);
             String empName = empVO.getEmpName();
             //進來的是何種使用者
             Object typeFunObj = session.getAttribute("typeFun");
             boolean isTypeFunList = (typeFunObj != null && (typeFunObj instanceof java.util.List));
             if (isTypeFunList) {
-                List<String> typeFun = (List<String>) session.getAttribute("typeFun");
                 boolean containsMaster = typeFun.contains("MASTER");
-                boolean containsAdmin = typeFun.contains("ADMIN");
+                boolean containsAdmin = typeFun.contains("BACKADMIN");
                 if (containsMaster && containsAdmin) {
-                    type = "ADMIN";
+                    type = "BACKADMIN";
                 } else if (containsMaster) {
                     type = "MASTER";
                 }
@@ -60,7 +61,7 @@
             }
             Integer teacherId = null;
             TeacherVO teacher = null;
-            if("ADMIN".equals(type)) {
+            if("BACKADMIN".equals(type)) {
                 List<TeacherVO> teacherList = teacherService.getAllTeacher();
                 pageContext.setAttribute("teacherList", teacherList);
             } else if ("MASTER".equals(type)) {
@@ -80,9 +81,6 @@
 
 <body>
 <div id="pageContent">
-        <div id="indexBlock">
-            <%-- <jsp:include page="/index.jsp" /> --%>
-        </div>
         <div id="naviContentBlock">
             <div id="naviBlock">
                 <jsp:include page="/desertcourse/navibar.jsp" />
@@ -116,13 +114,28 @@
         $(document).ready(function () {
             //判斷瀏覽人能對list的控制權, 回傳-1代表管理員,0代表該後台員工無法瀏覽, 1~n代表回回傳師傅id
             var type = "${type}";
-            let getTeaCode = 0;
-            console.log("${requestTeaId}");
-            if (type === "ADMIN") {
-                getTeaCode = -1;
-            } else if (type === "MASTER") {
-                getTeaCode = "${requestTeaId}";
-            }
+            var getTeaCode = 0;
+            if (type === "NOSESSION"){
+                                // 啟動定時器，3秒後導航到其他網頁
+                setTimeout(function() {
+                window.location.href = "${ctxPath}/emp/empLogin.jsp";
+                }, 3000); // 3000 毫秒 = 3 秒
+
+                Swal.fire({
+                title: "您沒有登入!",
+                icon: "warning",
+                confirmButtonText: "確定"
+             }).then(function(result){
+                if(result.isConfirmed) {
+                    window.location.href = "${ctxPath}/emp/empLogin.jsp";
+                }
+             });
+            } else {
+                if (type === "BACKADMIN") {
+                    getTeaCode = -1;
+                } else if (type === "MASTER") {
+                    getTeaCode = "${requestTeaId}";
+                }
             let defaultSearchValue = "${param.defaultSearchValue}";
             let searchOptions = defaultSearchValue !== null ? { search: defaultSearchValue } : {};
             function loadTeacher(Id) {
@@ -134,6 +147,30 @@
                     success: function (data) {
                         // 使用 jQuery Table 來動態生成表格
                         $('#teacherTable').DataTable({
+                            language: {
+                                "sProcessing": "處理中...",
+                                "sLengthMenu": "顯示 _MENU_ 項結果",
+                                "sZeroRecords": "沒有匹配結果",
+                                "sInfo": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                                "sInfoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+                                "sInfoFiltered": "(從 _MAX_ 項結果過濾)",
+                                "sInfoPostFix": "",
+                                "sSearch": "搜索:",
+                                "sUrl": "",
+                                "sEmptyTable": "表格中無可用數據",
+                                "sLoadingRecords": "載入中...",
+                                "sInfoThousands": ",",
+                                "oPaginate": {
+                                    "sFirst": "首頁",
+                                    "sPrevious": "上一頁",
+                                    "sNext": "下一頁",
+                                    "sLast": "末頁"
+                                },
+                                "oAria": {
+                                    "sSortAscending": ": 升冪排列",
+                                    "sSortDescending": ": 降冪排列"
+                                }
+                            },
                             data: data,
                             searching: true,
                             searchDelay: 500,
@@ -152,10 +189,7 @@
                                 { data: 'teacherIntro'}
                             ],
                             columnDefs: [
-                                    {
-                                        targets: [0], 
-                                        className: "custom-header-class" 
-                                    },
+
                             {
                                 targets: 7, // 對應 'teacherPic' 的索引（從 0 開始）
                                 render: function (data, type, row, meta) {
@@ -173,10 +207,11 @@
                                     } else if (getTeaCode === -1 && row.teacherStatus == "不可見") {
                                         return '<div class="button-group"><button type="button" class="modify-btn btn btn-primary" data-teacherId="' + row.teacherId + '">修改師傅</button>'
                                             + '<button type="button" class="back-btn btn btn-warning" data-teacherId="' + row.teacherId + '"data-teacherName="'+ row.teacherName +'">恢復師傅</button></div>';
-                                    } else if (getTeaCode > 0 && row.teacherId === "${requestTeaId}") {
-                                        return '<button type="button" class="modify-btn btn btn-primary" data-teacherId="' + row.teacherId + '">修改師傅</button>';
-                                    }
+                                    } else if (getTeaCode > 0 && row.teacherId == getTeaCode) {
+                                        return '<div class="button-group"><button type="button" class="modify-btn btn btn-primary" data-teacherId="' + row.teacherId + '">修改師傅</button></div>';
+                                    } else {
                                     return '';
+                                    }
                                 }
                             }]
                         });
@@ -271,7 +306,7 @@
                     success: function(response){
                             if(response.isAllowed) {
                                 Swal.fire({
-                                    title:'覆職師傅成功!',
+                                    title:'恢復師傅成功!',
                                     icon: 'success',
                                     confirmButtonText: '確定'
                                 }).then((result) => {
@@ -283,7 +318,7 @@
                                 })
                             } else{
                                 Swal.fire({
-                                    title: '無權限! 覆職師傅失敗!',
+                                    title: '無權限! 恢復師傅失敗!',
                                     icon: 'error',
                                     confirmButtonText: '確定'
                                 })
@@ -293,6 +328,7 @@
                     }
                 });
             });
+            }
         });
     </script>
 

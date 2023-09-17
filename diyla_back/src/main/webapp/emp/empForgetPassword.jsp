@@ -21,28 +21,89 @@
                     <link href="/css/style.css" rel="stylesheet" />
 
                     <!-- responsive style -->
-                    <link href="./css/responsive.css" rel="stylesheet" />
+                    <link href="${ctxPath}/css/responsive.css" rel="stylesheet" />
                     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+
+                    <style>
+                       /* 整体样式 */
+                        .title {
+                            font-family: "微軟正黑體", Arial, sans-serif;
+                            font-weight: bold;
+                            color: #B26021;
+                            position: relative;
+                            width:600px;
+                            top:50%;
+                            left:50%;
+                            transform: translateX(-50%);
+                            border-radius: 25px ;
+                            letter-spacing: 3px;
+                            margin:50px 0;
+                            border: 2px solid #333; /* 外边框线 */
+                            padding: 40px; /* 内边距 */
+                            text-align: center; /* 文本居中 */
+                        }
+
+                        .inputtext{
+                            font-family: "微軟正黑體", Arial, sans-serif;
+                            text-align: center;
+                            width: 400px;
+                            height: 35px;
+                            font-size: 15px; /*文字大小*/
+                            border-radius: 10px;
+                            font-weight: bold;
+                        }
+                    
+                        h4{
+                            font-family: "微軟正黑體", Arial, sans-serif;
+                            font-size:30px;
+                            font-weight: bold;
+                            margin-top:10px;
+                            margin-bottom:20px
+                        }
+
+                        body {
+                            margin: 0;
+                            background-image: url('../img/forget.png'); /* 背景图像的URL，注意路径 */
+                            background-size: cover; /* 按照视口大小覆盖整个屏幕 */
+                            background-repeat: no-repeat; /* 不重复平铺背景图像 */
+                            background-attachment: fixed; /* 固定背景图像 */
+                            background-position: center center; /* 居中显示背景图像 */
+                        }
+
+                        .sendbutton{
+                            margin-top: 20px;
+                            width: 120px;
+                            height: 35px;
+                            border-width: 3px;
+                            border-radius: 10px;
+                            background-color: #A3816A;
+                            cursor: pointer;
+                            outline: none;
+                            font-family: "微軟正黑體", Arial, sans-serif;
+                            color: #F8F1F1;
+                            font-size: 16px;
+                            font-weight: bold;
+                        }
+
+                    </style>
 
                 </head>
 
                 <body>
+
+                    
+
                     <div class="title">
                         <h4>忘記密碼</h4>
-                        <c:if test="${not empty exMsgs}">
-                            <div style="color:red" class="error">
-                                <c:forEach var="message" items="${exMsgs}">
-                                    ${message}
-                                </c:forEach>
-                            </div>
-                        </c:if>
                         <div class="importemail">
                             請輸入您的Email帳號，系統將會寄送驗證碼到您的Email信箱。
                             <br>
-                            <label>信箱</label><br>
-                            <input type="text" name="email" id="email" placeholder="請輸入信箱"
-                                value="${(empVO==null)? "" : empVO.empEmail()}" </br>
-                            <button type="submit" value="" 　id="sub" onclick="sendEmail()">送出驗證信</button><br>
+                            <br>
+                            <input class="inputtext" type="text" name="email" id="email" placeholder="請輸入信箱"
+                                value="${(empVO==null)? "" : empVO.empEmail()}"> <br>
+                            <br>    
+                            <button type="button" value="" class="sendbutton" onclick="sendEmail()">送出驗證信</button>
                         </div>
                     </div>
                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>

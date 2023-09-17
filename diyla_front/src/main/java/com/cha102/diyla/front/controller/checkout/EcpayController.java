@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.cha102.diyla.commodityOrder.CommodityOrderService;
 import com.cha102.diyla.commodityOrder.CommodityOrderVO;
 import com.cha102.diyla.commodityOrder.MailService;
-import com.cha102.diyla.commodityOrderDetail.CommodityOrderDetailService;
 import com.cha102.diyla.front.utils.EcpayCheckout;
 import com.cha102.diyla.member.MemVO;
 import com.cha102.diyla.member.MemberService;
@@ -62,7 +61,7 @@ public class EcpayController {
 		if ("".equals(token)) {
 			token = 0 + "";
 		}
-		String toEcpay = EcpayCheckout.goToEcpay(memNO, tradeDesc, totalPrice, token, itemName, receiveInfo,jsessionId);
+		String toEcpay = EcpayCheckout.goToEcpay(memNO, tradeDesc, totalPrice, token, itemName, receiveInfo,jsessionId,req);
 		// 自訂取號
 		model.addAttribute("toEcpay", toEcpay);
 		return "/checkout/checkoutPage.jsp";
@@ -83,7 +82,6 @@ public class EcpayController {
 			MailService mailService = new MailService();
 			ShoppingCartService shoppingCartService = new ShoppingCartService();
 			CommodityOrderService commodityOrderService = new CommodityOrderService();
-			CommodityOrderDetailService commodityOrderDetailService = new CommodityOrderDetailService();
 			// 因為綠界交易成功導回專案時有時候會把session id換掉，所以離開專案前暫存會員資料進HashMap，交易回來再取出
 			HttpSession session = req.getSession();
 			Integer memId = memberHolder.get(memKey);
@@ -98,7 +96,6 @@ public class EcpayController {
 			Map<String, String> cartInfo = jedis.hgetAll(redisKey);
 			List<ShoppingCartVO> shoppingCartList = shoppingCartService.getCart(memId, cartInfo);
 			// 收件人資訊取出
-			System.out.println(receiveInfo);
 			String[] info = receiveInfo.split(",");
 			String recipient = info[0];
 			String recipientAddress = info[1];
@@ -122,19 +119,39 @@ public class EcpayController {
 				session.setAttribute("tokenFeedBack", tokenFeedBack);
 			}
 			MemVO memVO = memberService.selectMem(memId);
-			session.setAttribute("memId", memId);
-			session.setAttribute("memVO", memVO);
-			String messageContent = "訂單詳情:\n" + "訂單編號:" + orderNo + "\n" + "收件人:" + recipient + "\n" + "收件地址:"
-					+ recipientAddress + "\n" + "購買日期:" + formattedDate + "\n" + "_____________________\n"
-					+ "DIYLA感謝您的訂購，我們將盡快將商品寄出";
-			mailService.sendMail("t1993626@gmail.com", "訂購成功", messageContent);
-//			commodityOrderDetailService.insert(orderNo, shoppingCartList);
+			model.addAttribute("memId", memId);
+			model.addAttribute("memVO", memVO);
+			String messageContent = "<html><head><style>"
+			        + "body {"
+			        + "    font-family: Arial, sans-serif;"
+			        + "    background-color: #ffebeb;"
+			        + "    margin: 0;"
+			        + "    padding: 20px;"
+			        + "}"
+			        + "h2 {"
+			        + "    color: #333;"
+			        + "}"
+			        + "p {"
+			        + "    color: #666;"
+			        + "}"
+			        + "hr {"
+			        + "    border: 1px solid #ccc;"
+			        + "}"
+			        + "</style></head><body>"
+			        + "<h2>訂單詳情</h2>"
+			        + "<p>訂單編號: " + orderNo + "</p>"
+			        + "<p>訂單金額: " + (totalPri - tokenUse) + "元</p>"
+			        + "<p>收件人: " + recipient + "</p>"
+			        + "<p>收件地址: " + recipientAddress + "</p>"
+			        + "<p>購買日期: " + formattedDate + "</p>"
+			        + "<hr>"
+			        + "<p>DIYLA感謝您的訂購，我們將盡快將商品寄出</p>"
+			        + "</body></html>";
+			mailService.sendMail(memVO.getMemEmail(), "訂購成功", messageContent);
 			// 訂單生成清空購物車
 			jedis.del(redisKey);
 			return "/checkout/checkoutSucess.jsp";
 		} else {
-			// todo 交易失敗的動作
-			System.out.println("000");
 			return "/checkout/checkoutFail.jsp";
 		}
 

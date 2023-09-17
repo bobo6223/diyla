@@ -251,9 +251,6 @@ a.canceled::hover {
 				</c:choose>
 				<span class="actualPrice">元</span> <span class="actualPrice"
 					id="actualPriceSpan">${totalPrice}</span> <span class="actualPrice">實付金額:</span>
-				<!-- 				</div> -->
-
-				<!-- 				<span style="margin:30px 0px;">本次預計獲得回饋:</span><input type="hidden" value="1" name="tokenback"> -->
 			</div>
 			<div class="container">
 				<div class="title">+填寫付款資訊</div>
@@ -375,7 +372,7 @@ a.canceled::hover {
 							});
 
 							$(
-									"#recipientName, #recipientPhone, #recipientAddress")
+									"#recipientName, #recipientPhone, #recipientAddress, #tokenAmount")
 									.on(
 											"input",
 											function() {
@@ -388,8 +385,8 @@ a.canceled::hover {
 												const recipientAddress = $(
 														"#recipientAddress")
 														.val();
-												const token = $("#tokenAmount")
-														.val();
+												const token = $("#tokenAmount").val();
+												
 
 												// 將收件人值填入下面表單的對應欄位
 												$("#cardrecipient").val(

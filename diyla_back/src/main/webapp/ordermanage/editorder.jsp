@@ -127,6 +127,14 @@ background-color:#9999CC;
 /* border: 1px solid black; */
 border-radius: 5px;
 }
+div:where(.swal2-icon).swal2-warning {
+margin:40px auto !important;
+color:#f8bb86 !important;
+}
+div:where(.swal2-icon){
+margin:2.5em auto .6em !important;
+}
+
 </style>
 </head>
 <body>
@@ -136,7 +144,7 @@ border-radius: 5px;
 	<div class="editform">
 		<h1 style="text-align: center;" class="heading">編輯訂單</h1>
 		<form action="${ctxPath}/orderManage/OrderManageController"
-			method="post">
+			method="post" id="edit">
 			<!-- commodityOrderVOList -->
 			<div class="info">
 				<span class="text">訂單編號:</span> <input name="orderNO"
@@ -205,7 +213,7 @@ border-radius: 5px;
 	               }).then(() => {
 	                   setTimeout(() => {
 	                       // 延遲 1 秒提交表單
-	                       document.querySelector("form").submit();
+	                       $("#edit").submit();
 	                   }, 1000);
 	               });
 	           }
@@ -256,7 +264,7 @@ border-radius: 5px;
 		const cancelButton = $(".cancel-button");
 
 		cancelButton.click(function() {
-		    window.location.href = "http://localhost:8081/diyla_back/orderManage/OrderManageController?action=listAllOrder";
+		    window.location.href = "${ctxPath}/orderManage/OrderManageController?action=listAllOrder";
 		});
 	</script>
 </body>

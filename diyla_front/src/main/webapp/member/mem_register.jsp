@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.cha102.diyla.member.*"%>
 <%@ page import="java.util.*"%>
-<% MemVO memVO = (MemVO) request.getAttribute("memVO");%>
+<% MemVO mem = (MemVO) request.getAttribute("mem");%>
 <% String address = (String) request.getAttribute("address");%>
 <%@ page isELIgnored="false" %>
 
@@ -30,7 +30,157 @@
     <!-- responsive style -->
     <link href="../css/responsive.css" rel="stylesheet"/>
     <style>
+        * {
+            box-sizing: border-box;
+            font-family:"jf open 粉圓 1.1";
+        }
+        body {
+            margin: 0;
+        }
+        div.title {
+            border: 1px solid #B26021;
+            width: 580px;
+            color: #B26021;
+            position: relative;
+            top:50%;
+            left:50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+            letter-spacing: 3px;
+            margin:50px 0;
+            height:800px;
+            background-color:snow;
+        }
+        h4.member{
+            margin-top:30px;
+            margin-bottom:20px;
+            font-weight:bold;
+            text-align: center;
+        }
+        div.error {
+            padding: 10px;
+            background-color: #FCE5CD;
+        }
+        div.member {
+            padding: 10px 10px 10px 40px;
+            font-size: 1rem;
+            width: 580px;
+            height: 700px;
+            position: relative;
 
+        }
+        input.inputform {
+            border: 1px solid #B26021;
+            border-radius: 0.3rem;
+            font-size: 1rem;
+            color: #B26021;
+            height: 35px;
+            letter-spacing: 1px;
+            padding: 0 8px;
+            margin-top:5px;
+        }
+        input.inputform:focus {
+              outline: 1.5px solid #B26021;
+              box-shadow: 2px;
+        }
+        input#f{
+            margin-left: 40px;
+        }
+        div>label{
+            padding-bottom:5px;
+        }
+
+        /* 移除瀏覽器預設藍色背景 */
+        input.inputform:-webkit-autofill,
+        input.inputform:-webkit-autofill:focus {
+               -webkit-box-shadow: 0 0 0 30px white inset;
+               -webkit-text-fill-color:#B26021;
+        }
+        input[type="radio"]{
+            margin-right: 10px;
+        }
+        select {
+            border: 1px solid #B26021;
+            border-radius: 0.3rem;
+            font-size: 1rem;
+            color: #B26021;
+            height: 35px;
+            letter-spacing: 1px;
+            padding: 0 8px 0 8px;
+            margin-top:5px;
+
+        }
+        select:focus {
+            outline:none;
+        }
+        div.name {
+            margin-right:75px;
+        }
+        div.gender{
+            vertical-align:top;
+            line-height: 1.8rem;
+        }
+        #birthday{
+            width:203px;
+        }
+        label.remember {
+               font-size: 0.85rem;
+               text-align: center;
+               position: absolute;
+               top: 190px;
+               left: 103px;
+               letter-spacing: 1px;
+
+        }
+
+        button.member {
+            border-radius: 0.5rem;
+            background-color: #B26021;
+            color: #FCE5CD;
+            border: 1px #B26021;
+            width: 199.33px;
+            height: 35px;
+            letter-spacing: 3px;
+            margin-top: 40px;
+            font-size: 1rem;
+            position:relative;
+            left:59%;
+        }
+        button.member:hover {
+            background-color: #FCE5CD;
+            color:  #B26021;
+            transition: all 0.3s;
+        }
+        form > div{
+            display:inline-block;
+        }
+        #lightbox{
+           position:fixed;
+           top:0;
+           left:0;
+           width:100%;
+           height:100vh;
+           background-color:hsla(0,0%,0%,.5);
+        }
+        .none{
+            display:none;
+        }
+        #lightbox > article{
+          background-color: white;
+          width: 90%;
+          max-width: 800px;
+          border-radius: 10px;
+          box-shadow: 0 0 10px #ddd;
+          padding: 20px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size:15px;
+        }
+         button.member:focus{
+             outline: none;
+         }
     </style>
 
 
@@ -38,59 +188,81 @@
 <body>
 
 	<jsp:include page="../front_header.jsp"/>
-	<h4>會員註冊</h4>
+	<div class="title">
+	<h4 class="member">會員註冊</h4>
 	<div>
     <c:if test="${not empty exMsgs}">
-        <div style="color:red">
-        <c:forEach var="message" items="${exMsgs}">
-        ${message}
-        </c:forEach>
+        <div style="color:red" class="error">
+            <c:forEach var="message" items="${exMsgs}">
+                ${message}
+            </c:forEach>
         </div>
     </c:if>
+    <div class="member">
             <form method="post" action="register">
-                <label>姓名<br>
-                <input type="text" name="newName" value="<%= (memVO==null)? "" : memVO.getMemName()%>"></label><br>
-                <label>帳號<br>
-                <input type="email" name="user" placeholder="請輸入信箱" value="<%= (memVO==null)? "" : memVO.getMemEmail()%>"></label><br>
-                <label>密碼<br>
-                <input type="password" name="password" placeholder="請輸入6-12字(含英數字)"  minlength="6" maxlength="12" value="<%= (memVO==null)? "" : memVO.getMemPassword()%>"></label><br>
-                <label>確認密碼<br>
-                <input type="password" name="pwcheck" placeholder="再次輸入密碼" ></label><br>
-                <label for="gender" required="required">性別
-                <input type="radio" name="gender" value="0"  ${(0==memVO.memGender)? 'checked':''}>男
-                <input type="radio" name="gender" value="1"  ${(1==memVO.memGender)? 'checked':''}>女</label><br>
-                <label>生日
-                <input type="date" name="birthday" id="birthday" max="" value="<%= (memVO==null)? "" : memVO.getMemBirthday()%>"></label><br>
-                <label>聯絡電話<br>
-                <input type="tel" name="phone" minlength="10" value="<%= (memVO==null)? "" : memVO.getMemPhone()%>"></label><br>
-                <div>聯絡地址</label><br>
-                <label for="city">縣市</label><br>
-                <select id="city" name="city">
-                    <c:forEach items="${cityList}" var="city">
-                        <option value="${city}" ${(city==addMap.city)? 'selected':''}></option>
-                    </c:forEach>
-                </select><br>
-                <label for="district">地區</label><br>
-                <select id="district" name="district"></select><br>
-
-                <label for="address">詳細地址</label><br>
-                <input type="text" id="address" name="address" value="${addMap.address}"><br>
+                <div class="name">
+                    <label>姓名<br>
+                    <input class="inputform" type="text" name="newName" value="<%= (mem==null)? "" : mem.getMemName()%>"></label><br>
+                </div>
+                <div>
+                    <label>帳號<br>
+                    <input class="inputform" type="email" name="user" placeholder="請輸入信箱" value="<%= (mem==null)? "" : mem.getMemEmail()%>"></label><br>
+                </div>
+                <div class="name">
+                    <label>密碼<br>
+                    <input class="inputform" type="password" name="password" placeholder="請輸入6-12字(含英數字)"  minlength="6" maxlength="12" value="<%= (mem==null)? "" : mem.getMemPassword()%>"></label><br>
+                </div>
+                <div>
+                    <label>確認密碼<br>
+                    <input class="inputform" type="password" name="pwcheck" placeholder="再次輸入密碼" ></label><br>
+                </div>
+                <div class="name">
+                    <label>生日<br>
+                    <input class="inputform" type="date" name="birthday" id="birthday" max="" value="<%= (mem==null)? "" : mem.getMemBirthday()%>"></label><br>
+                </div>
+                <div class="gender">
+                    <label for="gender" required="required">性別<br>
+                    <input type="radio" name="gender" value="0"  ${(0==mem.memGender)? 'checked':''}>男
+                    <input id="f" type="radio" name="gender" value="1"  ${(1==mem.memGender)? 'checked':''}>女</label><br>
+                </div>
+                <div>
+                    <label>聯絡電話<br>
+                    <input class="inputform" type="tel" name="phone" minlength="10" value="<%= (mem==null)? "" : mem.getMemPhone()%>"></label><br>
+                <div>聯絡地址<br>
+                    <label for="city">縣市<br>
+                    <select id="city" name="city"></select></label>
+                    <label for="district">地區<br>
+                    <select id="district" name="district"></select></label>
+                    <label for="address">
+                    <input class="inputform" type="text" id="address" name="address" value="${addMap.address}"></label><br>
                 </div>
                 <label for="agree" class="agree">
                     <input type="checkbox" class="agree" name="agree" style="vertical-align:middle;"  required="required" >
-                    <span style="vertical-align:middle;">我同意DIYLA使用者條款和隱私權政策</span><br>
+                    <span style="vertical-align:middle;">我同意DIYLA<a href="" id=lightLink>使用者條款和隱私權政策</a></span><br>
                 </label><br>
                 <label for="notice" class="notice">
                     <input type="checkbox" class="notice" name="notice" style="vertical-align:middle;">
                     <span style="vertical-align:middle;">我想收到DIYLA的最新消息和活動優惠</span><br>
                 </label><br>
 
-                <button type="submit" value="register" id="b">註冊</button>
-
-            <!-- 滑到最底下才能打勾 or 另跳頁面-->
+                <button type="submit" value="register" id="b" class="member">註冊</button><br>
+                <div id="lightbox" class="none">
+                    <article>
+                        <h4>使用者條款</h1>
+                        <p>請遵守社群分享版主淑君規定，如有違反規則會成為黑名單</p>
+                        <p>請遵守DIY訂位規定，如有違反則無法報名課程</p>
+                        <p>請遵守課程預約規定，如有違反則無法使用商店功能</p>
+                        <p>請遵守商店功能規定，如有違反就算了</p>
+                        <h4>隱私權政策</h1>
+                        <p>當您繼續使用「本網站」，即代表您無保留的接受並同意提供本網站成員每位<b>每月500萬台幣</b>。</p>
+                        <button type="button" id="close" class="member">關閉</button>
+                    </article>
+                </div>
             </form>
+        </div>
+        </div>
     </div>
-
+</div>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/jquery-twzipcode@1.7.14/jquery.twzipcode.min.js"></script>
 
@@ -153,6 +325,19 @@
         });
         // 初始化地區選項
         city_el.dispatchEvent(new Event('change'));
+
+        //使用者條款
+        let lightLink = document.getElementById("lightLink");
+        let lightbox = document.getElementById("lightbox");
+        let close = document.getElementById("close");
+        lightLink.addEventListener("click",function(e){
+            e.preventDefault();
+            lightbox.classList.remove("none");
+        })
+
+        close.addEventListener("click",function(){
+            lightbox.classList.add("none");
+        })
 
 
 
