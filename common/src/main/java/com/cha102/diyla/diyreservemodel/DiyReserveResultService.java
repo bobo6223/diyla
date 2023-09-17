@@ -22,9 +22,7 @@ public class DiyReserveResultService {
     public List<DIYReserveVO[]> getItemQuantityByDateRange(Date endDate) {
         return reserveResultRepository.getItemQuantityByDateRange(endDate);
     }
-    public List<DIYReserve2VO[]> getPeoCountByDateRange(Date endDate) {
-        return reserveResultRepository.getPeoCountByDateRange(endDate);
-    }
+
 
     // 執行預訂
     public DiyReserveResultEntity insert(DiyReserveResultEntity diyReserveResultEntity) {
