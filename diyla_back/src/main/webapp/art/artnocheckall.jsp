@@ -16,7 +16,7 @@
     <title>全部論壇文章</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
     <!-- ●●css for jquery datatables 用 -->
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="${ctxPath}/css/style.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -71,6 +71,9 @@
 
         th#th_time {
             width: 80px;
+        }
+        th#th_context{
+            min-width:360px;
         }
     </style>
 
@@ -199,7 +202,7 @@
     <script>
         $(document).ready(function () {
             $('#art').DataTable({
-                "lengthMenu": [10, 20],
+                "lengthMenu": [3, 5, 10, 20],
                 "searching": true,  //搜尋功能, 預設是開啟
                 "paging": true,     //分頁功能, 預設是開啟
                 "ordering": true,   //排序功能, 預設是開啟

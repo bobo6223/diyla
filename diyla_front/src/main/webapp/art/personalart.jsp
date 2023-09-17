@@ -81,8 +81,8 @@
                     <th>文章標題</th>
                     <th>文章圖片</th>
                     <th>文章內容</th>
-                    <th>發表時間</th>
                     <th>審核狀態</th>
+                    <th>發表時間</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -136,11 +136,11 @@
                                 <input type="hidden" name="action" value="update_start">
                                 <button type="submit">✏️編輯</button>
                             </form>
-                            <form method="post" action="ArtController">
+                            <form action="deleteArt" method="post">
                                 <input type="hidden" name="artNo" value="${artVO.artNo}">
                                 <input type="hidden" name="action" value="delete_Art">
-                                <input type="button" onclick="delete_art()" value="❌刪除">
-                                <input id="delete_submit" type="submit" style="display: none">
+                                <input type="button" onclick="delete_art(${artVO.artNo})" value="❌刪除">
+                                <input id="delete_submit${artVO.artNo}" type="submit" style="display: none">
                             </form>
                         </td>
                     </tr>
@@ -158,7 +158,7 @@
     <script>
         $(document).ready(function () {
             $('#art').DataTable({
-                "lengthMenu": [10, 20],
+                "lengthMenu": [3, 5, 10, 20],
                 "searching": true,  //搜尋功能, 預設是開啟
                 "paging": true,     //分頁功能, 預設是開啟
                 "ordering": true,   //排序功能, 預設是開啟
@@ -199,14 +199,14 @@
             $('.showall_button').css('display', 'block');
             $('.showpart_button').css('display', 'none');
         }
-        function delete_art() {
+        function delete_art(artNo) {
             swal("確定要刪除貼文?", "請按確定刪除或按取消返回", {
                 dangerMode: true,
                 buttons: ["取消", "確定"],
             }).then((confirm) => {
                 if (confirm) {
                     // 使用者按下了 "確定" 按鈕，執行表單送出
-                    document.querySelector("#delete_submit").click();
+                    document.querySelector("#delete_submit" +artNo).click();
                 } else {
                     // 使用者按下了 "取消" 按鈕，不執行任何操作，讓使用者保留在頁面
                 }

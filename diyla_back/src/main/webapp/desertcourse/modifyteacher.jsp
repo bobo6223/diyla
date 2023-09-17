@@ -15,6 +15,7 @@
 <html lang="en">
 
 <head>
+    <jsp:include page="/index.jsp" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>修改師傅資料</title>
@@ -37,19 +38,20 @@
         //默認使用者type為notAuth
         String type = "notAuth"; 
         //若session並非為null才往下
-        if(session != null){
-            Integer empId = (Integer) (session.getAttribute("empId"));
+        Integer empId = (Integer) (session.getAttribute("empId"));
+        List<String> typeFun = (List<String>) session.getAttribute("typeFun");
+        if(session != null && empId != null && typeFun != null){
             EmpVO empVO = empDAO.getOne(empId);
             String empName = empVO.getEmpName();
             //進來的是何種使用者
             Object typeFunObj = session.getAttribute("typeFun");
             boolean isTypeFunList = (typeFunObj != null && (typeFunObj instanceof java.util.List));
             if (isTypeFunList) {
-                List<String> typeFun = (List<String>) session.getAttribute("typeFun");
+                
                 boolean containsMaster = typeFun.contains("MASTER");
-                boolean containsAdmin = typeFun.contains("ADMIN");
+                boolean containsAdmin = typeFun.contains("BACKADMIN");
                 if (containsMaster && containsAdmin) {
-                    type = "ADMIN";
+                    type = "BACKADMIN";
                 } else if (containsMaster) {
                     type = "MASTER";
                 }
@@ -58,7 +60,7 @@
             }
             Integer teacherId = null;
             TeacherVO teacher = null;
-            if("ADMIN".equals(type)) {
+            if("BACKADMIN".equals(type)) {
                 List<TeacherVO> teacherList = teacherService.getAllTeacher();
                 pageContext.setAttribute("teacherList", teacherList);
             } else if ("MASTER".equals(type)) {
@@ -74,12 +76,16 @@
         }
         //修改的師傅資料處理
         TeacherVO teacherVO = (TeacherVO)request.getAttribute("teacherVO");
-        TeacherService teacherService = new TeacherService();
-        if(teacherVO != null){
-        List<String> teaSpeNameList = teacherService.getOneTeaSpecialityStringList(teacherVO.getTeaId());
+        List<String> teaSpeTestList = teacherService.getOneTeaSpecialityStringList(teacherVO.getTeaId());
+        List<String> teaSpeNameList = null;
+        if(teacherVO != null && !teaSpeTestList.isEmpty()){
+        teaSpeNameList = teacherService.getOneTeaSpecialityStringList(teacherVO.getTeaId());
         pageContext.setAttribute("teaSpeNameList", teaSpeNameList);
+        } else {
+            teaSpeNameList = null;
+            pageContext.setAttribute("teaSpeNameList", teaSpeNameList);
         }
-
+        System.out.println("speListis:" + teaSpeNameList);
 
 
 %>
@@ -88,7 +94,6 @@
 <body>
     <div id="pageContent">
         <div id="indexBlock">
-
         </div>
         <div id="naviContentBlock">
     <div id="naviBlock">
@@ -97,12 +102,12 @@
             <div id="titleBlock" style="margin-top: 5vh; margin-bottom: 5vh">
                 <h2 id="title" class="title-tag" >修改師傅</h2>
             </div>
+    <a href="${ctxPath}/desertcourse/listallteacher.jsp">前往教師列表頁面</a>
         <div id="contentBlock">
         <div id="formBlock">
-    <a href="${ctxPath}/desertcourse/listallteacher.jsp">前往教師列表頁面</a>
     <form action="${ctxPath}/modifyTeacher" method="post" enctype="multipart/form-data">
     <c:choose>
-    <c:when test="${'ADMIN'.equals(type) && teacherVO != null}">
+    <c:when test="${'BACKADMIN'.equals(type) && teacherVO != null}">
     <div class="row">
         <div id="teacherIdField" class="col-md-3 form-group">
             <label for="teacherId">師傅編號 </label>
@@ -121,7 +126,7 @@
         </div>
     </div>
     </c:when>
-    <c:when test="${'ADMIN'.equals(type) && teacherVO == null}">
+    <c:when test="${'BACKADMIN'.equals(type) && teacherVO == null}">
     <div class="row">
     <div id="teacherIdField">
         <label for="teacherId">師傅編號</label>
@@ -250,7 +255,7 @@
         <input type="hidden" id="defaultTeaPic" name="defaultTeaPic" value="">
     <% } %>
 </div>
-    <input type="submit" class="btn btn-primary" value="儲存修改" id="submitButton">
+    <input type="submit" class="btn btn-primary" value="儲存修改" id="submitButton" style="margin-top: 3vh;">
 </form>
 </div>
 </div>
@@ -258,12 +263,31 @@
 </div>
     <script>
         $(document).ready(function () {
+            //檢查是否登入
+            var type = "${type}";
+            
+            if (type === "NOSESSION") {
+                // 啟動定時器，3秒後導航到其他網頁
+                setTimeout(function() {
+                window.location.href = "${ctxPath}/emp/empLogin.jsp";
+                }, 3000); // 3000 毫秒 = 3 秒
+
+                Swal.fire({
+                title: "您沒有登入!",
+                icon: "warning",
+                confirmButtonText: "確定"
+             }).then(function(result){
+                if(result.isConfirmed) {
+                    window.location.href = "${ctxPath}/emp/empLogin.jsp";
+                }
+             });
+            }
                  //先做是否有修改的權利的確認
-            if (${type} !== 'ADMIN' && ${type} !== 'MASTER') {
-                // 啟動定時器，5秒後導航到其他網頁
+            if (type !== 'BACKADMIN' && type !== 'MASTER') {
+                // 啟動定時器，3秒後導航到其他網頁
                 setTimeout(function() {
                 window.location.href = "${ctxPath}" + "/desertcourse/listalldesertcoursecalendar.jsp";
-                }, 5000); // 5000 毫秒 = 5 秒
+                }, 3000); 
 
                 Swal.fire({
                 title: "您無權限修改師傅資料",

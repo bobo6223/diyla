@@ -31,6 +31,7 @@ public class RegisterServlet extends HttpServlet {
         List<String> exMsgs = new LinkedList<String>();
         req.setAttribute("exMsgs",exMsgs);
         Map<String,String> addMap = new LinkedHashMap<String,String>();
+        Map<String,String> successMap = new LinkedHashMap<String,String>();
 
         String name = req.getParameter("newName");
         String email = req.getParameter("user");
@@ -64,11 +65,16 @@ public class RegisterServlet extends HttpServlet {
         if (!pw.equals(pwcheck)){
             exMsgs.add("該密碼與您設定的密碼不一致");
         }
+        String addReg = "^[\u4e00-\u9fa5\\w,]+$";
+        if (!(address.matches(addReg))){
+            exMsgs.add("地址格式只能為中、英文字母、數字和,");
+        }
+
 
         MemberService memSer = new MemberService();
         MemVO memVO=memSer.addMem(exMsgs,name,email,pw,phone,birthday,gender,addressAll);
         if (!exMsgs.isEmpty()){
-            req.setAttribute("memVO",memVO);
+            req.setAttribute("mem",memVO);
             req.setAttribute("address",address);
             RequestDispatcher failure = req.getRequestDispatcher("/member/mem_register.jsp");
             failure.forward(req,res);

@@ -56,12 +56,12 @@
 
         .user-message {
             background-color: #DCF8C6;
-            align-self: flex-end;
+            align-self_chat: flex-end;
         }
 
         .other-message {
             background-color: #F4F4F4;
-            align-self: flex-start;
+            align-self_chat: flex-start;
         }
 
         #chatInputContainer {
@@ -76,7 +76,7 @@
         }
 
         #chatInput {
-            flex-grow: 1;
+            flex-grow_chat: 1;
             padding: 8px;
             border: none;
             border-radius: 20px;
@@ -154,7 +154,7 @@
         .friend.div{
             text-align: right; /* 将文本容器内的内容靠右 */
         }
-        #row{
+        #row_chat{
             width: 30px;
         }
         /* 朋友圖片 */
@@ -182,16 +182,15 @@
 </head>
 
 <body>
-    <form action="" enctype=""></form>
     <div id="chatIcon" onclick="closeChat()">Chat</div>
     <div id="chatContainer" style="display: none;">
         <div id="closeChat" onclick="closeChat()">-</div>
-        <!-- <div id="row"></div> -->
+        <!-- <div id="row_chat"></div> -->
 
         <div id="friendList">
             <span>Talk to : </span><div id="statusOutput" class="statusOutput"></div>
             <hr>
-        <div id="row"></div>
+        <div id="row_chat"></div>
         <!-- <div id="friendImg"></div> //測試用-->
         </div>
         <div id="activeChat">
@@ -218,19 +217,19 @@
         let dateTimeNowToBackend = formatDate(date, 'yyyy-MM-dd HH:mm:ss');
 
 
-        
+
 
         let MyPoint = "/chat/Master_${empId}_${empName}";
         let port = window.location.host.port;
         let host = window.location.host;
         let path = window.location.pathname;
         let webCtx = path.substring(0, path.indexOf('/', 1));
-        let endPointURL = "ws://" + host + webCtx + MyPoint;
+        let endPointURL = "wss://" + host + webCtx + MyPoint;
 
         let statusOutput = document.getElementById("statusOutput");
         let messagesArea = document.getElementById("messagesArea");
         // 可替換成名稱
-        let self = "Master_" + '${empId}_${empName}';
+        let self_chat = "Master_" + '${empId}_${empName}';
 
         let webSocket;
 
@@ -272,9 +271,12 @@
         function notMasterEmpfilter(){
             let empFunList = `${typeFun}`;
             // 判斷是否存在多筆 權限
-            let isSingle = empFunList.includes(",");
-            let empFun = isSingle ? "MASTER" : empFunList.substring(1, empFunList.length-1);
-            let isMaster = empFun.includes("MASTER");
+            if(empFunList.includes(",")){
+                return true;
+            }
+            let empFun = empFunList.substring(1, empFunList.length-1);
+            let isMaster = !empFun.includes("MASTER");
+            return isMaster;
         }
         // 開啟網頁就建立連線
         window.onload(webSocketOnloadConnect());
@@ -282,8 +284,11 @@
             webSocket = new WebSocket(endPointURL);
 
             webSocket.onopen = function (event) {
+                // 停止且隱藏
                 if(notMasterEmpfilter()){
+                chatIcon.style.display = "none";
                 webSocket.close();
+
                 } else {
                     console.log("connect success!");
                 }
@@ -311,9 +316,9 @@
                         div.appendChild(li);
                         let nameLi = document.createElement('li');
                         // 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
-                        fixedSender === self ? div.className +='me_div' : div.className += 'friend_div';
-                        fixedSender === self ? nameLi.className +='me_div' : nameLi.className += 'friend_div';
-                        fixedSender === self ? li.className += 'me' : li.className += 'friend';
+                        fixedSender === self_chat ? div.className +='me_div' : div.className += 'friend_div';
+                        fixedSender === self_chat ? nameLi.className +='me_div' : nameLi.className += 'friend_div';
+                        fixedSender === self_chat ? li.className += 'me' : li.className += 'friend';
 
                         // TODO 接收到訊息時 顏色變更
                         let getMesageColor = "#007bff"
@@ -328,7 +333,7 @@
                         ul.appendChild(div);
                     }
                     messagesArea.scrollTop = messagesArea.scrollHeight;
-                // 在寫入後端，同時傳給對象跟自己    
+                // 在寫入後端，同時傳給對象跟自己
                 } else if ("chat" === jsonObj.type) {
                     var li = document.createElement('li');
                     let nameLi = document.createElement('li');
@@ -340,25 +345,25 @@
                     let getMesageColor = "#f55454"
                     chatIcon.style.backgroundColor = getMesageColor;
                     console.log(jsonObj);
-                    if (self != receiver && self != sender){
+                    if (self_chat != receiver && self_chat != sender){
                         return;
                     }
                     let talkToName = document.getElementById("statusOutput").textContent;
                     if (talkToName != sender && talkToName != receiver){
                         return;
                     }
-                    
 
-                    sender === self ? div.className +='me_div' : div.className += 'friend_div';
-                    sender === self ? li.className += 'me' : li.className += 'friend';
-                    sender === self ? nameLi.className += 'me_div' : nameLi.className += 'friend_div';
+
+                    sender === self_chat ? div.className +='me_div' : div.className += 'friend_div';
+                    sender === self_chat ? li.className += 'me' : li.className += 'friend';
+                    sender === self_chat ? nameLi.className += 'me_div' : nameLi.className += 'friend_div';
                     li.innerHTML = jsonObj.message;
 
                     nameLi.innerHTML = jsonObj.sender + "  " + dateTimeNow;
                     document.getElementById("area").appendChild(nameLi);
                     document.getElementById("area").appendChild(div);
                     messagesArea.scrollTop = messagesArea.scrollHeight;
-                // 再斷線的時候，從別人好友列表移除    
+                // 再斷線的時候，從別人好友列表移除
                 } else if ("close" === jsonObj.type) {
                     refreshFriendList(jsonObj);
                 }
@@ -409,7 +414,7 @@
             var inputMessage = document.getElementById("message");
             var friend = statusOutput.textContent;
             var message = inputMessage.value.trim();
-            console.log("sendMessage: "+ message);    
+            console.log("sendMessage: "+ message);
             if (message === "") {
                 alert("Input a message");
                 inputMessage.focus();
@@ -418,7 +423,7 @@
             } else {
                 var jsonObj = {
                     "type": "chat",
-                    "sender": self,
+                    "sender": self_chat,
                     "receiver": friend,
                     "message": message,
                     "dateTime": dateTimeNowToBackend
@@ -432,12 +437,12 @@
         // 有好友上線或離線就更新列表
         function refreshFriendList(jsonObj) {
             var friends = jsonObj.users;
-            var row = document.getElementById("row");
+            var row_chat = document.getElementById("row_chat");
             let friendPic;
-            row.innerHTML = '';
+            row_chat.innerHTML = '';
             for (var i = 0; i < friends.length; i++) {
-                if (friends[i] === self  || "Master_" === friends[i].substring(0,7)) {
-                     continue; 
+                if (friends[i] === self_chat  || "Master_" === friends[i].substring(0,7)) {
+                     continue;
                 }
                 // 取得好友列表名稱與圖片
                 getMyPic(friends[i]);
@@ -449,13 +454,13 @@
         }
         // 註冊列表點擊事件並抓取好友名字以取得歷史訊息（推送給後端onMessage)
         function addListener() {
-            var container = document.getElementById("row");
+            var container = document.getElementById("row_chat");
             container.addEventListener("click", function (e) {
                 var friend = e.srcElement.textContent;
                 updateFriendName(friend);
                 var jsonObj = {
                     "type": "history",
-                    "sender": self,
+                    "sender": self_chat,
                     "receiver": friend,
                     "message": ""
                 };
@@ -488,13 +493,13 @@
                 let empName = res.empId;
                 let picData = arrayBufferToBase64(empIdObj);
                 let temp =  `<img class="friendImg" src="data: image/jpeg;base64,` + picData + `">`;
-                var row = document.getElementById("row");
+                var row_chat = document.getElementById("row_chat");
                 let count = 0;
                 // 把返回來的圖片直接放入好友列表
                 if(empIdObj != null || empIdObj == ''){
-                    row.innerHTML += '<div id=' + count++ + ' class="column" name="friendName" value=' + empName + ' ><div class="friendIng-div">'+temp +'<p class="friendName">' +empName + '</p></div></div>';
+                    row_chat.innerHTML += '<div id=' + count++ + ' class="column" name="friendName" value=' + empName + ' ><div class="friendIng-div">'+temp +'<p class="friendName">' +empName + '</p></div></div>';
                 } else {
-                    row.innerHTML += '<div id=' + count++ + ' class="column" name="friendName" value=' + empName + ' ><div class="friendIng-div"><p class="friendName">' +empName + '</p></div></div>';
+                    row_chat.innerHTML += '<div id=' + count++ + ' class="column" name="friendName" value=' + empName + ' ><div class="friendIng-div"><p class="friendName">' +empName + '</p></div></div>';
                 }
             })
             .catch(function (error) {

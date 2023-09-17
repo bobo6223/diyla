@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Success</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="${ctxPath}/css/style.css">
    <style>
            body {
                font-family: Arial, sans-serif;
@@ -57,7 +57,20 @@
         <h1 id="addok">新增成功！</h1>
 
                <ul>
-                   <li>問題分類：${addpbm.pbmSort}</li>
+                    <c:choose>
+                        <c:when test="${addpbm.pbmSort == 0}">
+                            <li>問題分類：課程</li>
+                        </c:when>
+                        <c:when test="${addpbm.pbmSort == 1}">
+                            <li>問題分類：DIY</li>
+                        </c:when>
+                        <c:when test="${addpbm.pbmSort == 2}">
+                            <li>問題分類：商店</li>
+                        </c:when>
+                        <c:otherwise>
+                            <li>問題分類：其他</li>
+                        </c:otherwise>
+                    </c:choose>
                    <li>問題標題：${addpbm.pbmTitle}</li>
                    <li>問題內容：${addpbm.pbmContext}</li>
                </ul>

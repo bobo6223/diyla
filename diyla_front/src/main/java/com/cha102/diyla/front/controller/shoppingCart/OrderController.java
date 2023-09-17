@@ -48,22 +48,8 @@ public class OrderController extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		String action = req.getParameter("action");
-		// 結帳
-//		if ("checkout".equals(action)) {
-//			Integer memId = (Integer) session.getAttribute("memId");
-//			List<ShoppingCartVO> shoppingCartList = shoppingCartService.getCartList(memId);
-//			Integer totalPrice = shoppingCartService.getTotalPrice(shoppingCartList);
-//			Integer maxToken = tokenService.getTokenTotalByMemId(memId);
-//			session.setAttribute("maxToken", maxToken);
-//			session.setAttribute("totalPrice", totalPrice);
-//			session.setAttribute("shoppingCartList", shoppingCartList);
-//			RequestDispatcher dispatcher = req.getRequestDispatcher("/checkout/order.jsp");
-//			dispatcher.forward(req, res);
-//		}
 		// 前台顯示訂單
 		if ("listOrder".equals(action)) {
-//			===============
-//			沒有登入就導向導向登入頁面
 			MemVO memVO = (MemVO) session.getAttribute("memVO");
 			if (memVO == null) {
 				String loginURL = "/member/mem_login.jsp";
@@ -93,7 +79,7 @@ public class OrderController extends HttpServlet {
 		if ("cancelOrder".equals(action)) {
 			Integer memId = (Integer) session.getAttribute("memId");
 			Integer orderNo = Integer.valueOf(req.getParameter("orderNO"));
-			commodityOrderService.updateStatus(5, orderNo);
+			commodityOrderService.updateStatus(6, orderNo);
 			List<CommodityOrderVO> list = commodityOrderService.getAllByMemId(memId);
 			session.setAttribute("memId", memId);
 			session.setAttribute("commodityOrderVOList", list);
@@ -108,7 +94,6 @@ public class OrderController extends HttpServlet {
 			MailService mailService = new MailService();
 			MemberService memberService = new MemberService();
 			HashMap<String, String> errMsg = new HashMap<>();
-
 			String recipient = (String) req.getParameter("recipient");
 			if (recipient == null || recipient.trim().isEmpty()) {
 				errMsg.put("recipient", "請填寫收件人");
@@ -130,6 +115,7 @@ public class OrderController extends HttpServlet {
 				return;
 			}
 			Integer memId = (Integer) session.getAttribute("memId");
+			MemVO memVO =(MemVO)session.getAttribute("memVO");
 			String redisKey = "cart:" + memId;
 			Map<String, String>cartInfo =jedis.hgetAll(redisKey);
 			List<ShoppingCartVO> shoppingCartList = shoppingCartService.getCart(memId,cartInfo);
@@ -157,11 +143,33 @@ public class OrderController extends HttpServlet {
 			CommodityOrderVO commodityOrderVO = new CommodityOrderVO(memId, 0, totalPrice, tokenUse,
 					totalPrice - tokenUse, recipient, recipientAddress, phone);
 			Integer orderNo = commodityOrderService.insert(commodityOrderVO,shoppingCartList);
-//			String memMail = memberService.selectMem(memId).getMemEmail();
-			String messageContent = "訂單詳情:\n" + "訂單編號:" + orderNo + "\n" +"訂單金額:"+(totalPrice - tokenUse)+"元+\n"+ "收件人:" + recipient + "\n" + "收件地址:"
-					+ recipientAddress + "\n" + "購買日期:" + formattedDate + "\n" + "_____________________\n"
-					+ "DIYLA感謝您的訂購，我們將盡快將商品寄出";
-			mailService.sendMail("t1993626@gmail.com", "訂購成功", messageContent);
+			String messageContent = "<html><head><style>"
+			        + "body {"
+			        + "    font-family: Arial, sans-serif;"
+			        + "    background-color: #ffebeb;"
+			        + "    margin: 0;"
+			        + "    padding: 20px;"
+			        + "}"
+			        + "h2 {"
+			        + "    color: #333;"
+			        + "}"
+			        + "p {"
+			        + "    color: #666;"
+			        + "}"
+			        + "hr {"
+			        + "    border: 1px solid #ccc;"
+			        + "}"
+			        + "</style></head><body>"
+			        + "<h2>訂單詳情</h2>"
+			        + "<p>訂單編號: " + orderNo + "</p>"
+			        + "<p>訂單金額: " + (totalPrice - tokenUse) + "元</p>"
+			        + "<p>收件人: " + recipient + "</p>"
+			        + "<p>收件地址: " + recipientAddress + "</p>"
+			        + "<p>購買日期: " + formattedDate + "</p>"
+			        + "<hr>"
+			        + "<p>DIYLA感謝您的訂購，我們將盡快將商品寄出</p>"
+			        + "</body></html>";
+			mailService.sendMail(memVO.getMemEmail(), "訂購成功", messageContent);
 			// 訂單生成清空購物車
 	        jedis.del(redisKey);
 			res.sendRedirect(req.getContextPath() + "/checkout/checkoutSucess.jsp");

@@ -15,6 +15,7 @@
 <html lang="en">
 
 <head>
+    <jsp:include page="/index.jsp" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新增課程</title>
@@ -49,19 +50,19 @@
         //默認使用者type為notAuth
         String type = "notAuth"; 
         //若session並非為null才往下
-        if(session != null){
-            Integer empId = (Integer) (session.getAttribute("empId"));
+        Integer empId = (Integer) (session.getAttribute("empId"));
+        List<String> typeFun = (List<String>) session.getAttribute("typeFun");
+        if(session != null && empId != null && typeFun != null){
             EmpVO empVO = empDAO.getOne(empId);
             String empName = empVO.getEmpName();
             //進來的是何種使用者
             Object typeFunObj = session.getAttribute("typeFun");
             boolean isTypeFunList = (typeFunObj != null && (typeFunObj instanceof java.util.List));
             if (isTypeFunList) {
-                List<String> typeFun = (List<String>) session.getAttribute("typeFun");
                 boolean containsMaster = typeFun.contains("MASTER");
-                boolean containsAdmin = typeFun.contains("ADMIN");
+                boolean containsAdmin = typeFun.contains("BACKADMIN");
                 if (containsMaster && containsAdmin) {
-                    type = "ADMIN";
+                    type = "BACKADMIN";
                 } else if (containsMaster) {
                     type = "MASTER";
                 }
@@ -70,7 +71,7 @@
             }
             Integer teacherId = null;
             TeacherVO teacher = null;
-            if("ADMIN".equals(type)) {
+            if("BACKADMIN".equals(type)) {
                 List<TeacherVO> teacherList = teacherService.getAllTeacher();
                 pageContext.setAttribute("teacherList", teacherList);
             } else if ("MASTER".equals(type)) {
@@ -85,13 +86,16 @@
             pageContext.setAttribute("type", type);
         }
     %>
-
+    <style>
+    .btn{
+        white-space: nowrap;
+    }
+    </style>
 </head>
 
 <body>
 <div id="pageContent">
     <div id="indexBlock">
-        <jsp:include page="/index.jsp" />
     </div>
 <div id="naviContentBlock">
     <div id="naviBlock">
@@ -107,9 +111,9 @@
             <div class="col-md-6">
                 <div id="teacherIdField" class="form-group">
                     <c:choose>
-                    <c:when test="${type == 'ADMIN'}">
+                    <c:when test="${type == 'BACKADMIN'}">
                         <label for="teacherSelect">師傅</label><br>
-                        <select id="teacherSelect" class="teacherSelect form-control">
+                        <select id="teacherSelect" name="teacherId" class="teacherSelect form-control">
                         <c:forEach var="tea" items="${teacherList}" varStatus="loop">
                             <option id="teacher${loop.index}" value="${tea.teaId}">${tea.teaName}</option>
                         </c:forEach>
@@ -117,7 +121,7 @@
                     </c:when>
                     <c:otherwise>
                         <label for="teacherId">師傅編號</label>
-                        <input type="text" id="teacherId" name="teacherId" class="form-control" value= ${teacherId} readonly style="background-color: #f2f2f2;"><br>
+                        <input type="text" id="teacherId" name="teacherId" class="form-control" value= "${teacherId}" readonly style="background-color: #f2f2f2;"><br>
                     </c:otherwise>
                     </c:choose>
                 </div>
@@ -180,7 +184,7 @@
             </div>
             <div class="col-md-3 form-group">
                 <label for="ingredientQuantity1"> 食材數量</label>
-                <input id="ingredientQuantity1" class="form-control" name="ingredientQuantity[]" data-field="ingredientQuantity" class="ingredientQuantity-row" required>
+                <input id="ingredientQuantity1" class="form-control" name="ingredientQuantity[]" data-field="ingredientQuantity" class="ingredientQuantity-row" required placeholder="輸入克數">
                 <span class="error" style="display: none">食材數量請輸入數字</span><br>
             </div>
             <div class="col-md-3 form-group">
@@ -224,6 +228,23 @@
 </div>
     <script>
         $(document).ready(function() {
+            //取得權限
+            var type = '${type}';
+            //若無session
+            if(type === "NOSESSION") {
+                Swal.fire({
+                title: "您沒有登入!",
+                icon: "error",
+                confirmButtonText: "確定"
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    window.location.href="${ctxPath}/emp/empLogin.jsp";
+                }
+            });
+            setTimeout(function() {
+                window.location.href = "${ctxPath}/emp/empLogin.jsp";
+                }, 2500);
+            } else{
             //取得食材列表
             var ingOptionString = "";
             fetch("${ctxPath}"+"/getIngredientList")
@@ -234,25 +255,8 @@
                 })
                 $("#ingredientType1").html(ingOptionString);
             });
-            //取得權限
-            var type = "${type}";
-            //若無session
-            if(type === "NOSESSION") {
-                Swal.fire({
-                title: "您沒有登入!",
-                icon: "error",
-                confirmButtonText: "確定"
-            }).then((result) => {
-                if(result.isConfirmed) {
-                    window.location.href="${ctxPath}/desertcourse/listalldesertcoursecalendar.jsp";
-                }
-            });
-            setTimeout(function() {
-                window.location.href = "${ctxPath}/desertcourse/listalldesertcoursecalendar.jsp";
-                }, 2500);
-            }
             //阻擋無權限人員新增課程
-           if(type !== "ADMIN" && type !== "MASTER") {
+           if(type !== "BACKADMIN" && type !== "MASTER") {
             Swal.fire({
                 title: "您沒有權限新增課程!",
                 icon: "error",
@@ -483,7 +487,7 @@ $("#price").on("input", function () {
 
 
 
-
+            }
         });
     </script>
 </body>

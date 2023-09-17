@@ -13,34 +13,27 @@
     <title>DIY後台</title>
     <!--DataTable的連結 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
     <!--樣式連結 -->
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- 引入 SweetAlert2 的 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.min.css">
 
     <!-- Custom styles for this template -->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <!-- Page level plugins -->
-    <script src="/diyla_back/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="/diyla_back/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="/diyla_back/js/demo/datatables-demo.js"></script>
-
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+    <link href="/diyla_back/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
     <link rel="stylesheet" href="../css/style.css">
 
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="${ctxPath}/css/style.css">
     <!-- Bootstrap core JavaScript-->
     <script src="/diyla_back/vendors/jquery/jquery-3.7.0.min.js"></script>
     <script src="/diyla_back/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -53,7 +46,8 @@
 
     <!-- Page level custom scripts -->
     <script src="/diyla_back/js/demo/datatables-demo.js"></script>
-
+    <!-- 引入 SweetAlert2 的 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.min.js"></script>
     <script src="//unpkg.com/layui@2.8.15/dist/layui.js"></script>
 
     <!-- 自訂css -->
@@ -95,24 +89,46 @@
             align-items: center; /* 垂直居中 */
         }
 
-
+        .product-image {
+            max-width: 100%; /* 图像宽度不超过单元格宽度 */
+            max-height: 100%; /* 图像高度不超过单元格高度 */
+            display: block; /* 让图像水平居中 */
+            margin: 0 auto; /* 让图像垂直居中 */
+        }
     </style>
     <link href="//unpkg.com/layui@2.8.15/dist/css/layui.css" rel="stylesheet">
 
-
 </head>
+
+<style>
+    /* 选择需要调整文字大小的元素，例如 body 元素 */
+    body {
+        font-size: 18px; /* 调整文字大小为 24 像素 */
+    }
+
+    /* 也可以选择特定的类或标签来调整文字大小 */
+    .custom-text {
+        font-size: 18px; /* 调整文字大小为 24 像素 */
+    }
+</style>
+<style>
+    .table {
+        border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+        border: none;
+    }
+</style>
 
 <body id="page-top">
 <aside class="topPage">
     <jsp:include page="../index.jsp" />
 </aside>
 <!-- Page Wrapper -->
-
-
-
 <main id="main">
-    <div id="content-wrapper" class="d-flex flex-column"
-         style="padding-left: 0px; padding-right: 0px; padding-top: 10px;">
+    <div id="content-wrapper" class="d-flex flex-column" style="padding-left: 0px; padding-right: 0px; padding-top: 10px;">
         <!-- Main Content -->
         <div id="content">
             <!-- Begin Page Content -->
@@ -125,28 +141,25 @@
                     <div class="card-body">
                         <div class="text-sm-end">
                             <a href="back_add_diycate.jsp">
-                                <button type="button"
-                                        class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2">
-                                    新增DIY品項
-                                </button>
+                                <button type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2">新增DIY品項</button>
                             </a>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th class="sorting">DIY品項編號</th>
-                                    <th>DIY品項名稱</th>
-                                    <th>DIY類別</th>
-                                    <th>DIY狀態</th>
-                                    <th>DIY金額</th>
-                                    <th>DIY圖片</th>
-                                    <th>編輯</th>
-                                    <th>刪除</th>
+                                    <th class="sorting" style="text-align: center;">品項編號</th>
+                                    <th style="text-align: center;">品項名稱</th>
+                                    <th style="text-align: center;">類別</th>
+                                    <th style="text-align: center;">狀態</th>
+                                    <th style="text-align: center;">金額</th>
+                                    <th style="text-align: center;">圖片</th>
+                                    <th style="text-align: center;">編輯</th>
+                                    <th style="text-align: center;">刪除</th>
                                 </tr>
                                 </thead>
                                 <tbody id="cateContainer">
-
+                                <!-- Table body content will be dynamically generated here -->
                                 </tbody>
                             </table>
                             <!--分页条-->
@@ -154,14 +167,10 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
             <!-- /.container-fluid -->
-
         </div>
         <!-- End of Main Content -->
-
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
@@ -171,26 +180,18 @@
             </div>
         </footer>
         <!-- End of Footer -->
-
     </div>
 </main>
 </div>
-
-
 <!-- Content Wrapper -->
-
 <!-- End of Content Wrapper -->
-
 <!-- End of Page Wrapper -->
-
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
-
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -207,31 +208,32 @@
         </div>
     </div>
 </div>
-
-
 <!-- 自定義 JavaScript -->
-
-
 <script>
-
     $(document).ready(function () {
         new DataTable('#dataTable1', {
             "ajax": {
-                url: "http://localhost:8081/diyla_back/api/diy-cates",
+                url: "/diyla_back/api/diy-cates",
                 type: "GET",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 dataSrc: 'content',
             },
+            "drawCallback": function (settings) {
+                // 图像加载完成后的代码
+                $('.product-image').on('load', function () {
+                    $(this).fadeIn();
+                });
+            },
             "columns": [
-                {data: "diyNo"},
-                {data: "diyName"},
-                {data: "diyCategoryDisplayName"},
-                {data: "diyStatusName"},
-                {data: "amount"},
+                { data: "diyNo" },
+                { data: "diyName" },
+                { data: "diyCategoryDisplayName" },
+                { data: "diyStatusName" },
+                { data: "amount" },
                 {
                     data: "diyPicture", "render": function (data, type, row, meta) {
-                        return `<img src="data:image/jpeg;base64,${data}" alt="商品圖片" style="width: 100px;height: 100px" class="product-image">`
+                        return `<img src="data:image/jpeg;base64,${data}" alt="商品圖片" style="width: 150px;height: 100px" class="product-image">`
                     }
                 },
                 {
@@ -247,14 +249,13 @@
             ]
         });
 
-
         layui.use(function () {
             let laypage = layui.laypage;
 
             function getList(s) {
                 // 使用 AJAX 請求從伺服器端獲取 JSON 數據
                 let xhr = new XMLHttpRequest();
-                let url = 'http://localhost:8081/diyla_back/api/diy-cates'; // Servlet URL
+                let url = '/diyla_back/api/diy-cates'; // Servlet URL
                 let params = ''; // 請求參數，以鍵值對形式拼接
 
                 if (s == null || s == "") {
@@ -294,7 +295,7 @@
                             'src=\"data:image/jpeg;base64,' +
                             data.content[i].diyPicture
                             + '\"' +
-                            'alt="商品圖片" style="width: 100px;height: 100px" class="product-image"></th>\n'
+                            'alt="商品圖片" style="width: 150px;height: 150px" class="product-image"></th>\n'
                         html += '<td>\n' +
                             '<button class="btn btn-outline-info"><a href=' +
                             '\"back_edit_diycate.jsp?' +
@@ -326,15 +327,22 @@
         });
     });
 
+    $('.product-image').on('load', function () {
+        $(this).fadeIn(); // 图像加载完成后显示
+    });
+
     function deleteRow(button, diyNo) {
         let row = button.closest('tr');
-        layer.msg('已刪除', {
-            icon: 1,
-            time: 2000 // 2秒關閉
+
+        Swal.fire({
+            icon: 'success',
+            title: '已刪除',
+            showConfirmButton: false,
+            timer: 2000 // 2秒後自動關閉
         });
         $.ajax({
             type: "DELETE",
-            url: "http://localhost:8081/diyla_back/api/diy-cates/" + diyNo,
+            url: "/diyla_back/api/diy-cates/" + diyNo,
             success: function (data) {
                 console.log("請求成功：", data);
                 console.log(button)
@@ -347,6 +355,6 @@
     }
 </script>
 
-
 </body>
+
 </html>

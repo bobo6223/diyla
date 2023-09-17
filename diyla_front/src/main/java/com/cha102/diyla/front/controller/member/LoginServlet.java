@@ -38,11 +38,10 @@ public class LoginServlet extends HttpServlet {
             String password = req.getParameter("password");
             MemVO memVO = memSer.login(exMsgs,user,password);
             if (!exMsgs.isEmpty()){
-                req.setAttribute("memVO",memVO);
+                req.setAttribute("mem",memVO);
                 RequestDispatcher failure = req.getRequestDispatcher("/member/mem_login.jsp");
                 failure.forward(req,res);
             } else {
-                String url = "/";
                 Integer memId =memVO.getMemId();
                 session.setAttribute("memVO", memVO);
                 session.setAttribute("memId", memId);
@@ -65,6 +64,7 @@ public class LoginServlet extends HttpServlet {
         //登出
         if ("logout".equals(action)){
             session.removeAttribute("memVO");
+            session.removeAttribute("memId");
             res.sendRedirect(req.getContextPath()+"/index.jsp");
         }
     }

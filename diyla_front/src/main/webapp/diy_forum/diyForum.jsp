@@ -19,7 +19,6 @@
         // return;
     } else {
         memVO = (MemVO) session.getAttribute("memVO");
-        // 假设 memVO 是一个 Java 对象，并且有一个名为 memId 的属性
         memId = (memVO != null) ? memVO.getMemId() : null;
     }
 
@@ -42,7 +41,7 @@
     <link rel="stylesheet" href="/diyla_front/diy/css/venobox.min.css">
     <link rel="stylesheet" href="/diyla_front/diy/css/animate.css">
     <link rel="stylesheet" href="/diyla_front/diy/css/jquery.exzoom.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="/diyla_front/diy/css/spacing.css">
     <link rel="stylesheet" href="/diyla_front/diy/css/style.css">
     <link rel="stylesheet" href="/diyla_front/diy/css/responsive.css">
@@ -83,8 +82,7 @@ MENU DETAILS START
                         <div class="tab-pane fade" id="pills-home" role="tabpanel"
                              aria-labelledby="pills-home-tab" tabindex="0">
                             <div class="menu_det_description">
-                                <p>訂位前請詳讀資訊以確保您的權益
-                                </p>
+                                <p><span style="font-size: 18px; font-weight: bold; color: red;">訂位前請詳讀資訊以確保您的權益</span></p>
                                 <ul>
                                     <li>● 因安全考量，無論是否有大人陪同，都無法接待12歲以下小朋友。
                                         (為避免小朋友年齡爭議，請攜帶可證明年齡之相關證件，供必要時核對)
@@ -99,18 +97,13 @@ MENU DETAILS START
                                     <li>● 費用依『甜點價格』收費。(無服務費)</li>
                                     <li>● 一份甜點價格限一人製作，其餘人數皆加收陪同費$100/人。</li>
                                 </ul>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                    Earum itaque nesciunt dolor laudantium placeat sed velit
-                                    aspernatur, nobis quos quibusdam distinctio voluptatum officia
-                                    Beatae, dolorum ad ea deleniti ratione voluptatum similique
-                                    omnis voluptas tempora optio soluta</p>
+                                <p>【修改及取消訂位注意事項】</p>
 
                                 <ul>
-                                    <li>Reiciendis blanditiis architecto. Debitis nesciunt
-                                        inventore voluptate
-                                    <li>Lorem ipsum dolor sit amet consectetur adipisicing
-                                        elit Doloribus.
-                                    </li>
+                                    <li>● 請在預約日三日前取消預約，否則不受理全額退費。 </li>
+                                    <li>● 若須修改聯絡人、電話相關資訊請至"查詢我的訂單"內修改。</li>
+                                    <li>● 代幣優惠折扣僅限商城使用，DIY體驗恕不折扣。</li>
+                                    <li>● 營業時間: 9:00~12:00，14:00~16:00，18:00~21:00</li>
 
                                 </ul>
 
@@ -191,31 +184,13 @@ MENU DETAILS START
     </div>
 </section>
 
-<!--=============================
-MENU DETAILS END
-==============================-->
 
-
-<!--=============================
-FOOTER START
-==============================-->
-
-<!--=============================
-FOOTER END
-==============================-->
-
-
-<!--=============================
-SCROLL BUTTON START
-==============================-->
 <!-- 捲動按鈕 -->
 
 <div class="tf__scroll_btn">
     <i class="fas fa-hand-pointer"></i>
 </div>
-<!--=============================
-SCROLL BUTTON END
-==============================-->
+
 
 <!-- 引入必要的 JavaScript  -->
 <!--jquery library js-->
@@ -245,7 +220,7 @@ SCROLL BUTTON END
 <!--main/custom js-->
 <script src="/diyla_front/diy/js/main.js"></script>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.js"></script>
 <!-- 自訂的 JavaScript 腳本 -->
 
 <script>
@@ -257,7 +232,7 @@ SCROLL BUTTON END
     function getList(s) {
         // 使用 AJAX 請求從伺服器端獲取 JSON 數據
         var xhr = new XMLHttpRequest();
-        var url = 'http://localhost:8081/diyla_front/diy/diy-forum/list'; // Servlet URL
+        var url = '/diyla_front/diy/diy-forum/list'; // Servlet URL
         // 後期需要傳入當前 diyNo，目前預設值為4
         var params = '&diyNo=<%=diyCateEntity.getDiyNo()%>'; // 請求參數，以鍵值對形式拼接
 
@@ -416,7 +391,7 @@ SCROLL BUTTON END
         var xhr = new XMLHttpRequest();
 
         // 設定請求方法和 URL
-        var url = "http://localhost:8081/diyla_front/diy/diy-forum/delete/" + id; // 替換為實際的刪除介面 URL
+        var url = "/diyla_front/diy/diy-forum/delete/" + id;
         xhr.open("DELETE", url, true);
 
         // 設定請求完成後的回調函式
@@ -448,7 +423,12 @@ SCROLL BUTTON END
         let memId = <%=memId%>;
 
         if (memId == null) {
-            alert("请登录后再评论！");
+            //使用sweetAlert2彈窗
+            Swal.fire({
+                icon: 'error',
+                title:'請登入後再評論!',
+            });
+
             return;
         }
 
@@ -464,7 +444,7 @@ SCROLL BUTTON END
         var memberId = <%=memId%>;
 
         var xhr = new XMLHttpRequest();
-        var url = 'http://localhost:8081/diyla_front/diy/diy-forum/add'; // Servlet URL
+        var url = '/diyla_front/diy/diy-forum/add';
         var params = 'diyNo=' + diyNo + "&diyGrade=" + diyGrade + "&artiCont=" + artiCont + "&memId=" + memberId; // 請求參數，以鍵值對形式拼接
         xhr.open('GET', url + '?' + params, true);
         xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
@@ -478,6 +458,15 @@ SCROLL BUTTON END
                 // 清空評論框的內容
                 document.querySelector('textarea[name="artiCont"]').value = ""; // 這裡清空評論框的內容
             }
+            if (xhr.readyState === 4 && xhr.status === 405) {
+                Swal.fire({
+                    icon: 'info',
+                    title: '注意',
+                    html: '您沒有上過此DIY品項課程，因此無法留下評論！<br>誠摯歡迎您參加DIY體驗哦',
+                });
+            }
+
+
         };
         xhr.send();
     }

@@ -40,9 +40,9 @@
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
-<div class="main-content">
+<div>
 
-    <div class="page-content">
+    <div class="page-content" style="padding:20px">
         <div class="container-fluid">
 
             <!-- start page title -->
@@ -136,8 +136,8 @@
                             </button>
                             <div style="width: 132px;">
                                 <div class="layui-upload-list">
-                                    <img class="layui-upload-img" id="ID-upload-demo-img" style="width: 100%; height: 92px;">
-                                    <div id="ID-upload-demo-text"></div>
+                                    <img class="layui-upload-img" id="ID-upload-demo-img" style="width: 200px; height: 150px;">
+                                </div>
                                 </div>
                                 <!--<div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="filter-demo">-->
                                 <!--    <div class="layui-progress-bar" lay-percent=""></div>-->
@@ -235,16 +235,21 @@
             var nameInput = document.querySelector('#diyName');
             var amountInput = document.querySelector('#amount');
 
-            if (nameInput.value === '') {
+            if (nameInput.value === '' && amountInput.value === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: '錯誤',
+                    text: '請輸入DIY品項名稱及DIY金額'
+                });
+                return; // 不繼續提交表單
+            } else if (nameInput.value === '') {
                 Swal.fire({
                     icon: 'error',
                     title: '錯誤',
                     text: '請輸入DIY品項名稱'
                 });
                 return; // 不繼續提交表單
-            }
-
-            if (amountInput.value === '') {
+            } else if (amountInput.value === '') {
                 Swal.fire({
                     icon: 'error',
                     title: '錯誤',
@@ -257,6 +262,15 @@
             if (isNaN(amountValue)) {
                 alert('請輸入有效的數字作為DIY金額');
                 return; // 不繼續提交表單
+            }
+            // 添加额外的防呆机制：检查金额是否小于100
+            if (amountValue < 100) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '錯誤',
+                    text: 'DIY金額必須大於或等於100'
+                });
+                return; // 不继续提交表单
             }
             // 發送 POST 請求
             var formData = new FormData();
@@ -303,7 +317,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "http://localhost:8081/diyla_back/api/diy-cates",
+                url: "/diyla_back/api/diy-cates",
                 data: formData,
                 dataType: 'json',
                 processData: false,  // 不處理數據
@@ -312,7 +326,7 @@
                     console.log("請求成功：", data);
                     // 跳轉回上一頁
                     // 跳轉到此 URL
-                    location.href = 'http://localhost:8081/diyla_back/diycate/back_diycate.jsp';
+                    location.href = '/diyla_back/diycate/back_diycate.jsp';
                 },
                 error: function(error) {
                     console.log("請求失敗：", error);
@@ -324,7 +338,7 @@
             event.preventDefault();
             // 跳轉回上一頁
             history.back();
-            location.href = 'http://localhost:8081/diyla_back/diycate/back_diycate.jsp';
+            location.href = '/diyla_back/diycate/back_diycate.jsp';
         });
     });
 </script>
